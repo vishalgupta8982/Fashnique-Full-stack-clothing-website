@@ -1,0 +1,39 @@
+.topDealsCard{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+.cards{
+    width: 16.5rem;
+    min-height: 18.4rem;
+     background-color: white;
+     margin:10px;
+     box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.3);
+     padding-bottom: 15px;
+     margin-bottom: 10px;
+}
+.cards:hover{
+    transform: translateY(-5px);
+    transition-duration: 0.3s;
+    scale: 1.02;
+}
+.topDealsCardImg{
+    height: 60%;
+    object-fit: cover;
+}
+ .topDealsHead{
+color:var(--Black);
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: auto;
+    text-align: center
+ }
+ .topDealsDiscount{
+    color:var(--primary);
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: auto;
+    text-align: center
+ }
+ 

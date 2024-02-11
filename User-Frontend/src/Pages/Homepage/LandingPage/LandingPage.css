@@ -1,0 +1,32 @@
+.homepage{
+    background: linear-gradient(to right,#ffdde1, #ee9ca7);
+     /* background: linear-gradient(to right, #E9DBBE, #E1C7A2); */
+}
+.homeLeft,.homeRight{
+   display: flex;
+flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.home_text1{
+    font-weight: 500;
+    color:var(--Grey);
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+}
+.home_text2{
+    font-weight: bold;
+    color:var(--Black);
+    font-size: 6vmax;
+    line-height: 6vmax;
+}
+.off{
+    color:var(--iconColor)
+}
+.home_img{
+    max-height:90vh ;
+    max-width: 90vw;
+     min-height:20vh ;
+    min-width: 20vw;
+    object-fit:contain;
+}

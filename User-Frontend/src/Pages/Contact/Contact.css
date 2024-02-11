@@ -1,0 +1,38 @@
+.contactPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white);
+}
+.ContactContainer{
+    display: flex;
+    padding: 20px 0px;
+    background-color: var(--white);
+    margin: 10px 0px;
+    border-radius: 10px;
+}
+ 
+.contactInputsContainer{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 30px;
+    
+}
+
+.getInTouch{
+    font-size: 28px;
+    font-weight: 500;
+}
+.feelFree{
+    color:var(--Grey);
+    margin-bottom: 30px;
+}
+.contactInput
+{
+    outline: none;
+    background-color: #F4F4F6;
+    padding: 10px;
+    border-radius: 10px;
+     margin-bottom: 25px;
+}
+ 

@@ -1,0 +1,27 @@
+.footer{
+    background-color: var(--secondary);
+    flex-direction: column;
+    min-height: 20vh;
+}
+ 
+.footerContainer{
+    padding:10px 20px;
+}
+.footerHead{
+    color: var(--white);
+    font-weight: 700;
+}
+.footerContent{
+    font-weight: 500;
+    color:var(--white);
+}
+.copyright{
+     font-weight: 500;
+    color:var(--white);
+    text-align: center;
+    padding:10px 0px;
+}
+.footerIcon{
+    color: var(--white);
+    font-size: larger;
+}

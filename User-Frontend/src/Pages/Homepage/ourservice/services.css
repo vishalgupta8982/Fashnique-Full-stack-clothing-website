@@ -1,0 +1,15 @@
+ 
+.service {
+    min-height: 25vh;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--quaternary);
+}
+.services1{
+    font-weight: bold;
+}
+.services2{
+    font-weight: 500;
+}
+ 
