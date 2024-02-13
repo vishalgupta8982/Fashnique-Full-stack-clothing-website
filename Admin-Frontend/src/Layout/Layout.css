@@ -1,0 +1,129 @@
+ 
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: var(--primary);
+}
+.logoImg{
+    width: 30px;
+}
+.lg-logo{
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--primary);
+    padding: 12px 0px;
+    text-align: center;
+}
+.sm-logo{
+    color:var(--Grey);
+}
+.logo {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+}
+.ant-layout {
+  min-height: 100vh;
+}
+.ant-layout-sider {
+  flex: 0 0 250px !important;
+  max-width: 250px !important;
+  min-width: 250px !important;
+  width: 250px !important;
+  background-color: var(--white);
+}
+.ant-layout-sider-children{
+    background-color: var(--white);
+}
+.ant-layout-sider-collapsed {
+  flex: 0 0 80px !important;
+  max-width: 80px !important;
+  min-width: 0px !important;
+  width: 80px !important;
+}
+ 
+
+.ant-layout-sider-collapsed .sm-logo {
+  display: block;
+}
+.ant-layout-sider-collapsed .lg-logo {
+  display: none;
+}
+.logo {
+  margin: 0;
+  height: 64px;
+}
+main {
+  height: 85vh;
+  overflow-y: scroll;
+  background-color: transparent !important;
+}
+main::-webkit-scrollbar {
+  width: 0px;
+}
+ 
+ 
+.error {
+  color: red;
+  font-size: 12px;
+}
+.adminHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white);
+    padding: 0px 10px;
+}
+ .ant-menu-item-selected{
+    color: var(--secondary) !important;
+    background-color: var(--lightprimary) !important;
+
+}
+.mainContainer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.headerProfileImg{
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+}
+.headerName{
+    font-size: 16px;
+    font-weight: 500;
+}
+.headerEmail{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Grey);
+}
+.nameEmail{
+    line-height: 18px;
+}
+.dropdown{
+  position: absolute;
+  right:30px;
+  top:60px;
+  background-color: var(--white);
+  padding: 10px;
+}
+li{
+  list-style-type: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+.dropdown-item{
+  margin-bottom: 10px;
+  padding: 10px 0px;
+  line-height: 20px;
+}
+.dropdown-item:hover{
+  color: var(--primary);
+}

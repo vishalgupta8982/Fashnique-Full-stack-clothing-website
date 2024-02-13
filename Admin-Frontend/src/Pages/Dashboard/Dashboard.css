@@ -1,0 +1,57 @@
+.dashboard{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+}
+.dashboardHead{
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.dbCard{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.dbCard1,.dbCard2,.dbCard3{
+    min-height: 110px;
+    margin: 10px;
+    background-color: var(--white);
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.cardName{
+font-size: 14px;
+color: var(--lightGrey);
+margin-bottom: 10px;
+}
+.cardAmount{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--Black);
+}
+.growth{
+    color: var(--primary);
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: flex-end;
+    justify-content: flex-end;
+}
+.income{
+    font-size: 20px;
+    font-weight: 500;
+    background-color: var(--white);
+    padding: 10px;
+    margin: 10px;
+    margin-bottom: 10px;
+}
