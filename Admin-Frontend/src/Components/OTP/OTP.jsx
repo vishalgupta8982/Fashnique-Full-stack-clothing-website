@@ -9,7 +9,7 @@ const OTP=()=>{
      console.log(otp)
     return(
         <>
-            <div className="otpPage w-[screen]  min-h-[74vh]   ">
+            <div className="otpPage w-[screen]  min-h-[100vh]   ">
                 <div className="otpCard ">
                     <div className='otpHead'> <p >Verify with otp</p></div>
                       <p className='sentto'>sent to vg980514@gmail.com</p> 

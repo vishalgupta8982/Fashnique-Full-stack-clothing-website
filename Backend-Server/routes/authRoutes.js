@@ -6,7 +6,7 @@ router.post('/register',createUser);
 router.post('/forgot-password-token',forgotPasswordToken)
 router.put("/reset-password/:token", resetPassword);
 router.put('/password',authMiddleware,updatePassword)
-router.post('/login',loginUserCtrl)
+router.post('/login',loginUserCtrl) 
 router.post('/admin-login',loginAdminCtrl)
 router.post('/cart',authMiddleware,userCart)
 router.post('/cart/applyCoupan',authMiddleware,applyCoupan)

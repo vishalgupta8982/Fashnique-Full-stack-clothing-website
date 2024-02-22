@@ -7,55 +7,81 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { useState } from 'react';
 import Layout from '../../Layouts/Layout/Layout.js'
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 import { toast } from 'react-toastify'
+import { userLogin } from '../../services/authAction.jsx';
+import { useEffect } from 'react';
 const Login = () => {
-   
-    const navigate=useNavigate()
-    const [secure,setSecure]=useState(true)
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const [secure, setSecure] = useState(true)
+    const [credential, setCredential] = useState({ email: '', password: '' })
+    const handleChange = (e, fieldName) => {
+        setCredential(prevState => ({
+            ...prevState,
+            [fieldName]: e.target.value
+        }));
+    };
+    const login = () => {
+        console.log("hei")
+        dispatch(userLogin(credential));
+    }
+    const authState = useSelector((state) => state)
+    const { user, error, isSuccess, loading } = authState.auth;
+    console.log(error)
+    useEffect(() => {
+        if (isSuccess) {
+            navigate("/");
+            toast.success("Login Successfull")
+        } else {
+            navigate("");
+        }
+    }, [user, error, isSuccess, loading]);
     return (
         <>
-        <Layout> 
-            <div className="loginPage w-[screen]   min-h-[74vh]   ">
-                <div className="loginCard ">
-                    <div className='LoginHead'> <p >Sign in</p></div>
-                    <div className='inputContainer'>
-                        <p className='label'>Email</p>
-                        <div className='inputField'>
-                            <CgProfile color='#AEAEAE' size={18} />
-                            <input
-                                className='input'
-                                type="text"
-                                placeholder='Email'
-                            // value={value}
-                            // onChange={handleChange}
-                            />
+            <Layout>
+                <div className="loginPage w-[screen]   min-h-[74vh]   ">
+                    <div className="loginCard ">
+                        <div className='LoginHead'> <p >Sign in</p></div>
+                        <div className='inputContainer'>
+                            <p className='label'>Email</p>
+                            <div className='inputField'>
+                                <CgProfile color='#AEAEAE' size={18} />
+                                <input
+                                    className='input'
+                                    type="text"
+                                    placeholder='Email'
+                                    value={credential.email}
+                                    onChange={(e) => handleChange(e, 'email')}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className='inputContainer'>
-                        <p className='label'>Password</p>
-                        <div className='inputField'>
-                            <IoLockClosedOutline color='#AEAEAE' size={18} />
-                            <input
-                                className='input'
-                                type={secure ? 'password' : 'text'}
-                                placeholder='Password'
-                                
-                                style={{ appearance: 'none' }}
-                            // value={value}
-                            // onChange={handleChange}
-                            />
+                        <div className='inputContainer'>
+                            <p className='label'>Password</p>
+                            <div className='inputField'>
+                                <IoLockClosedOutline color='#AEAEAE' size={18} />
+                                <input
+                                    className='input'
+                                    type={secure ? 'password' : 'text'}
+                                    placeholder='Password'
+
+                                    style={{ appearance: 'none' }}
+                                    value={credential.password}
+                                    onChange={(e) => handleChange(e, 'password')}
+                                />
                                 <span onClick={() => setSecure(!secure)} className='eye'>
                                     {secure ? (<FaEyeSlash />) : (<FaEye />)}
                                 </span>
+                            </div>
                         </div>
-                    </div>
-                    <p className='forgot'>Forgot Password?</p>
-                    <div className="LoginButton"> 
-                        <Button title='Sign in' widthButton={"270px"} /></div>
+                        <p className='forgot'>Forgot Password?</p>
+                        <div className="LoginButton">
+                            <div onClick={login}>
+                                <Button title='Sign in' widthButton={"270px"} /></div></div>
                         <p className='newMember'>New to Marketooze? <span onClick={() => navigate('/signUp')} className='join'>Join now</span></p>
+                    </div>
                 </div>
-            </div>
             </Layout>
         </>
     )

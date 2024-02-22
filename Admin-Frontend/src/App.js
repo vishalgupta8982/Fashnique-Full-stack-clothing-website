@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,useNavigate,Navigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from "./Components/Login/Login";
@@ -22,8 +22,14 @@ import AddColor from "./Pages/AddColor/AddColor.jsx";
 import AddCategory from "./Pages/AddCategory/AddCategory.jsx";
 import AddBrand from "./Pages/AddBrand/AddBrand.jsx";
 import AddProduct from "./Pages/AddProduct/AddProduct.jsx";
-
+import {useSelector} from "react-redux"
+import { useEffect } from "react";
+import NotFound from "./Components/NotFound/NotFound.jsx";
 const App = () => {
+  const isAuthenticated=useSelector((state)=>state.auth.isSuccess)
+   
+  
+    
     return (
     <BrowserRouter >
       <ToastContainer position="top-center" autoClose={4000} draggable />
@@ -32,6 +38,8 @@ const App = () => {
           <Route path="signup" element={<SignUp />} />
           <Route path="otp" element={<OTP />} />
           <Route path="changePassowrd" element={<ChangePassword />} />
+          
+          {isAuthenticated &&( 
         <Route path='/admin' element={<Layouts />}>
           <Route index element={< Dashboard />} />
         <Route path="customer" element={<Customer/>} />
@@ -49,7 +57,8 @@ const App = () => {
             <Route path="addcategory" element={<AddCategory/>} />
             <Route path="addbrand" element={<AddBrand/>} />
             <Route path="addproduct" element={<AddProduct/>} />
-        </Route>
+            </Route>)}
+          <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

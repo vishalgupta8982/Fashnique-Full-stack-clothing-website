@@ -19,17 +19,23 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate,useLocation } from "react-router-dom";
 import logo from '../assets/Images/logo.png'
-import Dashboard from "../Pages/Dashboard/Dashboard";
+import {useSelector,useDispatch} from "react-redux"
+import { logout } from "../Services/authentication/authAction";
 const { Header, Sider, Content } = Layout;
 const Layouts = () => {
     const location =useLocation()
+    const dispatch=useDispatch()
     const [collapsed, setCollapsed] = useState(false);
     const [showDropDown, setShowDropDown] = useState(false);
+    const adminUser=useSelector((state)=>state.auth.user)
+    const handleLogOut=()=>{
+        dispatch(logout())
+    }
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     const navigate = useNavigate();
-    console.log(Outlet)
+    
     return (
         <Layout >
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -184,8 +190,8 @@ const Layouts = () => {
                             <img className="headerProfileImg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNhFeR5WtouU9r_ETzHsC6Ij8sQFLfqZtTyMxm4DJD4Q&s" alt="" />
                          </div>
                          <div onClick={()=>setShowDropDown(!showDropDown)} className="nameEmail">
-                            <p className="headerName">Vishal Gupta</p>
-                            <p className="headerEmail">vg980514@gmail.com</p>
+                                <p className="headerName">{adminUser.firstName}&nbsp;{adminUser.lastName} </p>
+                            <p className="headerEmail">{adminUser.email}</p>
                          </div>
                      </div>
                     </div>
@@ -194,7 +200,7 @@ const Layouts = () => {
                     <li>
                         <Link
                             className="dropdown-item  "
-                            to="/"
+                            // to="/"
                         >
                             View Profile
                         </Link>
@@ -203,6 +209,7 @@ const Layouts = () => {
                         <Link
                             className="dropdown-item  backdrop:"
                             to="/"
+                            onClick={handleLogOut}
                         >
                             Signout
                         </Link>

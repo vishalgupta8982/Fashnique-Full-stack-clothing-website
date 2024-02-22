@@ -1,6 +1,7 @@
 const express=require("express");
 const dbConnect = require("./config/dbConnect");
 const app=express();
+const cors = require('cors');
 const cookieParser=require("cookie-parser")
 const dotenv=require("dotenv").config({path:"./.env"})
 const PORT =process.env.PORT || 4000  ;
@@ -18,6 +19,7 @@ const coupanRouter=require('./routes/coupanRoutes')
 const enquiryRouter=require('./routes/enqRoutes')
 dbConnect()
 app.use(morgan('dev'))
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(cookieParser())

@@ -91,7 +91,7 @@ const loginAdminCtrl = asyncHandler(async (req, res) => {
       token: generateToken(findAdmin?._id),
     });
   } else {
-    throw new Error("Inavalid credential");
+    return res.status(401).json({ error: 'Invalid username or password' });
   }
 });
 
