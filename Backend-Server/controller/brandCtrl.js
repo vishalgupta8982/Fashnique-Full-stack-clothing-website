@@ -7,7 +7,7 @@ const createBrand = asyncHandler(async (req, res) => {
     const newCategory = await Brand.create(req.body);
     res.json(newCategory);
   } catch (err) {
-    throw new Errror(err);
+    throw new Error(err);
   }
 });
 

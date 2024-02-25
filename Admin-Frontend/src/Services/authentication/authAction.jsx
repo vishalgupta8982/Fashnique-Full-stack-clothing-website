@@ -1,6 +1,6 @@
  import {baseUrl} from '../../Utils/baseUrl'
 import axios from "axios"
-
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const AdminLoginRequest = () => ({
     type: 'ADMIN_LOGIN_REQUEST',
@@ -39,6 +39,7 @@ export const adminLogin=(credential)=>async(dispatch)=>{
         const response=await axios.post(`${baseUrl}/user/admin-login`,credential)
         if(response){
             dispatch(AdminLoginSuccess(response.data))
+            await AsyncStorage.setItem(response.data)
         }
         console.log(response.data)
     }

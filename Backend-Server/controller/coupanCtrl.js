@@ -40,4 +40,14 @@ const deleteCoupan = asyncHandler(async (req, res) => {
     throw new Error(err);
   }
 });
-module.exports={createCoupan,getAllCoupan,updateCoupan,deleteCoupan}
+const getCoupan = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const coupanDetail = await Coupan.findById(id);
+    res.json(coupanDetail);
+  } catch (err) {
+    throw new Error(err);
+  }
+});
+module.exports={createCoupan,getAllCoupan,updateCoupan,deleteCoupan,getCoupan}

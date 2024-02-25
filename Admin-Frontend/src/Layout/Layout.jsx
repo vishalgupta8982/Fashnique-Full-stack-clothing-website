@@ -21,15 +21,18 @@ import { useNavigate,useLocation } from "react-router-dom";
 import logo from '../assets/Images/logo.png'
 import {useSelector,useDispatch} from "react-redux"
 import { logout } from "../Services/authentication/authAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { Header, Sider, Content } = Layout;
 const Layouts = () => {
     const location =useLocation()
     const dispatch=useDispatch()
     const [collapsed, setCollapsed] = useState(false);
     const [showDropDown, setShowDropDown] = useState(false);
+   
     const adminUser=useSelector((state)=>state.auth.user)
     const handleLogOut=()=>{
         dispatch(logout())
+        AsyncStorage.clear()
     }
     const {
         token: { colorBgContainer },
@@ -66,7 +69,7 @@ const Layouts = () => {
                         },
                         {
                             key: "Catalog",
-                            icon: <AiOutlineShoppingCart className=" text-xl" />,
+                            icon: <AiOutlineShoppingCart className="text-xl " />,
                             label: "Catalog",
                             children: [
                                 {
@@ -76,13 +79,13 @@ const Layouts = () => {
                                 },
                                 {
                                     key: "productlist",
-                                    icon: <AiOutlineShoppingCart className=" text-xl" />,
+                                    icon: <AiOutlineShoppingCart className="text-xl " />,
                                     label: "Product List",
                                 },
                                 {
                                     key: "addbrand",
                                     icon: <SiBrandfolder className="text-xl" />,
-                                    label: "Brand",
+                                    label: "Add Brand",
                                 },
                                 {
                                     key: "brandlist",
@@ -92,7 +95,7 @@ const Layouts = () => {
                                 {
                                     key: "addcategory",
                                     icon: <BiCategoryAlt className="text-xl" />,
-                                    label: "Category",
+                                    label: "Add Category",
                                 },
                                 {
                                     key: "categorylist",
@@ -102,7 +105,7 @@ const Layouts = () => {
                                 {
                                     key: "addcolor",
                                     icon: <AiOutlineBgColors className="text-xl" />,
-                                    label: "Color",
+                                    label: "Add Color",
                                 },
                                 {
                                     key: "colorlist",
@@ -122,12 +125,12 @@ const Layouts = () => {
                             label: "Marketing",
                             children: [
                                 {
-                                    key: "coupon",
+                                    key: "addcoupan",
                                     icon: <ImBlog className="text-xl" />,
                                     label: "Add Coupon",
                                 },
                                 {
-                                    key: "coupon-list",
+                                    key: "coupanlist",
                                     icon: <RiCouponLine className="text-xl" />,
                                     label: "Coupon List",
                                 },
@@ -170,7 +173,7 @@ const Layouts = () => {
             </Sider>
             <Layout className="site-layout">
                 <Header
-                    className="adminHeader   "
+                    className="adminHeader "
                     
                 >
                     {React.createElement(
@@ -199,7 +202,7 @@ const Layouts = () => {
                 <div className={`dropdown ${showDropDown ? `block` : `hidden`} `}>
                     <li>
                         <Link
-                            className="dropdown-item  "
+                            className="dropdown-item "
                             // to="/"
                         >
                             View Profile
@@ -207,7 +210,7 @@ const Layouts = () => {
                     </li>
                     <li>
                         <Link
-                            className="dropdown-item  backdrop:"
+                            className="dropdown-item backdrop:"
                             to="/"
                             onClick={handleLogOut}
                         >

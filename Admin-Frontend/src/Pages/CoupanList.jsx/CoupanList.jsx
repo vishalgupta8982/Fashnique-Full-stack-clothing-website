@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './ColorList.css'
+import './CoupanList.css'
 import { Table } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { BiEdit } from "react-icons/bi";
@@ -8,7 +8,8 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import CustomModal from '../../Components/CustomModel/CustomModel';
 import ClipLoader from "react-spinners/ClipLoader";
-import { deleteColor, getColor } from '../../Services/Color/ColorAction';
+import { deleteCoupan, getCoupan } from '../../Services/Coupan/CoupanAction';
+
 const columns = [
     {
         title: "SNo",
@@ -21,51 +22,58 @@ const columns = [
         sorter: (a, b) => a.name.length - b.name.length,
     },
     {
+        title: "Discount",
+        dataIndex: "discount",
+        sorter: (a, b) => a.discount - b.discount,
+    },
+    {
+        title: "Expiry",
+        dataIndex: "expiry",
+        sorter: (a, b) => a.name.length - b.name.length,
+    },
+    {
         title: "Action",
         dataIndex: "action",
     },
 ];
- 
-const ColorList = () => {
+
+const CoupanList = () => {
     const [open, setOpen] = useState(false);
-    const [colorId, setColorId] = useState("");
+    const [coupanId, setcoupanId] = useState("");
 
     const dispatch = useDispatch();
 
     const showModal = (id) => {
         setOpen(true);
-        setColorId(id);
+        setcoupanId(id);
     };
     const hideModal = () => {
         setOpen(false);
     };
-    const colorList = useSelector((state) => state.color)
-    const { isSuccess, loading, Color } = colorList;
+    const coupanList = useSelector((state) => state.coupan)
+    const { isSuccess, loading, Coupan } = coupanList;
     const token = useSelector((state) => state.auth.user.token);
-    const dltColor = (id) => {
-        dispatch(deleteColor(id, token));
+    const dltCoupan = (id) => {
+        dispatch(deleteCoupan(id, token));
         setOpen(false);
     };
 
     useEffect(() => {
-        dispatch(getColor());
+        dispatch(getCoupan(token));
         if (isSuccess) {
             toast.success("Deleted Successfully");
         }
     }, [dispatch, isSuccess]);
-    const data1 = Array.isArray(Color)
-        ? Color.map((item, index) => ({
+    const data1 = Array.isArray(Coupan)
+        ? Coupan.map((item, index) => ({
             key: index,
-            name: (
-                <div className="flex items-center" >
-                    <div style={{backgroundColor:item.title}} className={"colorShow "}></div>
-                    {`${item.title}`}
-                </div>
-
-            ),
+            name: item.name,
+            discount: `${item.discount}%`,
+            expiry: new Date(item.expiry).toLocaleString(),
+            
             action: (
                 <div className="icon">
-                    <Link to={`/admin/addcolor/${item._id}`} className="edit">
+                    <Link to={`/admin/addcoupan/${item._id}`} className="edit">
                         <BiEdit />
                     </Link>
                     <button className="delete" onClick={() => showModal(item._id)}>
@@ -75,9 +83,11 @@ const ColorList = () => {
             ),
         }))
         : [];
+
+
     return (
         <>
-            <div className='colorlist' >
+            <div className='coupanList' >
                 {loading && (
                     <div className='loader'>
                         <ClipLoader
@@ -89,16 +99,17 @@ const ColorList = () => {
                         />
                     </div>
                 )}
-                <p className="colorlistHead">Color List</p>
-                <Table columns={columns} dataSource={data1} /><CustomModal
+                <p className="coupanListHead">Coupan List</p>
+                <Table columns={columns} dataSource={data1} />
+                <CustomModal
                     hideModal={hideModal}
                     open={open}
                     performAction={() => {
-                        dltColor(colorId);
+                        dltCoupan(coupanId);
                     }}
                     title="Are you sure you want to delete this blog category?"
                 /></div></>
     )
 }
 
-export default ColorList
+export default CoupanList

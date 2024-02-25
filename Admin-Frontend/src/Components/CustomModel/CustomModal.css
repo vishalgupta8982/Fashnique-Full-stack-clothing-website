@@ -1,0 +1,9 @@
+.ant-btn{
+    background-color: var(--primary);
+    color:var(--white);
+}
+.ant-btn:hover{
+    background-color: var(--lightGrey) !important;
+    border-color: 1px solid var(--primary);
+    color: #fff !important;
+}

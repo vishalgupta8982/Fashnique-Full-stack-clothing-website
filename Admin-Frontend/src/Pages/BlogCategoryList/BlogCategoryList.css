@@ -12,3 +12,23 @@
     
     margin-bottom: 10px;
 }
+.icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.edit{
+    font-size: 18px;
+    color: var(--primary);
+    margin-right: 20px;
+     padding: 5px;
+}
+.delete{
+      font-size: 18px;
+    color: var(--iconColor);
+    padding: 5px;
+}
+.delete:hover,.edit:hover{
+    background-color: var(--lightGrey);
+    border-radius: 50%;
+}

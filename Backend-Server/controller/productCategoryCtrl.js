@@ -34,7 +34,7 @@ const deleteCategory=asyncHandler(async(req,res)=>{
     const {id}=req.params;
     validateMongoDbId(id)
     try{
-        const dltCategory = await ProductCategory.findOneAndDelete(id);
+        const dltCategory = await ProductCategory.findByIdAndDelete(id);
         res.json(dltCategory)
     }
     catch(err){

@@ -25,6 +25,8 @@ import AddProduct from "./Pages/AddProduct/AddProduct.jsx";
 import {useSelector} from "react-redux"
 import { useEffect } from "react";
 import NotFound from "./Components/NotFound/NotFound.jsx";
+import CoupanList from "./Pages/CoupanList.jsx/CoupanList.jsx";
+import AddCoupan from "./Pages/AddCoupan/AddCoupan.jsx";
 const App = () => {
   const isAuthenticated=useSelector((state)=>state.auth.isSuccess)
    
@@ -32,7 +34,7 @@ const App = () => {
     
     return (
     <BrowserRouter >
-      <ToastContainer position="top-center" autoClose={4000} draggable />
+      <ToastContainer position="top-center" autoClose={2000} draggable />
       <Routes>
         <Route path="/" element={<Login/>}  />
           <Route path="signup" element={<SignUp />} />
@@ -51,11 +53,18 @@ const App = () => {
             <Route path="categorylist" element={<CategoryList/>} />
             <Route path="brandlist" element={<BrandList/>} />
             <Route path="productlist" element={<ProductList/>} />
+            <Route path="coupanlist" element={<CoupanList/>} />
             <Route path="addblog" element={<AddBlog/>} />
+            <Route path="addcoupan" element={<AddCoupan/>} />
+            <Route path="addcoupan/:id" element={<AddCoupan/>} />
+            <Route path="addblogcategory/:id" element={<AddBlogCategory/>} />
             <Route path="addblogcategory" element={<AddBlogCategory/>} />
             <Route path="addcolor" element={<AddColor/>} />
+            <Route path="addcolor/:id" element={<AddColor/>} />
             <Route path="addcategory" element={<AddCategory/>} />
+            <Route path="addcategory/:id" element={<AddCategory/>} />
             <Route path="addbrand" element={<AddBrand/>} />
+            <Route path="addbrand/:id" element={<AddBrand/>} />
             <Route path="addproduct" element={<AddProduct/>} />
             </Route>)}
           <Route path="*" element={<NotFound />} />

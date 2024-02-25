@@ -1,37 +1,62 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Customer.css'
 import { Table } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
+import ClipLoader from "react-spinners/ClipLoader";
+import { getCustomer } from '../../Services/Customer/CustomerAction';
 const columns = [
     {
         title: "SNo",
         dataIndex: "key",
+        render: (text, record, index) => index + 1,
+        
     },
     {
         title: "Name",
         dataIndex: "name",
+        sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-        title: "Product",
-        dataIndex: "product",
+        title: "Email",
+        dataIndex: "email",
     },
     {
-        title: "Status",
-        dataIndex: "staus",
+        title: "Mobile",
+        dataIndex: "mobile",
     },
 ];
-const data1 = [];
-for (let i = 0; i < 26; i++) {
-    data1.push({
-        key: i,
-        name: `Edward King ${i}`,
-        product: 32,
-        staus: `London, Park Lane no. ${i}`,
-    });
-}
 const Customer = () => {
+    const dispatch=useDispatch();
+    useEffect(()=>{
+        dispatch(getCustomer())
+    },[])
+    const customerList=useSelector((state)=>state.customer)
+    const {  loading, Customer } = customerList
+    console.log(Customer)
+    const data1 = Array.isArray(Customer)
+        ? Customer.map((item, index) => ({
+            key: index,
+            name: item.firstName + " " + item.lastName,
+            email: item.email,
+            mobile: item.mobile
+        }))
+        : [];
+
     return (
         <>
             <div className='bloglist' >
+                {loading && (
+                    <div className='loader'>
+                        <ClipLoader
+                            color={"#52ab98"}
+                            loading={loading}
+                            size={25}
+                            aria-label="Loading Spinner"
+                            data-testid="loader"
+                        />
+                    </div>
+                )}
                 <p className="bloglistHead">Customers</p>
                 <Table columns={columns} dataSource={data1} /></div></>
     )

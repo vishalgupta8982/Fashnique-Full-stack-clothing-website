@@ -28,7 +28,7 @@ const deleteColor = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const dltCategory = await Color.findOneAndDelete(id);
+    const dltCategory = await Color.findByIdAndDelete(id);
     res.json(dltCategory);
   } catch (err) {
     throw new Error(EvalError);
