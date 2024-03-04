@@ -10,9 +10,7 @@ const dotenv = require("dotenv").config({ path: "./.env" });
 const asyncHandler = require("express-async-handler");
 const uniqid=require("uniqid")
 const validateMongoDbId = require('../utils/validateMongoDbId');
-const { generateRefreshToken } = require('../config/refreshToken');
 const sendEmail = require('./emailCtrl');
-generateRefreshToken
 validateMongoDbId
 const createUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
@@ -32,20 +30,12 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findUser = await User.findOne({ email })
   if (findUser && (await findUser.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findUser?._id);
     const updateUser = await User.findByIdAndUpdate(
       findUser.id,
-      {
-        refreshToken: refreshToken,
-      },
       {
         new: true,
       }
     );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 72 * 60 * 60 * 1000,
-    });
     res.json({
       _id: findUser?._id,
       firstName: findUser?.firstName,
@@ -68,20 +58,13 @@ const loginAdminCtrl = asyncHandler(async (req, res) => {
     throw new Error("not authorized")
   }
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findAdmin?._id);
     const updateUser = await User.findByIdAndUpdate(
       findAdmin.id,
-      {
-        refreshToken: refreshToken,
-      },
       {
         new: true,
       }
     );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 72 * 60 * 60 * 1000,
-    });
+     
     res.json({
       _id: findAdmin?._id,
       firstName: findAdmin?.firstName,
@@ -95,55 +78,10 @@ const loginAdminCtrl = asyncHandler(async (req, res) => {
   }
 });
 
-//handle refresh token
-
-const handleRefreshToken = asyncHandler(async (req, res) => {
-  const cookie = req.cookies;
-  if (!cookie?.refreshToken) throw new Error("no refresh token in cookies");
-
-  const refreshToken = cookie.refreshToken;
-  const user = await User.findOne({ refreshToken });
-  if (!user) {
-    throw new Error("no refresh token present in  db or not mathced")
-  }
-  jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
-    if (err || user.id !== decoded.id) {
-      throw new Error("there is something wrong token")
-    }
-    else {
-      const accessToken = generateToken(User?._id)
-      res.json({ accessToken })
-    }
-  });
-
-})
+ 
 
 
-//logout functionality
-const logout = asyncHandler(async (req, res) => {
-
-  const cookie = req.cookies;
-  if (!cookie?.refreshToken) throw new console.error("no refresh token in cookies");
-  const refreshToken = cookie.refreshToken;
-  const user = await User.findOne({ refreshToken })
-  if (!user) {
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: true
-    })
-    return res.sendStatus(204); //forbidden
-  }
-  await User.findOneAndUpdate(
-    { refreshToken: refreshToken },
-    { refreshToken: "" },
-    { new: true }
-  );
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: true,
-  });
-  return res.sendStatus(204); //forbidden
-})
+ 
 
 //get all user
 const getallUser = asyncHandler(async (req, res) => {
@@ -480,4 +418,25 @@ const updateOrderStatus=asyncHandler(async(req,res)=>{
   }
 })
 
-module.exports = { createUser, loginUserCtrl, getallUser, getaUser, deleteaUser, updateaUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdminCtrl, getWishlist, saveAddress, userCart ,getUserCart,emptyCart,applyCoupan,createOrder,getOrder,updateOrderStatus}
+const getAllOrder = asyncHandler(async (req, res) => {
+  try {
+    const userOrder = await Order.find().populate("products.product").populate("orderBy")
+    res.json(userOrder)
+  } catch (err) {
+    throw new Error(err)
+  }
+})
+
+const getOrderByUserId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id)
+  try {
+    const userOrder = await Order.findOne({ orderBy: id }).populate("products.product")
+    res.json(userOrder)
+  } catch (err) {
+    throw new Error(err)
+  }
+})
+
+
+module.exports = { createUser, loginUserCtrl, getallUser, getaUser, deleteaUser, updateaUser, blockUser, unblockUser,  updatePassword, forgotPasswordToken, resetPassword, loginAdminCtrl, getWishlist, saveAddress, userCart ,getUserCart,emptyCart,applyCoupan,createOrder,getOrder,updateOrderStatus,getAllOrder,getOrderByUserId}

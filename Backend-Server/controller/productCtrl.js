@@ -34,7 +34,7 @@ const updateProduct=asyncHandler(async(req,res)=>{
 const deleteProduct=asyncHandler(async(req,res)=>{
     const {id}=req.params;
     try{
-        const deleteProduct=await Product.findOneAndDelete(id)
+        const deleteProduct=await Product.findByIdAndDelete(id)
         res.json(deleteProduct)
     }
     catch(error){
@@ -188,6 +188,7 @@ const rating=asyncHandler(async(req,res)=>{
 })
 
 const uploadImages=asyncHandler(async(req,res)=>{
+  console.log(req.files,"hi")
   try{
 const uploader = async (path) => {
   const newpath = await cloudinaryUploadImg(path, "images");
@@ -195,12 +196,12 @@ const uploader = async (path) => {
 };
 const urls=[];
 const files=req.files;
- 
 for(const file of files){
   const {path}=file;
   const newpath=await uploader(path);
   urls.push(newpath)
 }
+   console.log(urls)
 const images=urls.map((file)=>{
   return file
 }

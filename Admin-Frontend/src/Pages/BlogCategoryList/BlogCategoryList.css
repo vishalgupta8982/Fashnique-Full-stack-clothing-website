@@ -1,34 +1,35 @@
-.blogCatlist{
-    display: flex;
-    flex-direction: column;
-    background-color: var(--white);
-    padding: 10px;
+.blogCatlist {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  padding: 10px;
 }
-.blogCatlistHead{
- font-size: 20px;
-    font-weight: 500;
-    background-color: var(--white);
-    padding: 10px;
-    
-    margin-bottom: 10px;
+.blogCatlistHead {
+  font-size: 20px;
+  font-weight: 500;
+  background-color: var(--white);
+  padding: 10px;
+
+  margin-bottom: 10px;
 }
-.icon{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
-.edit{
-    font-size: 18px;
-    color: var(--primary);
-    margin-right: 20px;
-     padding: 5px;
+.edit {
+  font-size: 18px;
+  color: var(--primary);
+  margin-right: 20px;
+  padding: 5px;
 }
-.delete{
-      font-size: 18px;
-    color: var(--iconColor);
-    padding: 5px;
+.delete {
+  font-size: 18px;
+  color: var(--iconColor);
+  padding: 5px;
 }
-.delete:hover,.edit:hover{
-    background-color: var(--lightGrey);
-    border-radius: 50%;
+.delete:hover,
+.edit:hover {
+  background-color: var(--lightGrey);
+  border-radius: 50%;
 }

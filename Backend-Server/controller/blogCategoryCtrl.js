@@ -28,7 +28,7 @@ const deleteBlogCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const dltCategory = await BlogCategory.findOneAndDelete(id);
+    const dltCategory = await BlogCategory.findByIdAndDelete(id);
     res.json(dltCategory);
   } catch (err) {
     throw new Error(EvalError);

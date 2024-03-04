@@ -1,20 +1,20 @@
-.colorlist{
-    display: flex;
-    flex-direction: column;
-    background-color: var(--white);
-    padding: 10px;
+.colorlist {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  padding: 10px;
 }
-.colorlistHead{
- font-size: 20px;
-    font-weight: 500;
-    background-color: var(--white);
-    padding: 10px;
-    
-    margin-bottom: 10px;
+.colorlistHead {
+  font-size: 20px;
+  font-weight: 500;
+  background-color: var(--white);
+  padding: 10px;
+
+  margin-bottom: 10px;
 }
-.colorShow{
-    width: 12px;
-    height: 12px;
-    border-radius: 6px;
-    margin-right: 4px;
+.colorShow {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  margin-right: 4px;
 }

@@ -7,7 +7,7 @@ const createEnquiry = asyncHandler(async (req, res) => {
     const newCategory = await Enquiry.create(req.body);
     res.json(newCategory);
   } catch (err) {
-    throw new Errror(err);
+    throw new Error(err);
   }
 });
 
@@ -28,7 +28,7 @@ const deleteEnquiry = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const dltCategory = await Enquiry.findOneAndDelete(id);
+    const dltCategory = await Enquiry.findByIdAndDelete(id);
     res.json(dltCategory);
   } catch (err) {
     throw new Error(EvalError);

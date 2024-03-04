@@ -1,4 +1,4 @@
-const Blog=require('../models/blogModel');
+const Blog =require('../models/blogModel')
 const User=require('../models/userModel');
   var fs=require("fs")
 const asyncHandler=require("express-async-handler");
@@ -9,11 +9,8 @@ const { cloudinaryUploadImg } = require("../utils/cloudinary");
 
 const createBlog = asyncHandler(async(req,res)=>{
 try{
-const newBlog = await Blog.create(req.body)
-res.json({
-    status:"success",
-    newBlog,
-})
+  const newBlog = await Blog.create(req.body);
+  res.json(newBlog);
 }
 catch(error){
     throw new Error(error)

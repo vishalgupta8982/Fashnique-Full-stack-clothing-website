@@ -25,6 +25,10 @@ var productSchema = new mongoose.Schema({
     type: String,
      required:true,
   },
+  brand: {
+    type: String,
+    required: true,
+  },
   quantity: {
     type: Number,
     required:true
@@ -34,7 +38,10 @@ var productSchema = new mongoose.Schema({
     default:0,
     
   },
-  images:  [],
+  images: [{
+    public_id: String,
+    url: String,
+  },],
   color:[],
   tags:[],
   ratings: [{

@@ -1,20 +1,19 @@
-.addBlogCat{
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+.addBlogCat {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
-.addBlogCatHead{
-    font-size: 20px;
-    font-weight: 500;
-    padding: 10px;
-    margin-bottom: 10px;
+.addBlogCatHead {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px;
+  margin-bottom: 10px;
 }
-.inputTitle{
-    outline: none;
-    padding: 10px;
-    border: 1px solid var(--lightGrey);
-    background-color: var(--white);
-    margin-top: 10px;
-    margin-bottom: 10px;
+.inputTitle {
+  outline: none;
+  padding: 10px;
+  border: 1px solid var(--lightGrey);
+  background-color: var(--white);
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
- 

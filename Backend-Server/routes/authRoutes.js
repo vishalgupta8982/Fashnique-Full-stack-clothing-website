@@ -1,5 +1,5 @@
 const express=require("express");
-const { createUser, loginUserCtrl, getallUser, getaUser, deleteaUser, updateaUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdminCtrl, getWishlist, saveAddress, userCart, getUserCart, emptyCart, applyCoupan, createOrder, getOrder, updateOrderStatus } = require("../controller/userCtrl");
+const { createUser, loginUserCtrl, getallUser, getaUser, deleteaUser, updateaUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdminCtrl, getWishlist, saveAddress, userCart, getUserCart, emptyCart, applyCoupan, createOrder, getOrder, updateOrderStatus, getAllOrder, getOrderByUserId } = require("../controller/userCtrl");
 const {authMiddleware,isAdmin} = require("../middlewares/authMiddleware");
 const router=express.Router();
 router.post('/register',createUser);
@@ -12,13 +12,13 @@ router.post('/cart',authMiddleware,userCart)
 router.post('/cart/applyCoupan',authMiddleware,applyCoupan)
 router.post('/cart/cash-order',authMiddleware,createOrder)
 router.get('/get-order',authMiddleware,getOrder)
+router.get('/get-all-order',getAllOrder)
+router.get('/getorderbyuser/:id',authMiddleware,isAdmin,getOrderByUserId)
 router.put('/order/update-order/:id',authMiddleware,isAdmin,updateOrderStatus)
 router.post('/save-address',authMiddleware,saveAddress)
 router.get('/all-users',getallUser)
 router.get('/cart',authMiddleware,getUserCart)
 router.delete('/empty-cart',authMiddleware,emptyCart)
-router.get("/refresh", handleRefreshToken);
-router.get('/logout',logout)
 router.get("/wishlist",authMiddleware,getWishlist)
 router.get("/:id",authMiddleware,isAdmin,getaUser)
 router.delete("/:id",deleteaUser)

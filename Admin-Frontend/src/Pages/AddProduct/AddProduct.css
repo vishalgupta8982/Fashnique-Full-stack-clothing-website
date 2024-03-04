@@ -1,30 +1,39 @@
-.addProduct{
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+.addProduct {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
-.addProductHead{
-    font-size: 20px;
-    font-weight: 500;
-    padding: 10px;
-    margin-bottom: 10px;
+.addProductHead {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px;
+  margin-bottom: 10px;
 }
-.inputTitle{
-    outline: none;
-    padding: 10px;
-    border: 1px solid var(--lightGrey);
-    background-color: var(--white);
-    margin-top: 10px;
+.inputTitle {
+  outline: none;
+  padding: 10px;
+  border: 1px solid var(--lightGrey);
+  background-color: var(--white);
+  margin-top: 10px;
 }
-.productCategory{
-    padding: 10px;
-    outline: none;
-    margin-top: 10px;
-    border: 1px solid var(--lightGrey);
-    margin-bottom: 10px;
+.productCategory {
+  padding: 10px;
+  outline: none;
+  margin-top: 10px;
+  border: 1px solid var(--lightGrey);
+  margin-bottom: 10px;
 }
-.quill{
-    background-color: var(--white);
-     margin-top: 10px;
-     margin-bottom: 10px;
+.quill {
+  background-color: var(--white);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.ant-select-selector {
+  padding: 6px 5px !important;
+  border: 1px solid #c2c2c2 !important;
+  color: black !important;
+  border-radius: 0px !important;
+}
+.ant-select-selector:hover {
+  box-shadow: none !important;
 }

@@ -1,85 +1,84 @@
-.loginPage{
-    display: flex;
-    justify-content: center;
-      background: linear-gradient(to right,#ffdde1, #ee9ca7);
-      align-items: center;
+.loginPage {
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to right, #ffdde1, #ee9ca7);
+  align-items: center;
 }
-.loginCard{
-    display: flex;
-    flex-direction: column;
-    min-width: 250px;
-     min-height:65vh ;
-    box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.3);
-    background-color: white;
-    margin: 20px;
-    padding: 40px 40px;
-    justify-content: center;
-    align-content: center;
-    border-radius: 10px;
-     
+.loginCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  min-height: 65vh;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  margin: 20px;
+  padding: 40px 40px;
+  justify-content: center;
+  align-content: center;
+  border-radius: 10px;
 }
-.LoginHead{
-    text-align: center;
-    font-size: 30px;
-    font-weight: 700;
+.LoginHead {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
 }
- .inputContainer{
-margin-top: 2vh;
- }
- .input{
-    outline: none;
-    font-size: 16px;
-    margin-left: 10px;
- }
- .eye{
-    cursor: pointer;
-    margin-left: auto;
- }
- .inputField{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 10px;
-    width: 90%;
-     border-bottom: 1px solid var(--lightGrey);
- }
- .label{
-    font-size: 15px;
- }
- .forgot{
-    text-align: right;
-    margin-top: 2vh;
-    color: var(--primary);
-    font-weight: 500;
-    cursor: pointer;
- }
- .forgot:active{
-    color: var(--iconColor);
- }
- .LoginButton{
-    display: flex;
-    margin-top: 4vh;
-    justify-content: center;
- }
- .newMember{
-    text-align: center;
-    margin-top: 3vh;
- }
- .join{
-    color: var(--primary);
-    cursor: pointer;
- }
- .join:active{
-    color: var(--iconColor);
- }
- .invalid{
-   font-size: 14px;
-   color: var(--iconColor);
- }
- .loader{
-    position: absolute;
-  top: 50%;  
-  left: 50%; 
-  transform: translate(-50%, -50%); 
+.inputContainer {
+  margin-top: 2vh;
+}
+.input {
+  outline: none;
+  font-size: 16px;
+  margin-left: 10px;
+}
+.eye {
+  cursor: pointer;
+  margin-left: auto;
+}
+.inputField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  width: 90%;
+  border-bottom: 1px solid var(--lightGrey);
+}
+.label {
+  font-size: 15px;
+}
+.forgot {
+  text-align: right;
+  margin-top: 2vh;
+  color: var(--primary);
+  font-weight: 500;
+  cursor: pointer;
+}
+.forgot:active {
+  color: var(--iconColor);
+}
+.LoginButton {
+  display: flex;
+  margin-top: 4vh;
+  justify-content: center;
+}
+.newMember {
+  text-align: center;
+  margin-top: 3vh;
+}
+.join {
+  color: var(--primary);
+  cursor: pointer;
+}
+.join:active {
+  color: var(--iconColor);
+}
+.invalid {
+  font-size: 14px;
+  color: var(--iconColor);
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1000;
- }
+}

@@ -1,6 +1,15 @@
- const jwt = require("jsonwebtoken");
- const generateToken = (id) => {
-   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
- };
+const jwt = require("jsonwebtoken");
 
- module.exports = { generateToken };
+const generateToken = (id) => {
+  const expiresIn = "1d";
+  const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn });
+  const decodedToken = jwt.decode(token);
+  const expirationTime = new Date(decodedToken.exp * 1000);
+
+  return {
+    token,
+    expiresAt: expirationTime
+  };
+};
+
+module.exports = { generateToken };
