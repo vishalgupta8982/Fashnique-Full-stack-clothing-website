@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../Layouts/Layout/Layout";
+import { useSelector, useDispatch } from "react-redux"
 import LandingPage from "./LandingPage/LandingPages";
 import Services from "./ourservice/Services";
 import BlogCard from "../../Components/BlogCard.js/BlogCard";
@@ -10,14 +10,25 @@ import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import TopDeals from "../../Components/TopDeals/TopDeals";
-
+import { useEffect } from "react"
+import { getBlog } from "../../services/Blogs/BlogAction";
+import { getProduct } from "../../services/Products/ProductsActions";
+import ClipLoader from 'react-spinners/ClipLoader'
 const Homepage = () => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getBlog())
+        dispatch(getProduct())
+    }, [])
+    const blog = useSelector((state) => state.blog);
+    const product=useSelector((state)=>state.product.Product)
+    const { isSuccess, loading, Blog } = blog;
     const [swiperRef, setSwiperRef] = useState(null);
     return (
         <  >
-            <Layout>
                 <LandingPage />
                 <Services />
+            
                 <section className="homeContainer">
                     <p className="pl-1 text-center md:text-left blogMainHead ">Top deals</p>
                     <Swiper
@@ -59,6 +70,7 @@ const Homepage = () => {
                        
                     </Swiper>
                 </section>
+             
                 <section className="homeContainer ">
                     <p className="pl-1 text-center md:text-left blogMainHead ">Popular Product</p>
                     <Swiper
@@ -90,16 +102,13 @@ const Homepage = () => {
                         modules={[Pagination, Navigation]}
                         className="mySwiper "
                     >
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
-                        <SwiperSlide ><ProductCard /></SwiperSlide>
+                    {product.data && product.data.product.slice(0, 5).map((item) => (
+                        <SwiperSlide ><ProductCard data={item} /></SwiperSlide>
+                    ))}
                     </Swiper>
                 </section>
                 <section className="homeContainer ">
+                    
                     <p className="pl-1 text-center md:text-left blogMainHead ">Marketooze Blogs</p>
                     <Swiper
                         onSwiper={setSwiperRef}
@@ -130,16 +139,11 @@ const Homepage = () => {
                         modules={[Pagination, Navigation]}
                         className="mySwiper "
                     >
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
-                        <SwiperSlide ><BlogCard /></SwiperSlide>
+                    {Blog && Blog.slice(0, 5).map((item) => (
+                         <SwiperSlide ><BlogCard data={item} /></SwiperSlide>
+                    ))}
                     </Swiper>
                 </section>
-            </Layout>
         </>
     );
 };

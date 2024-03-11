@@ -30,7 +30,7 @@
 }
 .editIcon {
   position: absolute;
-  margin: 2px 0px 0px 45px;
+  margin: 2px 0px 0px 10px;
   z-index: 1;
   cursor: pointer;
 }

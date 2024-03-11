@@ -1,4 +1,3 @@
-import Header from '../../Layouts/Header/Header';
 import './Login.css'
 import { IoLockClosedOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
@@ -10,9 +9,11 @@ import Layout from '../../Layouts/Layout/Layout.js'
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from 'react-toastify'
-import { userLogin } from '../../services/authAction.jsx';
+import { userLogin } from '../../services/Authentication/authAction.jsx';
+import ClipLoader from 'react-spinners/ClipLoader'
 import { useEffect } from 'react';
 const Login = () => {
+     
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const [secure, setSecure] = useState(true)
@@ -24,26 +25,36 @@ const Login = () => {
         }));
     };
     const login = () => {
-        console.log("hei")
         dispatch(userLogin(credential));
     }
     const authState = useSelector((state) => state)
-    const { user, error, isSuccess, loading } = authState.auth;
-    console.log(error)
+    const { user, error, isLoginSuccess, loading } = authState.auth;
     useEffect(() => {
-        if (isSuccess) {
+        if (isLoginSuccess) {
             navigate("/");
             toast.success("Login Successfull")
         } else {
             navigate("");
         }
-    }, [user, error, isSuccess, loading]);
+    }, [user, error, isLoginSuccess, loading]);
     return (
         <>
-            <Layout>
+             
                 <div className="loginPage w-[screen]   min-h-[74vh]   ">
                     <div className="loginCard ">
                         <div className='LoginHead'> <p >Sign in</p></div>
+                        {error && <p className="invalid">*Invalid email or password</p>}
+                        {loading && (
+                            <div className="loader">
+                                <ClipLoader
+                                    color={'#52ab98'}
+                                    loading={loading}
+                                    size={25}
+                                    aria-label="Loading Spinner"
+                                    data-testid="loader"
+                                />
+                            </div>
+                        )}
                         <div className='inputContainer'>
                             <p className='label'>Email</p>
                             <div className='inputField'>
@@ -82,7 +93,7 @@ const Login = () => {
                         <p className='newMember'>New to Marketooze? <span onClick={() => navigate('/signUp')} className='join'>Join now</span></p>
                     </div>
                 </div>
-            </Layout>
+             
         </>
     )
 }

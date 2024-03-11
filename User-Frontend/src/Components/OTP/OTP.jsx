@@ -10,7 +10,6 @@ const OTP=()=>{
      console.log(otp)
     return(
         <>
-        <Layout> 
             <div className="otpPage w-[screen]  min-h-[74vh]   ">
                 <div className="otpCard ">
                     <div className='otpHead'> <p >Verify with otp</p></div>
@@ -39,7 +38,7 @@ const OTP=()=>{
                         <Button title='Verify' widthButton={"270px"} /></div>
                     <p onClick={() => navigate('/signUp')} className='newMember'>Not recieved your code? <span className='join'>Resend</span></p>
                 </div>
-                </div></Layout></>
+                </div> </>
     )
 }
 export default OTP;

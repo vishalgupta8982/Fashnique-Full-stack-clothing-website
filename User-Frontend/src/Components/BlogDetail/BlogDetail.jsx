@@ -1,37 +1,108 @@
-import Layout from "../../Layouts/Layout/Layout";
+import { BiCategory } from "react-icons/bi";
 import "./BlogDetail.css";
 import { CiUser } from "react-icons/ci";
 import { CiCalendarDate } from "react-icons/ci";
+import { useLocation } from "react-router-dom"
+import { useEffect } from 'react'
+import { BiDislike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
+import { BiSolidDislike } from "react-icons/bi";
+import { BiSolidLike } from "react-icons/bi";
+import { dislikeBlog, getaBlog, likeBlog, resetBlogState } from "../../services/Blogs/BlogAction";
+import { useDispatch, useSelector } from "react-redux"
+import ClipLoader from 'react-spinners/ClipLoader'
+import { FaRegEye } from "react-icons/fa";
+import moment from 'moment';
+import { getTokenFromLocalStorage } from "../../utils/Token";
+import {useNavigate} from "react-router-dom"
+ 
+ 
 const BlogDetail = () => {
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const navigate=useNavigate()
+  const getBlogId = location.pathname.split('/')[2];
+  const ablogState = useSelector((state) => state.blog)
+  const { loading, aBlog, isSuccess } = ablogState;
+  const handleLikeDisLike = async (id,action) => {
+    if (getTokenFromLocalStorage === null) {
+      navigate('/login')
+    }
+    else if(action=="like") {
+      await dispatch(likeBlog(id))
+      dispatch(getaBlog(getBlogId))
+    }
+    else{
+      await dispatch(dislikeBlog(id))
+      dispatch(getaBlog(getBlogId))
+    }
+  }
+  useEffect(() => {
+    dispatch(resetBlogState())
+    dispatch(getaBlog(getBlogId))
+    window.scrollTo(0, 0);
+  },[])
+  
+ 
   return (
     <>
-      <Layout>
-        <div className="blogDetailPage">
+      <div className="blogDetailPage">
+        {loading && (
+          <div className="loader">
+            <ClipLoader
+              color={'#52ab98'}
+              loading={loading}
+              size={25}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        )}
           <div className="blogdetailContainer w-[100vw] md:w-[70vw]">
             <p className="blogName">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut,
-              iure.
+              {aBlog?.title}
             </p>
             <div className=" blogDetailNameAndDate">
               <p className=" blogDetailDate">
-                <CiCalendarDate />
-                17th July, 2023{" "}
+                <CiCalendarDate size={16} />
+                &nbsp; {moment(aBlog?.createdAt).format('DD MMM YYYY')}
               </p>
               <span className="borderBetween">|</span>
               <p className=" blogDetailName">
-                <CiUser />
-                Vishal Gupta
+                <CiUser size={16} />
+                &nbsp; {aBlog?.author}
               </p>{" "}
+              <span className="borderBetween">|</span>
+              <p className=" blogDetailName">
+              <BiCategory size={16} />
+                &nbsp; {aBlog?.category}
+              </p>{" "}
+              {/* <span className="borderBetween">|</span>
+              <p className=" blogDetailName">
+                <FaRegEye size={16} />
+                &nbsp; {aBlog?.numViews}&nbsp;Views
+              </p>{" "} */}
             </div>
+              <div className=" blogDetailNameAndDate">
+                <div><p className=" blogDetailDate">
+              {aBlog?.likes.some(user => user._id === getTokenFromLocalStorage?._id) ? (<span  onClick={()=>{handleLikeDisLike(aBlog._id,"like")}}> <BiSolidLike    color={"#52ab98"} size={18} /></span>) : (<span onClick={()=>{handleLikeDisLike(aBlog._id,"like")}}> <BiLike   padding="5px" size={18} /></span>)}
+                  &nbsp;  {aBlog?.likes.length}
+                </p></div>
+                <span className="borderBetween">|</span>
+                <div><p className=" blogDetailDate">
+              {aBlog?.disLikes.some(user => user._id === getTokenFromLocalStorage._id) ? (<span onClick={() => { handleLikeDisLike(aBlog._id, "dislike") }}> <BiSolidDislike padding="5px" color={"#FF6008"} size={18} /></span>) : (<span onClick={() => { handleLikeDisLike(aBlog._id, "dislike") }}> <BiDislike   padding="5px" size={18} /></span>)}
+                  &nbsp;  {aBlog?.disLikes.length}
+                </p></div>
+                 
+              </div>
             <img
               className="blogDetailImg"
-              src="https://www.shoppre.com/img/shoppre/Customs-0-VAT%20blog-new.jpg"
+              src={aBlog?.images[0]?.url || "https://res.cloudinary.com/dytlgwywf/image/upload/v1709644422/tlbnraoyd03bekjtyuzk.jpg"}
               alt=""
             />
-            <p className="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim expedita nihil, necessitatibus ipsa, facilis commodi illo quod quas eius, aliquam nesciunt! Omnis velit quibusdam eum optio minima doloribus iure quam hic repudiandae libero eligendi a, illum quos tempore? Reiciendis, maxime iure ad nulla ut beatae numquam eius cum molestiae repellat, corporis necessitatibus tenetur culpa nesciunt consequatur consectetur error eos excepturi velit. Porro totam accusantium ipsa sint inventore blanditiis. Beatae iusto commodi nostrum ut eligendi veniam, explicabo iure est quo modi perferendis quidem consectetur incidunt consequatur repudiandae fuga quibusdam porro fugit aperiam, officiis voluptatibus voluptates magnam cupiditate qui! Ducimus, ipsam provident.</p>
+            <p className="text-justify">{aBlog?.description.replace(/<[^>]+>/g, '').split(' ')} </p>
           </div>
-        </div>
-      </Layout>
+      </div>
     </>
   );
 };

@@ -10,6 +10,7 @@ import { getCategory } from '../../Services/Category/CategoryAction'
 import { getColor } from '../../Services/Color/ColorAction'
 import { getBrand } from '../../Services/Brand/BrandAction'
 import { Select } from 'antd'
+import { tags } from '../../assets/Constant/Size'
 import Dropzone from 'react-dropzone'
 import {
   addProduct,
@@ -18,6 +19,7 @@ import {
 } from '../../Services/CreateProduct/CreateProductAction'
 import { toast } from 'react-toastify'
 import { useLocation } from 'react-router-dom'
+import { size } from '../../assets/Constant/Size'
 import {
   deleteImage,
   resetImageState,
@@ -26,31 +28,35 @@ import {
 
 const AddProduct = () => {
   const location = useLocation()
-  const [image, setImage] = useState([])
   const [productDetail, setProductDetail] = useState({
     title: '',
     description: '',
-    price: 0,
+    price: null,
     category: '',
     brand: '',
-    quantity: 0,
+    quantity: null,
+    discount: null,
     color: [],
     tags: [],
     images: [],
+    size: []
   })
   const [editProductDetail, setEditProductDetail] = useState({
     title: '',
     description: '',
-    price: 0,
+    price: null,
     category: '',
     brand: '',
-    quantity: 0,
+    quantity: null,
+    discount: null,
     color: [],
     tags: [],
     images: [],
+    size: []
   })
 
   const getProductId = location.pathname.split('/')[3]
+
   const dispatch = useDispatch()
   useEffect(() => {
     if (getProductId !== undefined) {
@@ -70,7 +76,7 @@ const AddProduct = () => {
   const newProduct = useSelector((state) => state.product)
   const imgStat = useSelector((state) => state.upload)
   const { isSuccess, error, loading, aProduct } = newProduct
-  const { loading: imgLoad, isSuccess: imgSuccess, error: imgError } = imgState
+  const { loading: imgLoad, isSuccess: imgSuccess, error: imgError } = imgStat
   useEffect(() => {
     if (getProductId !== undefined && isSuccess) {
       toast.success('Updated Successfully')
@@ -89,9 +95,11 @@ const AddProduct = () => {
         category: aProduct.category,
         brand: aProduct.brand,
         quantity: aProduct.quantity,
+        discount: aProduct.discount,
         color: aProduct.color,
         tags: aProduct.tags,
         images: aProduct.images,
+        size: aProduct.size
       })
     }
   }, [aProduct, getProductId])
@@ -106,20 +114,18 @@ const AddProduct = () => {
   } else {
     console.error('colorList is undefined or null')
   }
-
   useEffect(() => {
     setProductDetail((prevProductDetail) => ({
       ...prevProductDetail,
-      images: image,
+      images: [...imgState],
     }))
-  }, [image])
+  }, [imgState])
   useEffect(() => {
     if (Array.isArray(imgState)) {
       const newImg = imgState.map((i) => ({
         public_id: i.public_id,
         url: i.url,
       }))
-      setImage(newImg)
     } else {
       console.error('imgState is not an array.')
     }
@@ -136,21 +142,18 @@ const AddProduct = () => {
       setEditProductDetail((prevState) => ({
         ...prevState,
         [fieldName]:
-          fieldName === 'description' || fieldName === 'color'
+          fieldName === 'description' || fieldName === 'color' || fieldName === 'size' || fieldName === 'tags'
             ? e
             : e.target.value,
       }))
     } else {
       setProductDetail((prevState) => ({
         ...prevState,
-        [fieldName]:
-          fieldName === 'description' || fieldName === 'color'
-            ? e
-            : e.target.value,
+        [fieldName]: fieldName === 'description' || fieldName === 'color' || fieldName === 'size' || fieldName === 'tags' ? e : e.target.value,
       }))
     }
   }
- console.log(productDetail)
+  console.log(productDetail)
   return (
     <div className="addProduct">
       <p className="addProductHead">
@@ -210,6 +213,17 @@ const AddProduct = () => {
         placeholder="Enter Product Price eg.4000"
         type="number"
       />
+      <input
+        className="inputTitle"
+        value={
+          getProductId !== undefined
+            ? editProductDetail.discount
+            : productDetail.discount
+        }
+        onChange={(e) => handleChange(e, 'discount')}
+        placeholder="Enter Discount percentage eg.30"
+        type="number"
+      />
       <Select
         mode="multiple"
         allowClear
@@ -222,6 +236,32 @@ const AddProduct = () => {
         }
         onChange={(e) => handleChange(e, 'color')}
         options={colorOpt}
+      />
+      <Select
+        mode="multiple"
+        allowClear
+        className="mt-2 w-100"
+        placeholder="Select size"
+        value={
+          getProductId !== undefined
+            ? editProductDetail.size
+            : productDetail.size
+        }
+        onChange={(e) => handleChange(e, 'size')}
+        options={size}
+      />
+      <Select
+        mode="single"
+        allowClear
+        className="mt-2 w-100"
+        placeholder="Select tags"
+        value={
+          getProductId !== undefined
+            ? editProductDetail.tags
+            : productDetail.tags
+        }
+        onChange={(e) => handleChange(e, 'tags')}
+        options={tags}
       />
       <select
         value={
@@ -272,19 +312,19 @@ const AddProduct = () => {
       <div className="flex flex-wrap ">
         {getProductId !== undefined
           ? editProductDetail.images.map((item) => (
-              <img src={item.url} alt="" width={100} height={100} />
-            ))
+            <img src={item.url} alt="" width={100} height={100} />
+          ))
           : imgState &&
-            imgState?.map((i, j) => {
-              return (
-                <div className="mt-1 mr-1 position-relative" key={j}>
-                  {/* <span onClick={()=>dispatch(deleteImage(i.public_id))} className="mt-1 top-5 position-absolute " style={{ padding: 0, margin: 0 }}>
+          imgState?.map((i, j) => {
+            return (
+              <div className="mt-1 mr-1 position-relative" key={j}>
+                {/* <span onClick={()=>dispatch(deleteImage(i.public_id))} className="mt-1 top-5 position-absolute " style={{ padding: 0, margin: 0 }}>
                                 <RxCross1 />
                             </span> */}
-                  <img src={i.url} alt="" width={100} height={100} />
-                </div>
-              )
-            })}
+                <img src={i.url} alt="" width={100} height={100} />
+              </div>
+            )
+          })}
       </div>
       {imgLoad && (
         <div className="loader">

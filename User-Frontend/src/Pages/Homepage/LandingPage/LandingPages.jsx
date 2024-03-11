@@ -1,9 +1,13 @@
 import { homepageTagline } from "../../../assets/ImportantData/HomepageTagline";
 import Button from "../../../Components/Button/Button";
 import './LandingPage.css'
+import {useState,useEffect} from 'react'
 const LandingPage = () => {
-    const tagline =
-        homepageTagline[Math.floor(Math.random() * homepageTagline.length)];
+    const[tagline,setTagline]=useState("")
+    useEffect(()=>{
+            setTagline(homepageTagline[Math.floor(Math.random() * homepageTagline.length)]);
+    },[])
+     
     return (
         <>
             <div className="flex min-h-[43vh] w-[screen]">
@@ -17,7 +21,7 @@ const LandingPage = () => {
                                 <span className="off">{tagline.largeText1}</span>
                                 {tagline.largeText2} <br /> {tagline.largeText3}
                             </p>
-                            <Button title={"Shop Now"} />
+                            <Button navigation={'/store'} title={"Shop Now"} />
                         </div>
                     </div>
                     <div   className="w-[screen] min-h-[36vh] md:h-[73vh] md:w-1/2 homeRight">

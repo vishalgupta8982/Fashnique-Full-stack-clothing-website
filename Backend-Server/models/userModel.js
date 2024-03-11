@@ -34,12 +34,18 @@ var userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    cart: {
-      type: Array,
-      default: [],
-    },
+    cart: [{ type: mongoose.Schema.Types.ObjectId ,ref:"Product"}],
     address: {
       type:String,
+      default: null
+    },
+    dateOfBirth: {
+      type:Date,
+      default: null
+    },
+    gender: {
+      type:String,
+      default:null
     },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     passwordChangedAt: Date,

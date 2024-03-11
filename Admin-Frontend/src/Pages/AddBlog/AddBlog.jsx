@@ -21,11 +21,13 @@ import {
 const AddBlog = () => {
   const location = useLocation()
   const [image, setImage] = useState([])
+  const user = JSON.parse(localStorage.getItem('User'))
   const [BlogDetail, setBlogDetail] = useState({
     title: '',
     description: '',
     category: '',
     images: [],
+    author:user.firstName+" "+user.lastName ,
   })
   const [editBlogDetail, setEditBlogDetail] = useState({
     title: '',
@@ -162,6 +164,7 @@ const AddBlog = () => {
       <div className="p-5 text-center bg-[#fff] border-1">
         <Dropzone
           onDrop={(acceptedFiles) => dispatch(uploadImage(acceptedFiles))}
+          maxFiles={1}
         >
           {({ getRootProps, getInputProps }) => (
             <section>

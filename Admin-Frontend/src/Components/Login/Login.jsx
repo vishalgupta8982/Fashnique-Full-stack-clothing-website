@@ -1,4 +1,3 @@
-import './Login.css'
 import { IoLockClosedOutline } from 'react-icons/io5'
 import { CgProfile } from 'react-icons/cg'
 import Button from '../Button/Button'
@@ -10,6 +9,7 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminLogin } from '../../Services/authentication/authAction'
 import ClipLoader from 'react-spinners/ClipLoader'
+import './Login.css'
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()

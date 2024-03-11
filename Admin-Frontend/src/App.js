@@ -6,7 +6,6 @@ import {
   Navigate,
 } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import Login from './Components/Login/Login'
 import ChangePassword from './Components/ChangePassword/ChangePassword.jsx'
 import PrivateLayouts from './Layout/Layout.jsx'
@@ -35,15 +34,28 @@ import AddCoupan from './Pages/AddCoupan/AddCoupan.jsx'
 import ViewOrder from './Pages/ViewOrder/ViewOrder.jsx'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
+import 'react-toastify/dist/ReactToastify.css'
 const App = () => {
-   useEffect(()=>{
-    if(!window.navigator.onLine){
-      toast.error("Check Internet connnection")
+  useEffect(() => {
+    const handleOnline = () => {
+      toast.success("You are now back online!");
+    };
+    const handleOffline = () => {
+      toast.error("Check Your Internet Connection");
+    };
+    if (!window.navigator.onLine) {
+      handleOffline();
     }
-   },[])
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
    return (
     <BrowserRouter>
-      <ToastContainer position="top-center" autoClose={2000} draggable />
+       <ToastContainer position="bottom-center" autoClose={1000} theme="dark" draggable />
        <AuthProvider> <Routes>
         <Route path="/" element={<Login />} />
         <Route path="signup" element={<SignUp />} />

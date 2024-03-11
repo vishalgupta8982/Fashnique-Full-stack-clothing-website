@@ -34,9 +34,8 @@ export const deleteEnquirySuccess = () => ({
   type: 'DELETE_ENQUIRY_SUCCESS',
 })
 
-export const deleteEnquiryFailure = (error) => ({
+export const deleteEnquiryFailure = () => ({
   type: 'DELETE_ENQUIRY_FAILURE',
-  payload: error,
 })
 
 export const resetEnquiryState = () => ({

@@ -12,7 +12,7 @@ const SignUp = () => {
     const navigate = useNavigate()
     return (
         <>
-            <Layout>
+            
                 <div className="signUpPage w-[screen]   min-h-[74vh]   ">
                     <div className="signUpCard ">
                         <div className='signUpHead'> <p >Sign up</p></div>
@@ -92,7 +92,7 @@ const SignUp = () => {
                         <p onClick={() => navigate('/login')} className='Member'>Already a member? <span className='Login'>Login</span></p>
                     </div>
                 </div>
-            </Layout>
+             
         </>
     )
 }

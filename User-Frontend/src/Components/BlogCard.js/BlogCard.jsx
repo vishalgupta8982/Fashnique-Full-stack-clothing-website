@@ -1,21 +1,25 @@
 import Button from '../Button/Button'
 import './BlogCard.css'
 import {useNavigate} from 'react-router-dom'
-const BlogCard = () => {
+import moment from 'moment';
+const BlogCard = ({data}) => {
     const navigate=useNavigate()
     return (
         <>
-            <div onClick={()=>navigate('/blogDetail')} className=' blogCard'>
+            <div onClick={()=>navigate(`/blogDetail/${data._id}`)} className=' blogCard'>
             <div className="cards ">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXt3luaPKC3aQczQIfaBORDOmrko2N54ckXjbA6IIC9Xo0Q3WhSGqmDkAbbfvqH7WRp3I&usqp=CAU" alt="" className=" blogCardImg" /> 
+                    <img src={data.images[0]?.url || "https://res.cloudinary.com/dytlgwywf/image/upload/v1709644422/tlbnraoyd03bekjtyuzk.jpg"} alt="" className=" blogCardImg" /> 
                     <div className=" blogCardContent">
-                        <p className="blogDate">1 Dec, 2023</p>
-                        <p className="blogHead">Lorem ipsum dolor sit amet.</p>
-                        <p className="blogContent">Lorem ipsum dolor sit amet consectetur</p>
+                        <p className="blogDate">{moment(data.createdAt).format('DD MMM YYYY')}</p>
+                        <p className="blogHead">{data.title.slice(0,15)}</p>
+                        <p className="blogContent">{data.description.replace(/<[^>]+>/g, '').split(' ').slice(0, 15).join(' ')}{(data.description.replace(/<[^>]+>/g, '').split(' ').length > 4 ? '...' : '')}</p>
+
+
                     </div>
-                    <Button widthButton={"100px"} navigation={'/blogdetail'} title="Read More" />
+                    <Button widthButton={"100px"}   title="Read More" />
                 </div> 
                  
+                  
         </div>
         </>
     )

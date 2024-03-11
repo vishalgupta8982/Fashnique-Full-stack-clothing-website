@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BiEdit } from 'react-icons/bi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { toast } from 'react-toastify'
+import { FaIndianRupeeSign } from "react-icons/fa6";
 import ClipLoader from 'react-spinners/ClipLoader'
 import CustomModal from '../../Components/CustomModel/CustomModel'
 import { Link } from 'react-router-dom'
@@ -72,8 +73,8 @@ const ProductList = () => {
     }
   }, [dispatch, isSuccess])
   console.log(Product)
-  const data1 = Array.isArray(Product)
-    ? Product.map((item, index) => ({
+  const data1 = Array.isArray(Product?.data?.product)
+    ? Product?.data?.product?.map((item, index) => ({
         key: index,
         title: item.title,
         brand: item.brand,
@@ -85,10 +86,14 @@ const ProductList = () => {
             ))}
           </div>
         ),
-        price: `${item.price}`,
+      price: (
+        <div className='flex flex-row items-center'>
+          <FaIndianRupeeSign size={12} /> {item.price}
+        </div>)
+      ,
         action: (
           <div className="icon">
-            <Link to={`/admin/addproduct/${item._id}`} className="edit">
+            <Link to={`/admin/addproduct/${item.slug}`} className="edit">
               <BiEdit />
             </Link>
             <button onClick={() => showModal(item._id)} className="delete">

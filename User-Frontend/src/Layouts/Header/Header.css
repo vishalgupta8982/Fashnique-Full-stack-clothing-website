@@ -62,16 +62,35 @@
  }
 .categoryList{
    background-color: var(--Black);
-   width: 15vw;
    z-index: 1;
    padding: 10px;
    border-bottom-left-radius: 10px;
    border-bottom-right-radius: 10px;
 }
- 
-
 .categoryName{
    color: var(--white);
-   padding: 10px 0px;
    font-size: 14px;
+   cursor: pointer;
+}
+.categoryName:hover{
+   color: var(--primary);
+}
+.profile{
+   font-size: 35px;
+   color: var(--primary);
+}
+.searchField{
+   position: absolute;
+   width: 40vw;
+   z-index: 5;
+   background-color: var(--white);
+}
+.searchValue{
+   padding: 5px 10px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+.searchValue:hover{
+background-color: var(--quaternary);
 }

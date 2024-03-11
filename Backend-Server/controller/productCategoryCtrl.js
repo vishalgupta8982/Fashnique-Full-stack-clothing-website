@@ -41,16 +41,28 @@ const deleteCategory=asyncHandler(async(req,res)=>{
         throw new Error(EvalError)
     }
 })
+const getAllCategory = asyncHandler(async (req, res) => {
+    try {
+        const { category } = req.query;
+        let allCategory;
+        if (category) {
+            allCategory = await ProductCategory.find({ title: { $regex: category, $options: 'i' } });
+            allCategory.sort((a, b) => {
+                const indexA = a.title.toLowerCase().indexOf(category.toLowerCase());
+                const indexB = b.title.toLowerCase().indexOf(category.toLowerCase());
+                return indexA - indexB;
+            });
+        } else {
+            allCategory = await ProductCategory.find().sort({ title: 1 });
+        }
+        res.json(allCategory);
+    } catch (err) {
+        throw new Error(err);
+    }
+});
 
-const getAllCategory=asyncHandler(async(req,res)=>{
-    try{
-        const allCategory = await ProductCategory.find();
-        res.json(allCategory)
-    }
-    catch(err){
-        throw new Error(err)
-    }
-})
+
+
 const getCategory=asyncHandler(async(req,res)=>{
     const {id}=req.params;
     validateMongoDbId(id)

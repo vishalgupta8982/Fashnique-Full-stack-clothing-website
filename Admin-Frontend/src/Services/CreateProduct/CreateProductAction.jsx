@@ -80,6 +80,7 @@ export const addProduct = (product) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
+    console.log(err.response.data)
     dispatch(AddProductFailure(err.response.data))
     setTimeout(() => {
       dispatch(resetProductState())

@@ -20,9 +20,11 @@
     scale: 1.02;
 }
 .blogCardImg{
-   width: 280px;
+   width: 200px;
+   height:200px;
      position: relative;
      z-index: 0;
+     object-fit: cover;
     
 }
 .blogCardContent{

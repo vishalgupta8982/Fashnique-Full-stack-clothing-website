@@ -2,6 +2,7 @@ import { BrowserRouter ,Routes,Route } from "react-router-dom";
 import Homepage from './Pages/Homepage/Homepage'
 import Login from './Components/Login/Login'
 import SignUp from "./Components/SignUp/SignUp";
+import { useEffect } from "react";
 import OTP from "./Components/OTP/OTP";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,12 +15,35 @@ import AddToCart from "./Components/AddToCart/AddToCart";
 import ProductDetail from "./Components/ProductDetail/ProductDetail";
 import UserProfile from "./Components/UserProfile/UserProfile";
 import Wishlist from "./Components/Wishlist/Wishlist";
+import Layout from './Layouts/Layout/Layout'
+import {toast} from "react-toastify"
+ 
 const App=()=>{
+  useEffect(() => {
+    const handleOnline = () => {
+      toast.success("You are now back online!");
+    };
+    const handleOffline = () => {
+      toast.error("Check Your Internet Connection");
+    };
+    if (!window.navigator.onLine) {
+      handleOffline();
+    }
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+
+
   return (
     <BrowserRouter >
-      <ToastContainer position="top-center" autoClose={4000} draggable />
+      <ToastContainer position="bottom-center" autoClose={1000}   theme="dark" draggable />
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<Layout />} >
         <Route  index element={<Homepage />} />
         <Route path="blogs" element={<Blogs />} />
         <Route path="contact" element={<ContactUs/>} />
@@ -28,11 +52,12 @@ const App=()=>{
         <Route path="login" element={<Login />} />
         <Route path="signUp" element={<SignUp />} />
         <Route path="otp" element={<OTP/>} />
-        <Route path="blogdetail" element={<BlogDetail/>} />
+        <Route path="blogdetail/:id" element={<BlogDetail/>} />
         <Route path="cart" element={<AddToCart/>} />
-        <Route path="productdetail" element={<ProductDetail/>} />
+        <Route path="productdetail/:id" element={<ProductDetail/>} />
         <Route path="userprofile" element={<UserProfile/>} />
         <Route path="/wishlist" element={<Wishlist/>} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

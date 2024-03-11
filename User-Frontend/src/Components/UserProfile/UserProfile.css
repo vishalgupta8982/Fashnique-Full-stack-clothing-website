@@ -41,6 +41,8 @@
  .upHello{
     font-size: 14px;
     line-height: 10px;
+    color: var(--primary);
+    font-weight: 500;
  }
  .upUserName{
     font-size: 18px;

@@ -58,10 +58,11 @@ const ColorList = () => {
         name: (
           <div className="flex items-center">
             <div
-              style={{ backgroundColor: item.title }}
+              style={{ backgroundColor:  item.title.split("-")[1] } }
               className={'colorShow '}
             ></div>
-            {`${item.title}`}
+            {item.title.split("-")[0]}
+
           </div>
         ),
         action: (

@@ -7,7 +7,7 @@ var colorSchema = new mongoose.Schema({
     required:true,
     unique:true,
     index:true
- }    
+ }, 
 },{timestamps:true})
 //Export the model
 module.exports = mongoose.model('Color', colorSchema);

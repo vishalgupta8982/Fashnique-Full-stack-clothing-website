@@ -13,7 +13,7 @@ const AddToCart = () => {
   const [itemSize, setItemSize] = useState();
   return (
     <>
-      <Layout>
+       
         <div className="flex flex-col AddToCartPage md:flex-row w-[screen">
           <section className="w-[100%] md:w-2/3 cartContainer">
             <p className="cartHead">Cart</p>
@@ -122,7 +122,7 @@ const AddToCart = () => {
             </div>
           </section>
         </div>
-      </Layout>
+       
     </>
   );
 };

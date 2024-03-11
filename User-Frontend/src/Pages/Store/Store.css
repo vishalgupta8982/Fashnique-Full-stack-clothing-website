@@ -124,18 +124,25 @@ font-weight: 500;
     align-items: center;
     padding: 10px;
 }
-.pageNumber {
+.pageNumber,.pageNumberEnd {
     background-color: var(--primary);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     color: var(--white);
-    border-radius: 20px;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0px 5px;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
+}
+.activePage{
+    background-color: var(--secondary) !important;
+}
+.pageNumberEnd {
+    background-color: var(--lightGrey) !important; 
 }
 .pageNumber:hover{
     background-color: var(--secondary);

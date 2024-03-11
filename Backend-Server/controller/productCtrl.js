@@ -43,62 +43,74 @@ const deleteProduct=asyncHandler(async(req,res)=>{
 })
 
 const getaProduct = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { slug } = req.params;
   try {
-    const findProduct = await Product.findById(id);
+    const findProduct = await Product.findOne({slug:slug}).populate("color");
     res.json(findProduct);
   } catch (err) {
     throw new Error(err);
   }
 });
 
-const getAllProduct=asyncHandler(async(req,res)=>{
-    try{
-      //filtering
-      const queryObj={...req.query};
-      const excludeFields=["page","sort","limit","fields"]
-      excludeFields.forEach((el)=>delete queryObj[el]);
-      
-      let queryStr=JSON.stringify(queryObj);
-      queryStr=queryStr.replace(/\b(gte|gt|lte|lt)\b/g,(match)=>`$${match}`); 
-      let query=Product.find(JSON.parse(queryStr))
+const getAllProduct = asyncHandler(async (req, res) => {
+  try {
+    // Filtering
+    const queryObj = { ...req.query };
+    const excludeFields = ["page", "sort", "limit", "fields", "color"]; // Add "color" to exclude fields
+    excludeFields.forEach((el) => delete queryObj[el]);
 
-      //sorting
-if(req.query.sort){
-  const sortBy=req.query.sort.split(',').join(' ')
-query=query.sort(sortBy)
-}else{
-query=query.sort('-createdAt')
-}
-//limiting the field
-  if(req.query.fields){
-    const fields = req.query.fields.split(",").join(" ");
-    query = query.select(fields);
-  }
-  else{
-query=query.select('-__v')
-  }
+    // Handle color filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    let query = Product.find(JSON.parse(queryStr));
 
-  //pagination
-
-  const page=req.query.page;
-  const limit=req.query.limit;
-  const skip=(page-1)*limit;
-  query=query.skip(skip).limit(limit)
-  if(req.query.page){
-    const productCount=await Product.countDocuments();
-    if(skip>=productCount)
-    throw new Error("This page is not exist")
-  }
-  console.log(page,limit,skip);
-
-         const product=await query;
-         res.json(product)
+    // Add color filtering
+    if (req.query.color) {
+      const decodedColors = decodeURIComponent(req.query.color).split(',').map(color => color.trim()); // Decode and split colors
+      query = query.where('color').in(decodedColors); // Filter products by color
     }
-    catch(error){
-        throw new Error(error)
+
+    // Sorting
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
     }
-})
+
+    // Limiting the fields
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
+    }
+
+    // Pagination
+    const page = parseInt(req.query.page) || 1; // Parse page to integer, default to 1 if not provided
+    const limit = parseInt(req.query.limit) || 10; // Parse limit to integer, default to 10 if not provided
+    const skip = (page - 1) * limit;
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const productCount = await Product.countDocuments();
+      if (skip >= productCount) throw new Error("This page does not exist");
+    }
+
+    const product = await query;
+    const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    res.json({
+      data: {
+        product,
+        totalPages,
+      }
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 
 const addToWishList=asyncHandler(async(req,res)=>{
   

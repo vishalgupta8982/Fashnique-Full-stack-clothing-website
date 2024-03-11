@@ -2,22 +2,51 @@ import { NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import "./Header.css";
 import Button from "../../Components/Button/Button";
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom";
 import { CgChevronDown } from "react-icons/cg";
 import { CgChevronUp } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg";
 import { RiMenu2Fill } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { RiSearchLine } from "react-icons/ri";
-import { IoIosArrowForward } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { pages } from "../../assets/ImportantData/pagesNameAndPath";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllCategory,
+  getCategory,
+} from "../../services/Category/CategoryActions";
 const Header = () => {
-  const navigate=useNavigate()
-  const [hamBurger, setHamBurger] = useState(false);
-  const[categoryDropDown,setcategoryDropDown]=useState(false)
   const location = useLocation();
+  const token = useSelector((state) => state.auth.user);
+  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllCategory());
+  }, []);
+  useEffect(() => {
+    dispatch(getCategory(search));
+  }, [search]);
+  const category = useSelector((state) => state.category.allCategory);
+  const searchValue = useSelector((state) => state.category.Category);
+  const navigate = useNavigate();
+  const [hamBurger, setHamBurger] = useState(false);
+  const [categoryDropDown, setcategoryDropDown] = useState(false);
+  const [SearchDiv, setSearchDiv] = useState(true);
+  const divRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (divRef.current && !divRef.current.contains(event.target)) {
+        setSearchDiv(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   const isLoginPage = location.pathname === "/login";
   return (
     <div className="w-[screen]  ">
@@ -30,33 +59,62 @@ const Header = () => {
                 Fashion<i style={{ color: "black" }}>ique</i>
               </span>
             </div>
-            <div className="md:flex-1 order-3    md:order-2 flex-[100%]">
-              <div className="flex items-center md:my-0 my-2  justify-between w-[90vw]    md:w-[40vw] md:mx-8 searchBox">
-                <div className="p-2 md:p-2 ">
+            <div
+              ref={divRef}
+              className="md:flex-1 order-3 md:mx-8  md:order-2 flex-[100%]"
+            >
+              <div
+                onClick={() => setSearchDiv(true)}
+                className="flex items-center md:my-0 my-2  justify-between w-[90vw]    md:w-[40vw]   searchBox"
+              >
+                <div className="p-2 md:p-1 md:px-2 ">
                   <input
                     placeholder="Search here.. "
                     className="text-[16px] md:text-lg w-[65vw] md:w-[35vw] bg-[#F5F5F7]  searchInput"
-                    type="text  "
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
                 <span
-                  className="text-xl p-[10px] md:p-3 md:text-2xl searchIcon"
+                  className="text-xl p-[10px] md:p-2 md:text-2xl searchIcon"
                   color="white"
                 >
                   <RiSearchLine color="white" />
                 </span>
               </div>
+              {SearchDiv && (
+                <div className="searchField">
+                  {searchValue.map((item) => (
+                    <p
+                      onClick={() => navigate(`store?category=${item.title}`)}
+                      className="searchValue"
+                    >
+                      <RiSearchLine size={14} color="grey" />
+                      &nbsp;&nbsp;{item.title}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="flex-col items-end justify-end flex-1 order-2 md:flex md:order-3 box3 ">
               <div className="flex justify-end ">
-                <div onClick={()=>navigate('/wishlist')} className="flex flex-col items-center mx-1 cursor-pointer md:mx-5">
+                <div
+                  onClick={() => navigate("/wishlist")}
+                  className="flex flex-col items-center mx-1 cursor-pointer md:mx-5"
+                >
                   <FaHeart className="text-2xl md:text-2xl headIcon" />
                   <p className="hidden iconText md:block">Wishlist</p>
                 </div>
-                <div onClick={()=>navigate('/cart')} className="flex flex-col items-center mx-1 cursor-pointer md:mx-5">
+                <div
+                  onClick={() => navigate("/cart")}
+                  className="flex flex-col items-center mx-1 cursor-pointer md:mx-5"
+                >
                   <div className="relative inline-flex mx-3">
                     <FiShoppingCart className="text-2xl headIcon md:text-2xl" />
-                    <p className="absolute min-w-[12px] min-h-[12px] rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4  bg-[#FF6008] text-[#fff]">10</p>
+                    <p className="absolute min-w-[12px] min-h-[12px] rounded-full py-1 px-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4  bg-[#FF6008] text-[#fff]">
+                      10
+                    </p>
                   </div>
                   <p className="hidden iconText md:block">Cart</p>
                 </div>
@@ -71,7 +129,18 @@ const Header = () => {
                   )}
                 </span>
                 <div className="hidden ml-3 md:block">
-                  {!isLoginPage && <Button navigation={"/login"} title={"Login"} />}
+                  {token !== null && (
+                    <div
+                      onClick={() => navigate("/userprofile")}
+                      className="flex flex-col items-center cursor-pointer"
+                    >
+                      <CgProfile className="text-2xl md:text-2xl headIcon" />
+                      <p className="iconText"> Profile</p>
+                    </div>
+                  )}
+                  {!isLoginPage && token === null && (
+                    <Button navigation={"/login"} title={"Login"} />
+                  )}
                 </div>
               </div>
             </div>
@@ -83,13 +152,17 @@ const Header = () => {
           } md:items-center  z-[1] md:z-auto md:static   w-full left-0 md:w-auto md:py-0 py-2 md:pl-0 pl-7 md:opacity-100 absolute opacity-0 left-[-400px] transition-all ease-out duration-500`}
         >
           {hamBurger && !isLoginPage && (
-            <div className="flex items-center justify-between">
-              <li className="mx-6 my-4 hamlink md:my-0">
-                <NavLink to="/login">Login</NavLink>
-              </li>
-              {/* <span className="mx-8">
-                <IoIosArrowForward color="white" />
-              </span> */}
+            <div className="flex items-center md:hidden justify-between">
+              {!isLoginPage && token === null && (
+                <li className="mx-6 my-4 hamlink md:my-0">
+                  <NavLink to="/login">Login</NavLink>
+                </li>
+              )}
+              {token !== null && (
+                <li className="mx-6 my-4 hamlink md:my-0">
+                  <NavLink to="/login">Profile</NavLink>
+                </li>
+              )}
             </div>
           )}
           {pages.map((item) => (
@@ -102,32 +175,43 @@ const Header = () => {
                 >
                   {item.name}
                 </NavLink>
-                {/* {hamBurger && (
-                  <span className="mx-8 ml-auto">
-                    <IoIosArrowForward size={16} color="white" />
-                  </span>
-                )} */}
               </li>
             </div>
           ))}
           <div
-            onClick={() => setcategoryDropDown(!categoryDropDown)}
+            onMouseEnter={() => setcategoryDropDown(!categoryDropDown)}
+            onMouseLeave={() => setcategoryDropDown(!categoryDropDown)}
           >
-            <div className="flex flex-row items-end justify-between mx-6 my-4 md:my-5 link"> 
-              <p  >Shop by Category  </p>
-              {categoryDropDown ? (<CgChevronUp size={18} className="mx-2" />) : (<CgChevronDown className="mx-2" size={18} />)}</div>
-             {categoryDropDown && (
-              <div className="relative categoryList md:absolute">
-                <p className="mx-4 md:border-b-[1px] border-[#514f4f]   categoryName md:mx-0">Shoes</p>
-                <p className="mx-4 md:border-b-[1px]  border-[#514f4f] categoryName md:mx-0">Shoes</p>
+            <div className="flex flex-row items-end justify-between mx-6 my-4 md:my-5 link">
+              <p>Shop by Category </p>
+              {categoryDropDown ? (
+                <CgChevronUp size={18} className="mx-2" />
+              ) : (
+                <CgChevronDown className="mx-2" size={18} />
+              )}
+            </div>
+            {categoryDropDown && (
+              <div
+                data-aos="zoom-in"
+                data-aos-duration="500"
+                className="relative  grid grid-cols-1 md:grid-cols-3 gap-0 categoryList md:w-[30vw] w-[80vw] md:absolute"
+              >
+                {category.map((item) => (
+                  <p
+                    onClick={() => {
+                      navigate(`store?category=${item.title}`);
+                      setHamBurger(!hamBurger);
+                    }}
+                    className="mx-4 md:border-b-[1px] md:border-r-[1px] p-1 md:p-3 border-[#514f4f]   categoryName md:mx-0"
+                  >
+                    {item.title}
+                  </p>
+                ))}
               </div>
             )}
-             </div>
-           
+          </div>
         </ul>
-         
       </nav>
-       
     </div>
   );
 };
