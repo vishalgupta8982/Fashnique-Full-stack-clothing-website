@@ -3,14 +3,18 @@ import './Contact.css'
 import contactImg from '../../assets/images/contact.png'
 import Button from '../../Components/Button/Button'
 import { useDispatch, useSelector } from 'react-redux'
-import { userDetail } from '../../services/Authentication/authAction'
+import { resetUserDetail, userDetail } from '../../services/Authentication/authAction'
 import { toast } from 'react-toastify'
 import { postEnq } from '../../services/Enquiry/EnquiryAction'
 import ClipLoader from 'react-spinners/ClipLoader'
+import Cookies from 'js-cookie';
+import {useNavigate} from "react-router-dom"
 const ContactUs = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
-    dispatch(userDetail())
+    if (Cookies.get('token')){
+    dispatch(userDetail())}
   }, [])
   const user = useSelector((state) => state.auth)
   const { loading, userInformation } = user
@@ -33,7 +37,11 @@ const ContactUs = () => {
   }, [userInformation, loading, enquirySuccess])
 
   const submit = async () => {
-    if (enqDetail.comment === '') {
+    if (!Cookies.get('token')){
+      toast.error("Please login to submit comment")
+      navigate('/login')
+    }
+    else if (enqDetail.comment === '') {
       toast.error('Required comment field')
     } else {
       try {

@@ -15,7 +15,7 @@ const Footer = () => {
               <p>Madhya Pradesh, India</p>
               <p>PinCode:- 462023</p>
             </div>
-            <div className='mt-3 break-all md:break-keep footerContent md:w-1/3'>
+            <div className='mt-3 break-all md:break-keep footerContent md:w-1/2'>
               <p>+91 8982186471</p>
               <p className='text-[14px] md:text-[14px]'>vishalgupta0403@gmail.com</p>
             </div>

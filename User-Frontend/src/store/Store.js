@@ -12,33 +12,33 @@ import cartReducer from '../services/Cart/CartReducer'
 import coupanReducer from '../services/Coupan/CoupanReducer'
 import manageAddressReducer from '../services/Manage-Address/Manage-AddressReducer'
 import orderReducer from '../services/Order/OrderReducer'
-
-// Define logout action type
-const LOGOUT = 'LOGOUT'
-
 // Logout action creator
 export const logout = () => ({
-  type: LOGOUT,
+  type: 'LOGOUT',
 })
 
+const appReducer = combineReducers({
+  auth: authReducer,
+  blog: blogReducer,
+  enquiry: enquiryReducer,
+  category: categoryReducer,
+  color: colorReducer,
+  product: productReducer,
+  wishlist: wishlistReducer,
+  cart: cartReducer,
+  Coupan: coupanReducer,
+  Address: manageAddressReducer,
+  order: orderReducer,
+})
 const rootReducer = (state, action) => {
-  if (action.type === LOGOUT) {
-    state = undefined
+  if (action.type === 'LOGOUT') {
+    state = undefined;  
   }
-  return combineReducers({
-    auth: authReducer,
-    blog: blogReducer,
-    enquiry: enquiryReducer,
-    category: categoryReducer,
-    color: colorReducer,
-    product: productReducer,
-    wishlist: wishlistReducer,
-    cart: cartReducer,
-    Coupan: coupanReducer,
-    Address: manageAddressReducer,
-    order: orderReducer,
-  })(state, action)
-}
+
+  return appReducer(state, action);
+};
+
+
 const store = createStore(
   rootReducer,
   applyMiddleware(thunk),

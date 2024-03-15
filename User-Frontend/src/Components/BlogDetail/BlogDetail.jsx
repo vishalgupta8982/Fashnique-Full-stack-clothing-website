@@ -12,9 +12,10 @@ import { dislikeBlog, getaBlog, likeBlog, resetBlogState } from '../../services/
 import { useDispatch, useSelector } from 'react-redux'
 import ClipLoader from 'react-spinners/ClipLoader'
 import moment from 'moment'
-import { getTokenFromLocalStorage } from '../../utils/Token'
 import { useNavigate } from 'react-router-dom'
-
+import { userDetail } from '../../services/Authentication/authAction'
+import { toast } from 'react-toastify'
+import Cookies from 'js-cookie';
 const BlogDetail = () => {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -23,9 +24,11 @@ const BlogDetail = () => {
   const ablogState = useSelector((state) => state.blog)
   const { loading, aBlog, isSuccess } = ablogState
   const handleLikeDisLike = async (id, action) => {
-    if (getTokenFromLocalStorage === null) {
+    if (!Cookies.get('token')){
+      toast.error("Please login to like/dislike blog");
       navigate('/login')
-    } else if (action == 'like') {
+    }
+       if (action == 'like') {
       await dispatch(likeBlog(id))
       dispatch(getaBlog(getBlogId))
     } else {
@@ -34,11 +37,13 @@ const BlogDetail = () => {
     }
   }
   useEffect(() => {
+    dispatch(userDetail())
     dispatch(resetBlogState())
     dispatch(getaBlog(getBlogId))
     window.scrollTo(0, 0)
   }, [])
-
+  const user = useSelector((state) => state.auth)
+  const {  userInformation } = user
   return (
     <>
       <div className='blogDetailPage'>
@@ -79,7 +84,7 @@ const BlogDetail = () => {
           <div className=' blogDetailNameAndDate'>
             <div>
               <p className=' blogDetailDate'>
-                {aBlog?.likes.some((user) => user._id === getTokenFromLocalStorage?._id) ? (
+                {aBlog?.likes.some((user) => user._id === userInformation?._id) ? (
                   <span
                     className='cursor-pointer'
                     onClick={() => {
@@ -106,7 +111,7 @@ const BlogDetail = () => {
             <span className='borderBetween'>|</span>
             <div>
               <p className=' blogDetailDate'>
-                {aBlog?.disLikes.some((user) => user._id === getTokenFromLocalStorage._id) ? (
+                {aBlog?.disLikes.some((user) => user._id === userInformation._id) ? (
                   <span
                     className='cursor-pointer'
                     onClick={() => {
@@ -139,7 +144,7 @@ const BlogDetail = () => {
             }
             alt=''
           />
-          <p className='text-justify'>{aBlog?.description.replace(/<[^>]+>/g, '').split(' ')} </p>
+          <p className='text-justify' dangerouslySetInnerHTML={{ __html: aBlog?.description }}></p>
         </div>
       </div>
     </>

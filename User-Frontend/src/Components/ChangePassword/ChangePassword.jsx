@@ -5,13 +5,14 @@ import { FaEye } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import { resetUserDetail, updatePassword } from '../../services/Authentication/authAction'
+import {  updatePassword } from '../../services/Authentication/authAction'
 import ClipLoader from 'react-spinners/ClipLoader'
+import {useNavigate} from "react-router-dom"
 const ChangePassword = () => {
+  const navigate=useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
-  const { loading, isSuccess, userInformation, error } = user
-  console.log(loading, isSuccess, userInformation, error)
+  const { loading, isLoginSuccess, userInformation, error } = user
   const [passwords, setPasswords] = useState({ newPassword: '', currentPassword: '' })
   const [confirmPassword, setConfirmPassword] = useState('')
   const handleChange = (e, fieldName) => {
@@ -21,7 +22,8 @@ const ChangePassword = () => {
     }))
   }
 
-  const update = async () => {
+  const update = async (event) => {
+    navigate('?tab=Change%20Password')
     if (passwords.newPassword !== confirmPassword) {
       toast.error('New Password does not match')
     }
@@ -29,17 +31,17 @@ const ChangePassword = () => {
     //     toast.error("Password must have at least 8 characters");
     // }
     else {
-      await dispatch(resetUserDetail())
-      dispatch(updatePassword(passwords))
+      await dispatch(updatePassword(passwords))
     }
   }
+  console.log(isLoginSuccess,error)
   useEffect(() => {
-    if (isSuccess) {
+    if (isLoginSuccess) {
       toast.success('Password update successfully')
     } else if (error) {
       toast.error('Check Current Password')
     }
-  }, [isSuccess, error])
+  }, [isLoginSuccess, error])
 
   const [showCurrPswrd, setShowCurrPswrd] = useState(true)
   const [showNewPswrd, setShowNewPswrd] = useState(true)

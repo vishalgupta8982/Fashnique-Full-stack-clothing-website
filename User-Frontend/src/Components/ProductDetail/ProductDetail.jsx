@@ -7,6 +7,7 @@ import { FaIndianRupeeSign } from 'react-icons/fa6'
 import { Pagination, Navigation } from 'swiper/modules'
 import Button from '../Button/Button.jsx'
 import { CgShoppingCart } from 'react-icons/cg'
+import {useNavigate} from "react-router-dom"
 import { IoIosShareAlt } from 'react-icons/io'
 import { RWebShare } from 'react-web-share'
 import { useParams } from 'react-router-dom'
@@ -16,10 +17,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../ProductCard/ProductCard.jsx'
 import { addProductInWishlist, getProductById } from '../../services/Products/ProductsActions.jsx'
 import ClipLoader from 'react-spinners/ClipLoader'
+import Cookies from 'js-cookie';
 import { userDetail } from '../../services/Authentication/authAction.jsx'
 import { addToCartProduct, getCart } from '../../services/Cart/CartAction.jsx'
 const ProductDetail = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [swiperRef, setSwiperRef] = useState(null)
   const { id } = useParams()
   const getProductId = id.split('=')[1]
@@ -40,6 +43,11 @@ const ProductDetail = () => {
   })
   const [productImg, setProductImg] = useState()
   const addInWishlist = async (id) => {
+    if (!Cookies.get('token')) {
+      toast.error("Please login to add item in wishlist")
+      navigate('/login')
+    }
+    else{
     try {
       await dispatch(addProductInWishlist(id))
       await dispatch(userDetail())
@@ -50,11 +58,15 @@ const ProductDetail = () => {
       }
     } catch (error) {
       console.error('Error occurred while adding to wishlist:', error)
-    }
+    }}
   }
 
   const addToCart = async () => {
-    if (!addToCartProductDetail.color) {
+    if (!Cookies.get('token')){
+      toast.error("Please login to add item in cart")
+      navigate('/login')
+    }
+    else if (!addToCartProductDetail.color) {
       toast.error('Choose color of product')
     } else if (!addToCartProductDetail.size) {
       toast.error('Choose size of product')
@@ -65,13 +77,14 @@ const ProductDetail = () => {
     }
   }
   return (
-    <>
-      <section className='pdTopSection w-[screen] md:flex-row flex-col justify-center items-start   '>
-        {(loading || cartLoading) && (
+    <> 
+        <section className='pdTopSection w-[screen] md:flex-row flex-col justify-center items-start   '>
+         
+        {loading || cartLoading && (
           <div className='loader'>
             <ClipLoader
               color={'#52ab98'}
-              loading={loading || cartLoading}
+              loading= {cartLoading || loading}
               size={25}
               aria-label='Loading Spinner'
               data-testid='loader'
@@ -295,7 +308,7 @@ const ProductDetail = () => {
               </section>
             ),
         )}
-      </div>
+            </div> 
     </>
   )
 }

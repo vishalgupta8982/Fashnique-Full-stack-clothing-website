@@ -14,13 +14,17 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import { addProductInWishlist } from '../../services/Products/ProductsActions'
 import { getWishlist } from '../../services/Wishlist/WishlistAction'
 import { applyCoupan, applyCoupanResetState } from '../../services/Coupan/CoupanAction'
+import Cookies from 'js-cookie';
+ 
+ 
 const AddToCart = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
+    if (Cookies.get('token')){
     dispatch(applyCoupanResetState())
     dispatch(getCart())
-    dispatch(getWishlist())
+    dispatch(getWishlist())}
   }, [])
   const [coupanCode, setCoupanCode] = useState('')
   const cart = useSelector((state) => state.cart)
@@ -74,7 +78,7 @@ const AddToCart = () => {
         )}
         {Cart?.products?.length > 0 ? (
           <div className='flex flex-col AddToCartPage md:flex-row w-[100%]'>
-            <section className='  md:w-2/3 cartContainer'>
+            <section className=' md:w-2/3 cartContainer'>
               <p className='cartHead'>Cart</p>
               {Cart.products.map((item) => (
                 <div className='cartItemContainer'>
@@ -205,9 +209,9 @@ const AddToCart = () => {
               src='https://res.cloudinary.com/dytlgwywf/image/upload/v1710181332/djyjxsphr874hu1od7xg.png'
               alt='emptyCart'
             />
-            <p className='emptyText'>Your card is empty</p>
+            <p className='emptyText'>Your cart is empty</p>
             <div className='flex justify-center'>
-              <Button navigation={'/store'} title={'Shop Now'} />
+                {Cookies.get('token') ? (<Button navigation={'/store'} title={'Shop Now'} />) : (<Button navigation={'/login'} title={'Login'} />)}
             </div>
           </div>
         )}

@@ -26,7 +26,7 @@ const LandingPage = () => {
             </div>
           </div>
           <div className='w-[screen] min-h-[36vh] md:h-[73vh] md:w-1/2 homeRight'>
-            <img className='home_img' src={tagline.imgUrl} alt='' />
+            <img data-aos='fade-left' className='home_img' src={tagline.imgUrl} alt='' />
           </div>
         </div>
       </div>

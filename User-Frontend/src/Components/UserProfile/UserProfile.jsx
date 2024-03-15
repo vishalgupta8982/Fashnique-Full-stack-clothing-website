@@ -20,7 +20,7 @@ import ManageAddress from '../ManageAddress/ManageAddress'
 import { useLocation, useParams } from 'react-router-dom'
 import MyOrder from '../MyOrder/MyOrder'
 import Cookies from 'js-cookie';
-import { Config, generateConfig } from '../../utils/AxiosConfig'
+ 
 const UserProfile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()

@@ -1,4 +1,4 @@
-import { Config,  } from '../../utils/AxiosConfig.jsx'
+import { Config, } from '../../utils/AxiosConfig.jsx'
 import { baseUrl } from '../../utils/baseUrl.jsx'
 import axios from 'axios'
 import Cookies from 'js-cookie';
@@ -58,9 +58,9 @@ export const updatePasswordRequest = () => ({
   type: 'UPDATE_PASSWORD_REQUEST',
 })
 
-export const updatePasswordSuccess = (user) => ({
+export const updatePasswordSuccess = () => ({
   type: 'UPDATE_PASSWORD_SUCCESS',
-  payload: { user },
+  
 })
 
 export const updatePasswordFailure = (error) => ({
@@ -79,7 +79,7 @@ export const userLogin = (credential) => async (dispatch) => {
     if (response) {
       // localStorage.setItem('User', JSON.stringify(response.data))
       dispatch(UserLoginSuccess(response.data))
-       Cookies.set('token', response.data.token.token, { expires: 7, secure: true });
+      Cookies.set('token', response.data.token.token, { expires: 7, secure: true });
       setTimeout(() => {
         dispatch(resetUserDetail())
       }, 1000)
@@ -155,6 +155,7 @@ export const updatePassword = (password) => async (dispatch) => {
   dispatch(updatePasswordRequest())
   try {
     const response = await axios.put(`${baseUrl}/user/password`, password, Config())
+
     if (response) {
       dispatch(updatePasswordSuccess(response.data))
       setTimeout(() => {
@@ -162,6 +163,7 @@ export const updatePassword = (password) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
+
     dispatch(updatePasswordFailure(err.response.data))
     setTimeout(() => {
       dispatch(resetUserDetail())

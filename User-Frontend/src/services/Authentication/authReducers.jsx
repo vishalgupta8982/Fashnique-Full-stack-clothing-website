@@ -17,7 +17,6 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        // token: Cookies.get('token'),
         isLoginSuccess: true,
       }
     case 'USER_LOGIN_FAILURE':
@@ -83,14 +82,14 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        isSuccess: true,
+        isLoginSuccess: true,
       }
     case 'USER_DETAIL_UPDATE_FAILURE':
       return {
         ...state,
         loading: false,
         user: null,
-        error: action.payload,
+        error: true,
       }
     case 'UPDATE_PASSWORD_REQUEST':
       return {
@@ -104,7 +103,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        isSuccess: true,
+        isLoginSuccess: true,
       }
     case 'UPDATE_PASSWORD_FAILURE':
       return {

@@ -6,10 +6,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getWishlist } from '../../services/Wishlist/WishlistAction'
 import ClipLoader from 'react-spinners/ClipLoader'
 import Button from '../Button/Button'
+import Cookies from 'js-cookie';
 const Wishlist = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(getWishlist())
+    if (Cookies.get('token')) {
+      dispatch(getWishlist())
+    }
   }, [])
 
   const wishlist = useSelector((state) => state.wishlist)
@@ -18,7 +21,7 @@ const Wishlist = () => {
     <>
       <div className='flex justify-center items-center min-h-[70vh]'>
         {Wishlist?.wishlist?.length > 0 ? (
-          <div className='grid justify-between grid-cols-2 gap-0 md:grid-cols-5 wishListContainer  '>
+          <div className='grid justify-between grid-cols-2 gap-0 md:grid-cols-5 wishListContainer '>
             {loading && (
               <div className='loader'>
                 <ClipLoader
@@ -35,7 +38,7 @@ const Wishlist = () => {
             ))}
           </div>
         ) : (
-          <div className='emptyWishlist  '>
+          <div className='emptyWishlist '>
             <img
               src='https://res.cloudinary.com/dytlgwywf/image/upload/v1710253047/wvgsjhush23todrat6pq.png'
               width={400}
@@ -43,7 +46,8 @@ const Wishlist = () => {
             />
             <p className='emptyText'>Your wishlist is empty</p>
             <div className='flex justify-center'>
-              <Button navigation={'/store'} title={'Visit Store'} />
+                {Cookies.get('token') ? (<Button navigation={'/store'} title={'Visit Store'} />) : (<Button navigation={'/login'} title={'Login'} />)}
+
             </div>
           </div>
         )}

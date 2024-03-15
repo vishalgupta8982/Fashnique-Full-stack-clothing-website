@@ -75,7 +75,6 @@ const MyAccount = () => {
         <div className='flex flex-col piInfo'>
           <div className='flex flex-col items-center justify-center profileImgCont md:items-start md:flex-row md:justify-between'>
             <div className='profileImg'>
-              <FaRegEdit className='editIcon' />
               <img
                 className='profileImg'
                 src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgbI78v3a7Q5Tcm1DrdpZ7KEH2-ArooT9qzvFe6cLOYxy4wY-hp6dG-NrJKyv9_n5Hcjs&usqp=CAU'

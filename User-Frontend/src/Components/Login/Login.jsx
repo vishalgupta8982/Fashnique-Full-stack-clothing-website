@@ -98,7 +98,7 @@ const Login = () => {
             </div>
           </div>
           <p className='newMember'>
-            New to Marketooze?{' '}
+            New to Fashionique?{' '}
             <span onClick={() => navigate('/signUp')} className='join'>
               Join now
             </span>

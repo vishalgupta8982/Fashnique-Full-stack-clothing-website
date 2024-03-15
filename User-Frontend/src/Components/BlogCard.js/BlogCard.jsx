@@ -18,7 +18,7 @@ const BlogCard = ({ data }) => {
           />
           <div className=' blogCardContent'>
             <p className='blogDate'>{moment(data.createdAt).format('DD MMM YYYY')}</p>
-            <p className='blogHead'>{data.title.slice(0, 15)}</p>
+            <p className='blogHead'>{data.title.slice(0, 20)}</p>
             <p className='blogContent'>
               {data.description
                 .replace(/<[^>]+>/g, '')
