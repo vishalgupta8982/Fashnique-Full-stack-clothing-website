@@ -27,7 +27,7 @@ const AddBlog = () => {
     description: '',
     category: '',
     images: [],
-    author:user.firstName+" "+user.lastName ,
+    author: user.firstName + ' ' + user.lastName,
   })
   const [editBlogDetail, setEditBlogDetail] = useState({
     title: '',
@@ -49,7 +49,7 @@ const AddBlog = () => {
   }, [dispatch, getBlogId])
   const blogCat = useSelector((state) => state.blogCat.blogCategory)
   const imgState = useSelector((state) => state.upload.Images)
-  
+
   const newBlog = useSelector((state) => state.blog)
   const { isSuccess, error, loading, aBlog } = newBlog
   useEffect(() => {

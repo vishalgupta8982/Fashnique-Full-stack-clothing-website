@@ -34,7 +34,8 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "format": "prettier --write \"src/**/*.{js,jsx}\""
   },
   "babel": {
     "presets": [

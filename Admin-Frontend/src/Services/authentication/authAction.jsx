@@ -1,6 +1,5 @@
 import { baseUrl } from '../../Utils/baseUrl'
 import axios from 'axios'
- 
 
 export const AdminLoginRequest = () => ({
   type: 'ADMIN_LOGIN_REQUEST',

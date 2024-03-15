@@ -16,7 +16,7 @@ import { FaClipboardList, FaBloggerB } from 'react-icons/fa'
 import { SiBrandfolder } from 'react-icons/si'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { Layout, Menu } from 'antd'
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import logo from '../assets/Images/logo.png'
 import { useDispatch } from 'react-redux'
 import { logout } from '../Services/authentication/authAction'
@@ -26,7 +26,7 @@ const Layouts = () => {
   const dispatch = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
   const [showDropDown, setShowDropDown] = useState(false)
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
   const handleLogOut = () => {
     dispatch(logout())
     AsyncStorage.clear()
@@ -34,9 +34,10 @@ const Layouts = () => {
   const navigate = useNavigate()
   const getUserFromLocalStorage = JSON.parse(localStorage.getItem('User'))
   useEffect(() => {
-    const localAuth = getUserFromLocalStorage;
-    if (!localAuth) { navigate('/') }
-    else{
+    const localAuth = getUserFromLocalStorage
+    if (!localAuth) {
+      navigate('/')
+    } else {
       setUser(localAuth)
     }
   }, [navigate])
@@ -202,7 +203,7 @@ const Layouts = () => {
                 {user && (
                   <>
                     <p className="headerName">
-                      {user.firstName}{" "}{user.lastName}
+                      {user.firstName} {user.lastName}
                     </p>
                     <p className="headerEmail">{user.email}</p>
                   </>

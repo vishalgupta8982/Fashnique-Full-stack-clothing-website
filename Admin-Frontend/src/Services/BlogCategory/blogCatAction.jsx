@@ -75,7 +75,11 @@ export const resetBlogCategoryState = () => ({
 export const addBlogCat = (title) => async (dispatch) => {
   dispatch(AddBlogCategoryRqst())
   try {
-    const response = await axios.post(`${baseUrl}/blogCategory`, { title },config)
+    const response = await axios.post(
+      `${baseUrl}/blogCategory`,
+      { title },
+      config,
+    )
     if (response) {
       await dispatch(AddBlogCategorySuccess(response.data))
       setTimeout(() => {
@@ -137,7 +141,6 @@ export const getaBlogCat = (id) => async (dispatch) => {
       setTimeout(() => {
         dispatch(resetBlogCategoryState())
       }, 1000)
-    
     }
   } catch (err) {
     dispatch(GetaBlogCategoryFailure(err.response.data))
@@ -161,9 +164,9 @@ export const updateBlogCat = (id, title) => async (dispatch) => {
     }
   } catch (err) {
     dispatch(updateBlogCategoryFailure(err.response.data))
-     setTimeout(() => {
-        dispatch(resetBlogCategoryState())
-      }, 1000)
+    setTimeout(() => {
+      dispatch(resetBlogCategoryState())
+    }, 1000)
     return err.response.data
   }
 }

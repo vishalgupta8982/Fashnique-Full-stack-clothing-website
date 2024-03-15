@@ -33,7 +33,7 @@ const columns = [
   {
     title: 'comment',
     dataIndex: 'comment',
-    align:'center'
+    align: 'center',
   },
   {
     title: 'Status',
@@ -73,9 +73,7 @@ const Enquiries = () => {
         name: item.name,
         email: item.email,
         mobile: item.mobile,
-        comment:(
-          <p className='text-center'>{item.comment}</p>
-        ),
+        comment: <p className="text-center">{item.comment}</p>,
         status: (
           <>
             <select
@@ -131,7 +129,7 @@ const Enquiries = () => {
           </div>
         )}
         <p className="enquiriesHead">Enquiries</p>
-        <Table  columns={columns} dataSource={data1} />
+        <Table columns={columns} dataSource={data1} />
         <CustomModal
           hideModal={hideModal}
           open={open}

@@ -39,7 +39,7 @@ const AddProduct = () => {
     color: [],
     tags: [],
     images: [],
-    size: []
+    size: [],
   })
   const [editProductDetail, setEditProductDetail] = useState({
     title: '',
@@ -52,7 +52,7 @@ const AddProduct = () => {
     color: [],
     tags: [],
     images: [],
-    size: []
+    size: [],
   })
 
   const getProductId = location.pathname.split('/')[3]
@@ -99,10 +99,11 @@ const AddProduct = () => {
         color: aProduct.color,
         tags: aProduct.tags,
         images: aProduct.images,
-        size: aProduct.size
+        size: aProduct.size,
       })
     }
   }, [aProduct, getProductId])
+  console.log(editProductDetail)
   const colorOpt = []
   if (colorList) {
     colorList.forEach((i) => {
@@ -142,18 +143,26 @@ const AddProduct = () => {
       setEditProductDetail((prevState) => ({
         ...prevState,
         [fieldName]:
-          fieldName === 'description' || fieldName === 'color' || fieldName === 'size' || fieldName === 'tags'
+          fieldName === 'description' ||
+          fieldName === 'color' ||
+          fieldName === 'size' ||
+          fieldName === 'tags'
             ? e
             : e.target.value,
       }))
     } else {
       setProductDetail((prevState) => ({
         ...prevState,
-        [fieldName]: fieldName === 'description' || fieldName === 'color' || fieldName === 'size' || fieldName === 'tags' ? e : e.target.value,
+        [fieldName]:
+          fieldName === 'description' ||
+          fieldName === 'color' ||
+          fieldName === 'size' ||
+          fieldName === 'tags'
+            ? e
+            : e.target.value,
       }))
     }
   }
-  console.log(productDetail)
   return (
     <div className="addProduct">
       <p className="addProductHead">
@@ -312,19 +321,19 @@ const AddProduct = () => {
       <div className="flex flex-wrap ">
         {getProductId !== undefined
           ? editProductDetail.images.map((item) => (
-            <img src={item.url} alt="" width={100} height={100} />
-          ))
+              <img src={item.url} alt="" width={100} height={100} />
+            ))
           : imgState &&
-          imgState?.map((i, j) => {
-            return (
-              <div className="mt-1 mr-1 position-relative" key={j}>
-                {/* <span onClick={()=>dispatch(deleteImage(i.public_id))} className="mt-1 top-5 position-absolute " style={{ padding: 0, margin: 0 }}>
+            imgState?.map((i, j) => {
+              return (
+                <div className="mt-1 mr-1 position-relative" key={j}>
+                  {/* <span onClick={()=>dispatch(deleteImage(i.public_id))} className="mt-1 top-5 position-absolute " style={{ padding: 0, margin: 0 }}>
                                 <RxCross1 />
                             </span> */}
-                <img src={i.url} alt="" width={100} height={100} />
-              </div>
-            )
-          })}
+                  <img src={i.url} alt="" width={100} height={100} />
+                </div>
+              )
+            })}
       </div>
       {imgLoad && (
         <div className="loader">

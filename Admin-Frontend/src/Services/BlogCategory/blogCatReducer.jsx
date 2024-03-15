@@ -90,7 +90,7 @@ const blogCatReducer = (state = initialState, action) => {
         error: null,
         loading: false,
         isSuccess: false,
-        ablogCategory:null
+        ablogCategory: null,
       }
     default:
       return state

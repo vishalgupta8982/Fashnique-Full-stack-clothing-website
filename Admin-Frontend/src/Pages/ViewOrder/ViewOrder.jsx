@@ -43,7 +43,7 @@ const ViewOrder = () => {
   const userId = location.pathname.split('/')[3]
   useEffect(() => {
     dispatch(getOrderByUserId(userId))
-  },[])
+  }, [])
   const orderState = useSelector((state) => state.order)
   const { loading, OrderByUserId } = orderState
   const data1 = Array.isArray(OrderByUserId)

@@ -3,11 +3,10 @@ const getUserFromLocalStorage = localStorage.getItem('User')
   : null
 const initialState = {
   loading: false,
-  user: getUserFromLocalStorage ,
+  user: getUserFromLocalStorage,
   error: null,
   isLoginSuccess: false,
   isRegisterSuccess: false,
-
 }
 
 const authReducer = (state = initialState, action) => {
@@ -49,7 +48,7 @@ const authReducer = (state = initialState, action) => {
       }
     case 'LOGOUT':
       return initialState
-     
+
     default:
       return state
   }

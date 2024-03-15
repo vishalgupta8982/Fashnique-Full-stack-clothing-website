@@ -57,11 +57,11 @@ const AddBlogCategory = () => {
     if (getBlogCatId !== undefined) {
       dispatch(updateBlogCat(getBlogCatId, editBlogCategory))
     } else {
-      if(newBlogCategory.length<1){
-        toast.error("This Field is required")
+      if (newBlogCategory.length < 1) {
+        toast.error('This Field is required')
+      } else {
+        dispatch(addBlogCat(newBlogCategory))
       }
-      else{
-      dispatch(addBlogCat(newBlogCategory))}
     }
   }
 

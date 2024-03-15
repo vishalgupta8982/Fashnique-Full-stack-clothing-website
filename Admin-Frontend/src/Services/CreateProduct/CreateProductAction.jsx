@@ -136,14 +136,15 @@ export const getaProduct = (id) => async (dispatch) => {
   }
 }
 
-export const updateProduct = (id, product) => async (dispatch) => {
+export const updateProduct = (slug, product) => async (dispatch) => {
   dispatch(updateProductRqst())
   try {
     const response = await axios.put(
-      `${baseUrl}/product/${id}`,
+      `${baseUrl}/product/${slug}`,
       product,
       config,
     )
+    console.log(response)
     if (response) {
       await dispatch(updateProductSuccess(response.data))
       setTimeout(() => {

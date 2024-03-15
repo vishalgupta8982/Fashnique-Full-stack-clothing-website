@@ -35,12 +35,9 @@ var userSchema = new mongoose.Schema(
       default: false,
     },
     cart: [{ type: mongoose.Schema.Types.ObjectId ,ref:"Product"}],
-    address: {
-      type:String,
-      default: null
-    },
+    address: [],
     dateOfBirth: {
-      type:Date,
+      type:String,
       default: null
     },
     gender: {

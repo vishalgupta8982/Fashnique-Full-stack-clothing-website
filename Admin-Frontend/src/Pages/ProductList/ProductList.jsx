@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BiEdit } from 'react-icons/bi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { toast } from 'react-toastify'
-import { FaIndianRupeeSign } from "react-icons/fa6";
+import { FaIndianRupeeSign } from 'react-icons/fa6'
 import ClipLoader from 'react-spinners/ClipLoader'
 import CustomModal from '../../Components/CustomModel/CustomModel'
 import { Link } from 'react-router-dom'
@@ -86,11 +86,11 @@ const ProductList = () => {
             ))}
           </div>
         ),
-      price: (
-        <div className='flex flex-row items-center'>
-          <FaIndianRupeeSign size={12} /> {item.price}
-        </div>)
-      ,
+        price: (
+          <div className="flex flex-row items-center">
+            <FaIndianRupeeSign size={12} /> {item.price}
+          </div>
+        ),
         action: (
           <div className="icon">
             <Link to={`/admin/addproduct/${item.slug}`} className="edit">

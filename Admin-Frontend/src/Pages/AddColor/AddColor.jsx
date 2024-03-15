@@ -79,15 +79,13 @@ const AddColor = () => {
         id=""
       >
         <option value="">Select Color</option>
-        {colors.map(color => (
+        {colors.map((color) => (
           <option key={color.hex} value={`${color.name} - ${color.hex}`}>
-              {color.name}
+            {color.name}
           </option>
-
-
         ))}
       </select>
-      <div className='mt-3' onClick={color}>
+      <div className="mt-3" onClick={color}>
         <Button
           widthButton={'fit-content'}
           title={`  ${getColorId !== undefined ? 'Update' : 'Add'} Color`}
@@ -98,4 +96,3 @@ const AddColor = () => {
 }
 
 export default AddColor
-  

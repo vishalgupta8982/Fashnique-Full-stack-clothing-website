@@ -1,4 +1,5 @@
 const { generateToken } = require("../config/jwtToken");
+const mongoose = require('mongoose');
 const crypto = require("crypto");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
@@ -237,13 +238,16 @@ const getWishlist = asyncHandler(async (req, res) => {
 //save user address
 const saveAddress = asyncHandler(async (req, res) => {
   const { _id } = req.user;
+  const address = req.body
   validateMongoDbId(_id);
+  const newAddress = {
+    _id: new mongoose.Types.ObjectId(),
+    ...address
+  };
   try {
     const updateUser = await User.findByIdAndUpdate(
       _id,
-      {
-        address: req?.body?.address,
-      },
+      { $push: { address: { $each: [newAddress], $position: 0 } } },
       { new: true }
     );
     res.json(updateUser);
@@ -252,24 +256,49 @@ const saveAddress = asyncHandler(async (req, res) => {
   }
 });
 
-// add to cart
+
+const deleteAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const user = await User.findById(_id);
+    let addressIndex = -1;
+    user.address.forEach((address, index) => {
+      if (address._id.toString() === id) {
+        addressIndex = index;
+      }
+    });
+    if (addressIndex === -1) {
+      return res.status(404).json({ message: "Address not found" });
+    }
+    user.address.splice(addressIndex, 1);
+    await user.save();
+    res.json({ message: "Address deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting address:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 const addToCart = asyncHandler(async (req, res) => {
   const { productId, color, size, quantity, price } = req.body;
-  const userId = req.user._id;  
+  const userId = req.user._id;
   try {
     let cart = await Cart.findOne({ userId }).populate('products.productId').exec();
     if (!cart) {
       cart = await Cart.create({ userId, products: [] });
     }
 
-    const existingProduct = cart.products.find(product =>
-      product.productId._id.equals(productId) && product.color.equals(color)
+    const existingProductIndex = cart.products.findIndex(product =>
+      product.productId._id.equals(productId) && product.color === color && product.size === size
     );
-    if (existingProduct) {
-      existingProduct.quantity += quantity;
+
+    if (existingProductIndex !== -1) {
+      cart.products[existingProductIndex].quantity += quantity;
+      cart.products[existingProductIndex].price = price; // Update price if necessary
     } else {
-      cart.products.push({ productId, color, size, quantity, price });
+      cart.products.unshift({ productId, color, size, quantity, price });
     }
     await cart.save();
     res.json(cart);
@@ -286,8 +315,16 @@ const getUserCart = asyncHandler(async (req, res) => {
     const cart = await Cart.findOne({ userId: _id }).populate(
       "products.productId"
     ).populate("products.color");
-    
-    res.json(cart);
+    let totalPrice = 0;
+    cart.products.forEach(product => {
+      totalPrice += product.productId.price * product.quantity;
+    });
+    cart.products.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const cartWithTotalPrice = {
+      ...cart.toObject(),
+      totalPrice: totalPrice
+    };
+    res.json(cartWithTotalPrice);
   } catch (err) {
     throw new Error(err);
   }
@@ -295,16 +332,16 @@ const getUserCart = asyncHandler(async (req, res) => {
 
 const removeFromCart = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const userId = req.user._id; 
+  const userId = req.user._id;
   try {
     let cart = await Cart.findOne({ userId });
     if (!cart) {
       return res.status(404).json({ error: 'Cart not found' });
     }
     const index = cart.products.findIndex(product =>
-      product.productId.equals(id)
+      product.equals(id)
     );
-    
+
     if (index === -1) {
       return res.status(404).json({ error: 'Product not found in cart' });
     }
@@ -322,19 +359,24 @@ const applyCoupan = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   try {
     const validCoupan = await Coupan.findOne({ name: coupan });
-    if (validCoupan == null) {
-      throw new Error("inavlid coupan");
+    const validCouponExpiry = new Date(validCoupan.expiry);
+    const currentDate = new Date();
+    if (validCoupan == null || validCouponExpiry < currentDate) {
+      throw new Error("invalid coupan");
     }
     const user = await User.findOne({ _id });
-    let { products, cartTotal } = await Cart.findOne({
-      orderBy: user._id,
-    }).populate("products.product");
-    let totalAfterDiscount = (
-      cartTotal -
-      (cartTotal * validCoupan.discount) / 100
-    ).toFixed(2);
+
+    const cart = await Cart.findOne({ userId: _id }).populate(
+      "products.productId"
+    ).populate("products.color");
+    let cartTotal = 0;
+    cart.products.forEach(product => {
+      cartTotal += product.productId.price * product.quantity;
+    });
+    let totalAfterDiscount = Math.floor(cartTotal - (cartTotal * validCoupan.discount) / 100);
+
     await Cart.findOneAndUpdate(
-      { orderBy: user._id },
+      { userId: user._id },
       { totalAfterDiscount },
       {
         new: true,
@@ -348,28 +390,30 @@ const applyCoupan = asyncHandler(async (req, res) => {
 
 const createOrder = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const { COD, coupanApplied } = req.body;
+  const { COD, totalPriceAfterDiscount,address } = req.body;
   if (!COD) {
     throw new Error("Create Cash order failed");
   }
   try {
     const user = await User.findById(_id);
-    let userCart = await Cart.findOne({ orderBy: user._id });
-    let finalAmout = 0;
-    if (coupanApplied && userCart.totalAfterDiscount) {
-      finalAmout = userCart.totalAfterDiscount;
-    } else {
-      finalAmount = userCart.cartTotal;
-    }
+    let userCart = await Cart.findOne({ userId: user._id }).populate(
+      "products.productId"
+    ).populate("products.color");
     let newOrder = await new Order({
-      products: userCart.products,
+      products: userCart.products.map(product => ({
+        product: product.productId._id,
+        count: product.quantity,
+        color: product.color,
+        size:product.size,
+        address:address
+      })),
       paymentIntent: {
         id: uniqid(),
         method: "COD",
-        amount: finalAmout,
+        amount: totalPriceAfterDiscount,
         status: "Cash On Delivery",
         createdAt: Date.now(),
-        currency: "usd",
+        currency: "inr",
       },
       orderBy: user._id,
       orderStatus: "Cash On Delivery",
@@ -377,12 +421,11 @@ const createOrder = asyncHandler(async (req, res) => {
     let update = userCart.products.map((item) => {
       return {
         updateOne: {
-          filter: { _id: item.product._id },
+          filter: { _id: item.productId._id },
           update: { $inc: { quantity: item.count, sold: +item.count } },
         },
       };
     });
-    const updated = await Product.bulkWrite(update, {});
     res.json({ message: "success" });
   } catch (err) {
     throw new Error(err);
@@ -393,14 +436,16 @@ const getOrder = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const userOrder = await Order.findOne({ orderBy: _id }).populate(
-      "products.product"
-    );
+    const userOrder = await Order.find({ orderBy: _id })
+      .populate("products.product")
+      .populate("orderBy")
+      .sort({ createdAt: -1 });  
     res.json(userOrder);
   } catch (err) {
     throw new Error(err);
   }
 });
+
 
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
@@ -463,6 +508,7 @@ module.exports = {
   loginAdminCtrl,
   getWishlist,
   saveAddress,
+  deleteAddress,
   addToCart,
   getUserCart,
   removeFromCart,
