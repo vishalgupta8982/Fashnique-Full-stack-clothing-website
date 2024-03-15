@@ -19,7 +19,7 @@ export const resetWishlistState = () => ({
 export const getWishlist = () => async (dispatch) => {
   dispatch(getWishlistRqst())
   try {
-    const response = await axios.get(`${baseUrl}/user/wishlist`, Config)
+    const response = await axios.get(`${baseUrl}/user/wishlist`, Config())
     console.log(response)
     if (response) {
       await dispatch(getWishlistSuccess(response.data))

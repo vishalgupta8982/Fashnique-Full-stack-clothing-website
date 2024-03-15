@@ -1,7 +1,7 @@
-import { Config } from '../../utils/AxiosConfig.jsx'
+import { Config,  } from '../../utils/AxiosConfig.jsx'
 import { baseUrl } from '../../utils/baseUrl.jsx'
 import axios from 'axios'
-
+import Cookies from 'js-cookie';
 export const UserLoginRequest = () => ({
   type: 'USER_LOGIN_REQUEST',
 })
@@ -77,8 +77,9 @@ export const userLogin = (credential) => async (dispatch) => {
   try {
     const response = await axios.post(`${baseUrl}/user/login`, credential)
     if (response) {
-      localStorage.setItem('User', JSON.stringify(response.data))
+      // localStorage.setItem('User', JSON.stringify(response.data))
       dispatch(UserLoginSuccess(response.data))
+       Cookies.set('token', response.data.token.token, { expires: 7, secure: true });
       setTimeout(() => {
         dispatch(resetUserDetail())
       }, 1000)
@@ -115,7 +116,7 @@ export const userRegister = (credential) => async (dispatch) => {
 export const userDetail = () => async (dispatch) => {
   dispatch(UserDetailRequest())
   try {
-    const response = await axios.get(`${baseUrl}/user/userdetail`, Config)
+    const response = await axios.get(`${baseUrl}/user/userdetail`, Config())
     if (response) {
       dispatch(UserDetailSuccess(response.data))
       setTimeout(() => {
@@ -134,7 +135,7 @@ export const userDetail = () => async (dispatch) => {
 export const userDetailUpdate = (detail) => async (dispatch) => {
   dispatch(UserDetailUpdateRequest())
   try {
-    const response = await axios.put(`${baseUrl}/user/edit-user`, detail, Config)
+    const response = await axios.put(`${baseUrl}/user/edit-user`, detail, Config())
     if (response) {
       dispatch(UserDetailUpdateSuccess(response.data))
       setTimeout(() => {
@@ -153,7 +154,7 @@ export const userDetailUpdate = (detail) => async (dispatch) => {
 export const updatePassword = (password) => async (dispatch) => {
   dispatch(updatePasswordRequest())
   try {
-    const response = await axios.put(`${baseUrl}/user/password`, password, Config)
+    const response = await axios.put(`${baseUrl}/user/password`, password, Config())
     if (response) {
       dispatch(updatePasswordSuccess(response.data))
       setTimeout(() => {

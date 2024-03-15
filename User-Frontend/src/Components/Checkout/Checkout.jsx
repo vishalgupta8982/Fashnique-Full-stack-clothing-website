@@ -49,6 +49,7 @@ function Checkout() {
   console.log(orderDetail)
   const placeOrder = async () => {
     await dispatch(createOrder(orderDetail))
+    navigate('/order-success')
   }
   return (
     <div className='flex '>

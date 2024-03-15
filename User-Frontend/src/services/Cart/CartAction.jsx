@@ -38,7 +38,7 @@ export const resetCartState = () => ({
 export const getCart = () => async (dispatch) => {
   dispatch(getCartRqst())
   try {
-    const response = await axios.get(`${baseUrl}/user/cart`, Config)
+    const response = await axios.get(`${baseUrl}/user/cart`, Config())
     if (response) {
       await dispatch(getCartSuccess(response.data))
       setTimeout(() => {
@@ -54,7 +54,7 @@ export const getCart = () => async (dispatch) => {
 export const addToCartProduct = (data) => async (dispatch) => {
   dispatch(addToCartRqst())
   try {
-    const response = await axios.post(`${baseUrl}/user/add-to-cart/`, data, Config)
+    const response = await axios.post(`${baseUrl}/user/add-to-cart/`, data, Config())
     if (response) {
       await dispatch(addToCartSuccess(response.data))
       setTimeout(() => {
@@ -69,7 +69,7 @@ export const addToCartProduct = (data) => async (dispatch) => {
 export const deleteProductFromCart = (id) => async (dispatch) => {
   dispatch(deleteProductCartRqst())
   try {
-    const response = await axios.delete(`${baseUrl}/user/remove-from-cart/${id}`, Config)
+    const response = await axios.delete(`${baseUrl}/user/remove-from-cart/${id}`, Config())
     if (response) {
       await dispatch(deleteProductCartSuccess(response.data))
       setTimeout(() => {

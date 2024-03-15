@@ -19,7 +19,8 @@ import { logout } from '../../store/Store'
 import ManageAddress from '../ManageAddress/ManageAddress'
 import { useLocation, useParams } from 'react-router-dom'
 import MyOrder from '../MyOrder/MyOrder'
-
+import Cookies from 'js-cookie';
+import { Config, generateConfig } from '../../utils/AxiosConfig'
 const UserProfile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -43,13 +44,13 @@ const UserProfile = () => {
     { head: 'Change Password', icon: <RiLockPasswordFill /> },
     { head: 'Log Out', icon: <MdOutlineLogout /> },
   ]
-  const handleSideTabClick = (item) => {
+  const handleSideTabClick = async(item) => {
     if (item.path) {
       navigate(item.path)
     }
     if (item.head === 'Log Out') {
-      localStorage.clear()
-      dispatch(logout())
+      await Cookies.remove('token'); 
+      await dispatch(logout())
       navigate('/login')
     } else if (!item.path) {
       navigate(`?tab=${item.head}`)

@@ -42,7 +42,7 @@ export const getProduct = (filter) => async (dispatch) => {
   console.log(filterParam)
   dispatch(getProductRqst())
   try {
-    const response = await axios.get(`${baseUrl}/product${filterParam}`, Config)
+    const response = await axios.get(`${baseUrl}/product${filterParam}`, Config())
 
     if (response) {
       await dispatch(getProductSuccess(response.data))
@@ -59,7 +59,7 @@ export const getProduct = (filter) => async (dispatch) => {
 export const getProductById = (slug) => async (dispatch) => {
   dispatch(getProductByIdRqst())
   try {
-    const response = await axios.get(`${baseUrl}/product/${slug}`, Config)
+    const response = await axios.get(`${baseUrl}/product/${slug}`, Config())
     if (response) {
       await dispatch(getProductByIdSuccess(response.data))
       setTimeout(() => {
@@ -75,7 +75,7 @@ export const getProductById = (slug) => async (dispatch) => {
 export const addProductInWishlist = (prodId) => async (dispatch) => {
   dispatch(addProductInWishlistRqst())
   try {
-    const response = await axios.put(`${baseUrl}/product/wishlist/`, { prodId }, Config)
+    const response = await axios.put(`${baseUrl}/product/wishlist/`, { prodId }, Config())
     if (response) {
       await dispatch(addProductInWishlistSuccess(response.data))
       setTimeout(() => {

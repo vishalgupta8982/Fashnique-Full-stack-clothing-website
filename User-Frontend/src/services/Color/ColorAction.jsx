@@ -19,7 +19,7 @@ export const resetColorState = () => ({
 export const getColor = () => async (dispatch) => {
   dispatch(getColorRqst())
   try {
-    const response = await axios.get(`${baseUrl}/color/`, Config)
+    const response = await axios.get(`${baseUrl}/color/`, Config())
     if (response) {
       await dispatch(getColorSuccess(response.data))
       setTimeout(() => {

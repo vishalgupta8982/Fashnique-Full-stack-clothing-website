@@ -54,7 +54,7 @@ export const resetBlogState = () => ({
 export const getBlog = () => async (dispatch) => {
   dispatch(GetBlogRqst())
   try {
-    const response = await axios.get(`${baseUrl}/blog`, Config)
+    const response = await axios.get(`${baseUrl}/blog`, Config())
     if (response) {
       await dispatch(GetBlogSuccess(response.data))
     }
@@ -67,7 +67,7 @@ export const getBlog = () => async (dispatch) => {
 export const getaBlog = (id) => async (dispatch) => {
   dispatch(GetaBlogRqst())
   try {
-    const response = await axios.get(`${baseUrl}/blog/${id}`, Config)
+    const response = await axios.get(`${baseUrl}/blog/${id}`, Config())
     if (response) {
       await dispatch(GetaBlogSuccess(response.data))
     }
@@ -80,7 +80,7 @@ export const getaBlog = (id) => async (dispatch) => {
 export const likeBlog = (blogId) => async (dispatch) => {
   dispatch(likeBlogRqst())
   try {
-    const response = await axios.put(`${baseUrl}/blog/likes`, { blogId }, Config)
+    const response = await axios.put(`${baseUrl}/blog/likes`, { blogId }, Config())
     if (response) {
       await dispatch(likeBlogSuccess())
     }
@@ -93,7 +93,7 @@ export const likeBlog = (blogId) => async (dispatch) => {
 export const dislikeBlog = (blogId) => async (dispatch) => {
   dispatch(dislikeBlogRqst())
   try {
-    const response = await axios.put(`${baseUrl}/blog/dislikes`, { blogId }, Config)
+    const response = await axios.put(`${baseUrl}/blog/dislikes`, { blogId }, Config())
     if (response) {
       await dispatch(dislikeBlogSuccess())
     }

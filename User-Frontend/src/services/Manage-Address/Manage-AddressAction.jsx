@@ -29,7 +29,7 @@ export const resetAddressState = () => ({
 export const addAddress = (data) => async (dispatch) => {
   dispatch(addAddressRqst())
   try {
-    const response = await axios.post(`${baseUrl}/user/save-address`, data, Config)
+    const response = await axios.post(`${baseUrl}/user/save-address`, data, Config())
     if (response) {
       await dispatch(addAddressSuccess(response))
       setTimeout(() => {
@@ -45,7 +45,7 @@ export const addAddress = (data) => async (dispatch) => {
 export const deleteAddress = (id) => async (dispatch) => {
   dispatch(deleteAddressRqst())
   try {
-    const response = await axios.delete(`${baseUrl}/user/delete-address/${id}`, Config)
+    const response = await axios.delete(`${baseUrl}/user/delete-address/${id}`, Config())
     if (response) {
       await dispatch(deleteAddressSuccess(response))
       setTimeout(() => {

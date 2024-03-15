@@ -33,7 +33,7 @@ export const getCategory = (filter) => async (dispatch) => {
   } else {
     dispatch(getCategoryRqst())
     try {
-      const response = await axios.get(`${baseUrl}/productCategory?category=${filter}`, Config)
+      const response = await axios.get(`${baseUrl}/productCategory?category=${filter}`)
       if (response) {
         await dispatch(getCategorySuccess(response.data))
         setTimeout(() => {
@@ -49,7 +49,7 @@ export const getCategory = (filter) => async (dispatch) => {
 export const getAllCategory = () => async (dispatch) => {
   dispatch(getAllCategoryRqst())
   try {
-    const response = await axios.get(`${baseUrl}/productCategory/`, Config)
+    const response = await axios.get(`${baseUrl}/productCategory/`)
     if (response) {
       await dispatch(getAllCategorySuccess(response.data))
       setTimeout(() => {

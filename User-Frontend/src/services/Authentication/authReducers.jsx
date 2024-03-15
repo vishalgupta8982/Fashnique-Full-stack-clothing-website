@@ -1,6 +1,7 @@
+import Cookies from 'js-cookie';
 const initialState = {
   loading: false,
-  user: localStorage.getItem('User') ? JSON.parse(localStorage.getItem('User')) : null,
+  token:  Cookies.get('token')  ,
   error: null,
   userInformation: null,
   isLoginSuccess: false,
@@ -16,7 +17,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        user: JSON.parse(localStorage.getItem('User')),
+        // token: Cookies.get('token'),
         isLoginSuccess: true,
       }
     case 'USER_LOGIN_FAILURE':

@@ -17,10 +17,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllCategory, getCategory } from '../../services/Category/CategoryActions'
 import { getCart } from '../../services/Cart/CartAction'
 import { Config } from '../../utils/AxiosConfig'
-
+import Cookies from 'js-cookie';
 const Header = () => {
   const location = useLocation()
-  const token = useSelector((state) => state.auth.user)
+  const token = Cookies.get('token');
   const [search, setSearch] = useState('')
   const dispatch = useDispatch()
   useEffect(() => {
@@ -123,7 +123,7 @@ const Header = () => {
                   {hamBurger ? <RxCross1 color='black' /> : <RiMenu2Fill color='black' />}
                 </span>
                 <div className='hidden ml-3 md:block'>
-                  {token !== null && (
+                  {token !== null && token!==undefined && (
                     <div
                       onClick={() => navigate('/userprofile?tab=My Account')}
                       className='flex flex-col items-center cursor-pointer'
@@ -132,7 +132,7 @@ const Header = () => {
                       <p className='iconText'> Profile</p>
                     </div>
                   )}
-                  {!isLoginPage && token === null && (
+                  {!isLoginPage && (token === null || token===undefined) && (
                     <Button navigation={'/login'} title={'Login'} />
                   )}
                 </div>
@@ -146,7 +146,7 @@ const Header = () => {
           } md:items-center  z-[1] md:z-auto md:static   w-full left-0 md:w-auto md:py-0 py-2 md:pl-0 pl-7 md:opacity-100 absolute opacity-0 left-[-400px] transition-all ease-out duration-500`}
         >
           {hamBurger && !isLoginPage && (
-            <div className='flex items-center md:hidden justify-between'>
+            <div className='flex items-center justify-between md:hidden'>
               {!isLoginPage && token === null && (
                 <li className='mx-6 my-4 hamlink md:my-0'>
                   <NavLink to='/login'>Login</NavLink>

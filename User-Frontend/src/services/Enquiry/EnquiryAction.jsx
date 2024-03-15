@@ -20,7 +20,7 @@ export const postEnq = (enquiry) => async (dispatch) => {
   dispatch(postEnqRqst())
   console.log(enquiry)
   try {
-    const response = await axios.post(`${baseUrl}/enquiry/`, enquiry, Config)
+    const response = await axios.post(`${baseUrl}/enquiry/`, enquiry, Config())
     if (response) {
       await dispatch(postEnqSuccess(response.data))
       setTimeout(() => {

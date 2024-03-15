@@ -21,6 +21,7 @@ import logo from '../assets/Images/logo.png'
 import { useDispatch } from 'react-redux'
 import { logout } from '../Services/authentication/authAction'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+ import {config} from './../Utils/axiosConfig'
 const { Header, Sider, Content } = Layout
 const Layouts = () => {
   const dispatch = useDispatch()

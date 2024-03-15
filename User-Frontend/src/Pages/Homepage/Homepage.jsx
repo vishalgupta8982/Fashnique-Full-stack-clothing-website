@@ -14,9 +14,11 @@ import { useEffect } from 'react'
 import { getBlog } from '../../services/Blogs/BlogAction'
 import { getProduct } from '../../services/Products/ProductsActions'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { getCart } from '../../services/Cart/CartAction'
 const Homepage = () => {
   const dispatch = useDispatch()
   useEffect(() => {
+    dispatch(getCart())
     dispatch(getBlog())
     dispatch(getProduct())
   }, [])

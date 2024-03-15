@@ -29,7 +29,7 @@ export const resetOrderState = () => ({
 export const getOrder = () => async (dispatch) => {
   dispatch(getOrderRqst())
   try {
-    const response = await axios.get(`${baseUrl}/user/get-order`, Config)
+    const response = await axios.get(`${baseUrl}/user/get-order`, Config())
     if (response) {
       await dispatch(getOrderSuccess(response.data))
       setTimeout(() => {
@@ -46,7 +46,7 @@ export const getOrder = () => async (dispatch) => {
 export const createOrder = (data) => async (dispatch) => {
   dispatch(createOrderRqst())
   try {
-    const response = await axios.post(`${baseUrl}/user/cart/create-order`, data, Config)
+    const response = await axios.post(`${baseUrl}/user/cart/create-order`, data, Config())
     if (response) {
       await dispatch(createOrderSuccess(response.data))
       setTimeout(() => {

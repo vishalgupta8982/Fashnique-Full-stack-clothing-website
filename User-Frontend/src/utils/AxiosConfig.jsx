@@ -1,8 +1,11 @@
-const getTokenFromLocalStorage = localStorage.getItem('User')
-  ? JSON.parse(localStorage.getItem('User'))
-  : null
-export const Config = {
-  headers: {
-    Authorization: `Bearer ${getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token.token : ''}`,
-  },
-}
+import Cookies from 'js-cookie';
+export const Config = () => {
+  const token = Cookies.get('token');
+  const config = {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',  
+    },
+  };
+
+  return config;
+};

@@ -20,7 +20,7 @@ export const applyCoupan = (coupan) => async (dispatch) => {
   console.log(coupan)
   dispatch(applyCoupanRqst())
   try {
-    const response = await axios.post(`${baseUrl}/user/cart/applyCoupan`, { coupan }, Config)
+    const response = await axios.post(`${baseUrl}/user/cart/applyCoupan`, { coupan }, Config())
     if (response) {
       await dispatch(applyCoupanSuccess(response.data))
     }
