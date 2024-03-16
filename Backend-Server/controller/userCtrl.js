@@ -372,7 +372,8 @@ const applyCoupan = asyncHandler(async (req, res) => {
     ).populate("products.color");
     let cartTotal = 0;
     cart.products.forEach(product => {
-      cartTotal += product.productId.price * product.quantity;
+      let discountedPrice = product.productId.price * (1 - product.productId.discount / 100);
+      cartTotal += discountedPrice * product.quantity;
     });
     let totalAfterDiscount = Math.floor(cartTotal - (cartTotal * validCoupan.discount) / 100);
 
