@@ -452,16 +452,13 @@ const getOrder = asyncHandler(async (req, res) => {
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
+  console.log(status,id)
   validateMongoDbId(id);
-
   try {
     const updateOrder = await Order.findByIdAndUpdate(
       id,
       {
         orderStatus: status,
-        paymentIntent: {
-          status: status,
-        },
       },
       { new: true }
     );

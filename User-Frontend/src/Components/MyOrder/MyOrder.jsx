@@ -33,7 +33,7 @@ function MyOrder() {
                 </div>
                 <p className='flex flex-row items-center'>
                   <FaIndianRupeeSign size={14} />
-                  {product.product.price}
+                  {Math.floor((product.product.price ) - (product.product.price *   product.product.discount / 100))}
                 </p>
                 <p className='orderStatus'>{item.orderStatus}</p>
               </div>

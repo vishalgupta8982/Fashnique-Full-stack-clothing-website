@@ -3,7 +3,7 @@ import { FaRupeeSign } from 'react-icons/fa'
 import { FaArrowTrendUp } from 'react-icons/fa6'
 import { Column } from '@ant-design/plots'
 import { Table } from 'antd'
-import { getOrder } from '../../Services/Orders/OrdersAction'
+import { getOrder, updateOrderStatus } from '../../Services/Orders/OrdersAction'
 import {useSelector,useDispatch} from "react-redux"
 import React,{useEffect,useState} from 'react'
 import { Link } from 'react-router-dom'
@@ -29,6 +29,10 @@ const columns = [
   {
     title: 'Date',
     dataIndex: 'date',
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
   },
 ]
 const Dashboard = () => {
@@ -180,8 +184,30 @@ const Dashboard = () => {
       ),
       amount: ` ₹${item.paymentIntent.amount}`,
       date: new Date(item.createdAt).toLocaleString(),
+      status: (
+        <>
+          <select
+            name=""
+            defaultValue={item.orderStatus}
+            className="outline-none form-control form-select"
+            id=""
+            onChange={(e) => setOrderStatus(e.target.value, item._id)}
+          >
+            <option value="Cash On Delivery">Cash On Delivery</option>
+            <option value="Not Processed">Not Processed</option>
+            <option value="Processing">Processing</option>
+            <option value="Dispatch">Dispatch</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </>
+      ),
     }))
     : []
+  const setOrderStatus = async (status, id) => {
+    await dispatch(updateOrderStatus(status, id))
+    dispatch(getOrder())
+  }
   return (
     <>
       <div className="dashboard">
