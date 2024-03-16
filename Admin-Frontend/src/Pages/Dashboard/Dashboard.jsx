@@ -176,7 +176,7 @@ const Dashboard = () => {
       key: index,
       name: item.orderBy.firstName + ' ' + item.orderBy.lastName,
       product: (
-        <Link to={`/admin/vieworder/${item.orderBy._id}`}>View Orders</Link>
+        <Link to={`/admin/vieworder/${item._id}`}>View Orders</Link>
       ),
       amount: ` ₹${item.paymentIntent.amount}`,
       date: new Date(item.createdAt).toLocaleString(),

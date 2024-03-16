@@ -39,12 +39,14 @@ const orderReducer = (state = initialState, action) => {
         loading: false,
       }
 
-    case 'RESET_CUSTOMER_STATE':
+    case 'RESET_ORDER_STATE':
       return {
         ...state,
         error: null,
         loading: false,
         isSuccess: false,
+        Order: null,
+        OrderByUserId: null,
       }
     default:
       return state

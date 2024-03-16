@@ -4,7 +4,7 @@ import { Table } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { getOrderByUserId } from '../../Services/Orders/OrdersAction'
+import { getOrderByUserId, resetOrdersState } from '../../Services/Orders/OrdersAction'
 const columns = [
   {
     title: 'SNo',
@@ -42,6 +42,7 @@ const ViewOrder = () => {
   const dispatch = useDispatch()
   const userId = location.pathname.split('/')[3]
   useEffect(() => {
+    dispatch(resetOrdersState())
     dispatch(getOrderByUserId(userId))
   }, [])
   const orderState = useSelector((state) => state.order)
