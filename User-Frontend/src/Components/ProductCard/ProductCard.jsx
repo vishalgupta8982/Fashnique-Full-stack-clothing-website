@@ -32,10 +32,15 @@ const ProductCard = ({ data }) => {
               size={20}
               activeColor='#FFA534'
             />
+            <div className='flex flex-row items-center'> 
             <p className=' productCardPrice'>
               <FaIndianRupeeSign size={12} />
-              <span>{data.price}</span>
-            </p>
+              <span>{Math.floor(data.price-data.price*data.discount/100)}</span>
+              </p><p className=' productCardBeforePrice'>
+                <span>{data.price}</span>
+              </p> <p className=' productCardDiscount'>
+                <span>{data.discount}% off</span>
+              </p></div>
           </div>
         </div>
       </div>

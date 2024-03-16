@@ -134,9 +134,14 @@ const ProductDetail = () => {
             <p className='pdStock'>In Stock</p>
           </div>
           <div className='pdProductPrice'>
-            <p className='flex items-center'>
+            <p className='flex items-center mr-[10px]'>
               <FaIndianRupeeSign size={18} />
-              {aProduct.price}
+              {Math.floor(aProduct.price - aProduct.price * aProduct.discount / 100)}
+            </p>
+            <p className='pdBeforePrice'>
+              <span>{aProduct.price}</span>
+            </p> <p className=' pdDiscount'>
+              <span>{aProduct.discount}% off</span>
             </p>
           </div>
           <div className='pdRating'>

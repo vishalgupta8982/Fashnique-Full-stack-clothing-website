@@ -10,13 +10,13 @@ import { Link } from 'react-router-dom'
 import './Layout.css'
 import { RiCouponLine } from 'react-icons/ri'
 import 'react-toastify/dist/ReactToastify.css'
-import { Outlet } from 'react-router-dom'
+import { Outlet, queryParams} from 'react-router-dom'
 import { ImBlog } from 'react-icons/im'
 import { FaClipboardList, FaBloggerB } from 'react-icons/fa'
 import { SiBrandfolder } from 'react-icons/si'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { Layout, Menu } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useLocation } from 'react-router-dom'
 import logo from '../assets/Images/logo.png'
 import { useDispatch } from 'react-redux'
 import { logout } from '../Services/authentication/authAction'
@@ -24,6 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
  import {config} from './../Utils/axiosConfig'
 const { Header, Sider, Content } = Layout
 const Layouts = () => {
+  const location=useLocation()
   const dispatch = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
   const [showDropDown, setShowDropDown] = useState(false)

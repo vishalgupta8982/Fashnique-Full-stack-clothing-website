@@ -81,6 +81,22 @@
   font-size: 20px;
   font-weight: 500;
   margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+.pdBeforePrice,.pdDiscount{
+   display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  align-items: center;
+  color: var(--primary);
+}
+.pdBeforePrice{
+  color: var(--Grey);
+  text-decoration: line-through;
+  margin-right: 10px;
 }
 
 .pdRating {

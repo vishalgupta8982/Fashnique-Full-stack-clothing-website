@@ -47,11 +47,13 @@ const AddCategory = () => {
     }
   }
 
-  const category = () => {
+  const category = async() => {
     if (getCategoryId !== undefined) {
-      dispatch(updateCategory(getCategoryId, editCategory))
+      await dispatch(updateCategory(getCategoryId, editCategory))
+      setEditCategory('')
     } else {
-      dispatch(addCategory(newCategory))
+      await dispatch(addCategory(newCategory))
+      setNewCategory('')
     }
   }
   return (

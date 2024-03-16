@@ -60,10 +60,10 @@
   font-weight: 500;
   cursor: pointer;
 }
-.cartItemName:hover{
+.cartItemName:hover {
   color: var(--primary);
 }
-.cartItemName:active{
+.cartItemName:active {
   color: var(--iconColor);
 }
 .cartItemPrice {
@@ -72,6 +72,20 @@
   flex-direction: row;
   font-size: 16px;
   font-weight: 500;
+  margin-right: 5px;
+}
+.cartBeforePrice,
+.cartDiscount {
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  align-items: center;
+  color: var(--primary);
+}
+.cartBeforePrice {
+  color: var(--Grey);
+  text-decoration: line-through;
+  margin-right: 5px;
 }
 
 .showStock {
@@ -234,30 +248,30 @@
   border-color: var(--iconColor);
   color: var(--iconColor);
 }
-.emptyText{
+.emptyText {
   color: var(--primary);
-   text-align: center;
-   margin-bottom: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
-.emptycartImg{
+.emptycartImg {
   width: 300px;
-align-self: center;
-justify-self: center;
+  align-self: center;
+  justify-self: center;
 }
 .emptyCartImg {
   width: 100%;
   object-fit: contain;
   display: flex;
   align-self: center;
-   flex-direction: column;
-   justify-content: center;
+  flex-direction: column;
+  justify-content: center;
 }
-.invalid,.valid{
+.invalid,
+.valid {
   color: var(--iconColor);
   font-size: 14px;
   font-weight: 500;
-  
 }
-.valid{
-  color: var(--primary)!important;
+.valid {
+  color: var(--primary) !important;
 }

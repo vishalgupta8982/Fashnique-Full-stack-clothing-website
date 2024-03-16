@@ -317,12 +317,13 @@ const getUserCart = asyncHandler(async (req, res) => {
     ).populate("products.color");
     let totalPrice = 0;
     cart.products.forEach(product => {
-      totalPrice += product.productId.price * product.quantity;
+      let discountedPrice = product.productId.price * (1 - product.productId.discount / 100);  
+      totalPrice += discountedPrice * product.quantity;
     });
     cart.products.sort((a, b) => new Date(a.date) - new Date(b.date));
     const cartWithTotalPrice = {
       ...cart.toObject(),
-      totalPrice: totalPrice
+      totalPrice: Math.floor(totalPrice)
     };
     res.json(cartWithTotalPrice);
   } catch (err) {

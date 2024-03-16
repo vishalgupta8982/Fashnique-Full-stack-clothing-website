@@ -365,9 +365,9 @@ const Store = () => {
             </div>
           ) : (
             <div>
-              <div className='grid justify-between grid-cols-2 gap-0 md:grid-cols-4 productSection'>
+              <div className='grid justify-between grid-cols-2 gap-0 md:grid-cols-4 '>
                 {Product?.data?.product?.length > 0 &&
-                  Product.data.product.map((item) => <ProductCard data={item} />)}
+                    Product.data.product.map((item) => (<ProductCard data={item} />))}
               </div>
               <div className='nextPage'>
                 {page > 1 ? (

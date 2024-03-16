@@ -48,11 +48,13 @@ const AddColor = () => {
     }
   }
 
-  const color = () => {
+  const color = async() => {
     if (getColorId !== undefined) {
-      dispatch(updateColor(getColorId, editColor))
+      await dispatch(updateColor(getColorId, editColor))
+      setEditColor('')
     } else {
-      dispatch(addColor(newColor))
+      await dispatch(addColor(newColor))
+      setNewColor('')
     }
   }
   return (

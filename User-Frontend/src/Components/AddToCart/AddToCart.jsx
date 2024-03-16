@@ -93,9 +93,14 @@ const AddToCart = () => {
                       >
                         {item.productId.title} | {item.productId.brand}
                       </p>
+                      <div className='flex flex-row items-center'> 
                       <p className=' cartItemPrice'>
-                        <FaIndianRupeeSign /> {item.productId.price * item.quantity}
-                      </p>
+                        <FaIndianRupeeSign /> {Math.floor((item.productId.price * item.quantity) - (item.productId.price * item.quantity * item.productId.discount/100))}
+                        </p><p className=' cartBeforePrice'>
+                          <span>{item.productId.price}</span>
+                        </p> <p className='cartDiscount'>
+                          <span>{item.productId.discount}% off</span>
+                        </p></div>
                     </div>
                     <p className='showStock'>In Stock</p>
                     <div className='flex flex-row items-center'>
@@ -170,7 +175,7 @@ const AddToCart = () => {
                   <div className='totalContainer'>
                     <p className='subTotal'>Subtotal</p>
                     <p className=' subTotal'>
-                      <FaIndianRupeeSign size={14} /> {Cart.totalPrice}
+                      <FaIndianRupeeSign size={14} />{Cart.totalPrice}
                     </p>
                   </div>
                   <div className='totalContainer'>
