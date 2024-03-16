@@ -11,10 +11,14 @@
     margin-left:  0vw;
     margin-right: 5vw;
  }
+ .swiper-button{
+  cursor: pointer;
+ }
 .swiper-button-prev:hover,
 .swiper-button-next:hover,
 .swiper-button-prev:focus,
 .swiper-button-next:focus {
   color: var(--primary);
+  cursor: pointer;
 }
  

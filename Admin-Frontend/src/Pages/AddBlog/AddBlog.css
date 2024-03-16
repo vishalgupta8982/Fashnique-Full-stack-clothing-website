@@ -27,3 +27,14 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.imgUploadErr{
+  color: var(--iconColor);
+ text-align: center;justify-content: center;
+}
+.imgUploadSuccess{
+  color: var(--primary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;justify-content: center;
+}

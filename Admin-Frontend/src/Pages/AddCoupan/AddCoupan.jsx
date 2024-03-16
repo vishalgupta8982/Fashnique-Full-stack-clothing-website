@@ -62,12 +62,28 @@ const AddCoupan = () => {
     }
   }
 
-  const coupan = () => {
+  const coupan = async() => {
     if (getCoupanId !== undefined) {
-      dispatch(updateCoupan(getCoupanId, editCoupan))
+      await dispatch(updateCoupan(getCoupanId, editCoupan))
+      clearUpdateCoupanField()
     } else {
-      dispatch(addCoupan(newCoupan))
+      await dispatch(addCoupan(newCoupan))
+      clearCoupanField()
     }
+  }
+  const clearCoupanField=()=>{
+    setNewCoupan({
+      name: '',
+      discount: '',
+      expiry: '',
+    })
+  }
+  const clearUpdateCoupanField=()=>{
+    setEditCoupan({
+      name: '',
+      discount: '',
+      expiry: '',
+    })
   }
   return (
     <div className="addCoupan">

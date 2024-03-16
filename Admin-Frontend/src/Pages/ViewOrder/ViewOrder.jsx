@@ -53,7 +53,7 @@ const ViewOrder = () => {
         brand: item.product.brand,
         count: item.count,
         amount: item.product.price,
-        color: item.product.color,
+        color: item.color,
         date: new Date(item.product.createdAt).toLocaleString(),
       }))
     : []

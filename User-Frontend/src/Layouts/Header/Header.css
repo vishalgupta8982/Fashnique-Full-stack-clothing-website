@@ -81,7 +81,6 @@
 }
 .searchField{
    position: absolute;
-   width: 40vw;
    z-index: 5;
    background-color: var(--white);
 }

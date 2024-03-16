@@ -49,10 +49,9 @@ export const getOrderByUserId = (id) => async (dispatch) => {
   dispatch(GetOrdersByUserIdRqst())
   try {
     const response = await axios.get(
-      `${baseUrl}/user/getorderbyuser/${id}`,
+      `${baseUrl}/user/getorderbyorderid/${id}`,
       config,
     )
-
     if (response) {
       await dispatch(GetOrdersByUserIdSuccess(response.data.products))
     }

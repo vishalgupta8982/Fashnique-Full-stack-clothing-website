@@ -27,7 +27,7 @@
 }
 .cardName {
   font-size: 14px;
-  color: var(--lightGrey);
+  color: var(--Grey);
   margin-bottom: 10px;
 }
 .cardAmount {
@@ -40,6 +40,15 @@
 }
 .growth {
   color: var(--primary);
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+  justify-content: flex-end;
+}
+.down{
+   color: var(--iconColor);
   font-size: 14px;
   display: flex;
   flex-direction: row;

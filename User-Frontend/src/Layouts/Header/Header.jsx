@@ -64,7 +64,7 @@ const Header = () => {
             <div ref={divRef} className='md:flex-1 order-3 md:mx-8  md:order-2 flex-[100%]'>
               <div
                 onClick={() => setSearchDiv(true)}
-                className='flex items-center md:my-0 my-2  justify-between w-[90vw]    md:w-[40vw]   searchBox'
+                className='flex items-center md:my-0 mt-2  justify-between w-[90vw]    md:w-[40vw]   searchBox'
               >
                 <div className='p-2 md:p-1 md:px-2 '>
                   <input
@@ -80,7 +80,7 @@ const Header = () => {
                 </span>
               </div>
               {SearchDiv && (
-                <div className='searchField'>
+                <div className='searchField md:[40vw] w-[90vw]'>
                   {searchValue.map((item) => (
                     <p
                       onClick={() => navigate(`store?category=${item.title}`)}
@@ -149,12 +149,12 @@ const Header = () => {
             <div className='flex items-center justify-between md:hidden'>
               {!isLoginPage && token === null && (
                 <li className='mx-6 my-4 hamlink md:my-0'>
-                  <NavLink to='/login'>Login</NavLink>
+                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>Login</NavLink>
                 </li>
               )}
               {token !== null && (
                 <li className='mx-6 my-4 hamlink md:my-0'>
-                  <NavLink to='/login'>Profile</NavLink>
+                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>Profile</NavLink>
                 </li>
               )}
             </div>
@@ -162,7 +162,7 @@ const Header = () => {
           {pages.map((item) => (
             <div className='flex items-center justify-between md:my-5'>
               <li key={item} className='mx-6 my-4 link md:my-0'>
-                <NavLink
+                <NavLink onClick={() => setHamBurger(!hamBurger)}
                   className={`nav-link   ${({ isActive }) => (isActive ? 'active' : 'inactive')}`}
                   to={`${item.route}`}
                 >

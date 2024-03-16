@@ -3,11 +3,16 @@ import { FaRupeeSign } from 'react-icons/fa'
 import { FaArrowTrendUp } from 'react-icons/fa6'
 import { Column } from '@ant-design/plots'
 import { Table } from 'antd'
-
+import { getOrder } from '../../Services/Orders/OrdersAction'
+import {useSelector,useDispatch} from "react-redux"
+import React,{useEffect,useState} from 'react'
+import { Link } from 'react-router-dom'
+import { FaArrowTrendDown } from "react-icons/fa6";
 const columns = [
   {
     title: 'SNo',
     dataIndex: 'key',
+    render: (text, record, index) => index + 1,
   },
   {
     title: 'Name',
@@ -18,19 +23,14 @@ const columns = [
     dataIndex: 'product',
   },
   {
-    title: 'Status',
-    dataIndex: 'staus',
+    title: 'Amount',
+    dataIndex: 'amount',
+  },
+  {
+    title: 'Date',
+    dataIndex: 'date',
   },
 ]
-const data1 = []
-for (let i = 0; i < 26; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    staus: `London, Park Lane no. ${i}`,
-  })
-}
 const Dashboard = () => {
   const data = [
     {
@@ -110,6 +110,78 @@ const Dashboard = () => {
       },
     },
   }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getOrder());
+  }, []);
+
+  const orderState = useSelector((state) => state.order);
+  const { loading, Order } = orderState;
+
+  const [totalSalesThisMonth, setTotalSalesThisMonth] = useState(0);
+  const [totalSales, setTotalSales] = useState(0);
+  const [totalProductsSold, setTotalProductsSold] = useState(0);
+  const [totalSalesLastMonth, setTotalSalesLastMonth] = useState(0);
+  const [salesIncreasePercentage, setSalesIncreasePercentage] = useState(0);
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+    const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const lastYear = lastMonth === 12 ? currentYear - 1 : currentYear;
+
+    let currentMonthSales = 0;
+    let allTotalSales = 0;
+    let productsSoldCount = 0;
+    let lastMonthSales = 0;
+
+    if (Array.isArray(Order)) {
+      Order.forEach(order => {
+        order.products.forEach(product => {
+          allTotalSales += product.product.price * product.count;
+          productsSoldCount += product.count;
+          const orderDate = new Date(order.createdAt);
+          const orderMonth = orderDate.getMonth() + 1;
+          const orderYear = orderDate.getFullYear();
+          if (orderMonth === currentMonth && orderYear === currentYear) {
+            currentMonthSales += product.product.price * product.count;
+          }
+          if (orderMonth === lastMonth && orderYear === lastYear) {
+            lastMonthSales += product.product.price * product.count;
+          }
+        });
+      });
+    }
+
+    const increase = currentMonthSales - lastMonthSales;
+    let percentageIncrease = 0;
+    if (lastMonthSales === 0) {
+      percentageIncrease = 'No Sales Last Month';
+    } else {
+      percentageIncrease = (((currentMonthSales - lastMonthSales) / lastMonthSales) * 100).toFixed(2);
+      if (increase < 0) {
+        percentageIncrease *= -1;
+      }
+    }
+    setTotalSalesThisMonth(currentMonthSales);
+    setTotalSales(allTotalSales);
+    setTotalProductsSold(productsSoldCount);
+    setTotalSalesLastMonth(lastMonthSales);
+    setSalesIncreasePercentage(percentageIncrease);
+  }, [Order]);
+
+  const data1 = Array.isArray(Order)
+    ? Order.map((item, index) => ({
+      key: index,
+      name: item.orderBy.firstName + ' ' + item.orderBy.lastName,
+      product: (
+        <Link to={`/admin/vieworder/${item.orderBy._id}`}>View Orders</Link>
+      ),
+      amount: ` ₹${item.paymentIntent.amount}`,
+      date: new Date(item.createdAt).toLocaleString(),
+    }))
+    : []
   return (
     <>
       <div className="dashboard">
@@ -117,52 +189,56 @@ const Dashboard = () => {
         <div className="dbCard w-[100%] flex md:flex-row flex-col ">
           <div className="dbCard1   w-[100%] md:w-1/3">
             <div>
-              <p className="cardName">Total sells</p>
+              <p className="cardName">Current Month Sells</p>
               <p className="cardAmount ">
                 <FaRupeeSign />
-                3799.00
+               {totalSalesThisMonth}
               </p>
             </div>
 
             <div>
-              <p className="growth">
-                <FaArrowTrendUp />
-                &nbsp;34%
-              </p>
-              <p className="cardName">Compared to April 2022</p>
+              {typeof salesIncreasePercentage === 'number' ? (
+                salesIncreasePercentage > 0 ? (
+                  <p className="growth">
+                    <FaArrowTrendUp />
+                    &nbsp;{salesIncreasePercentage}
+                  </p>
+                ) : (
+                  <p className="down">
+                    <FaArrowTrendDown />
+                    &nbsp;{salesIncreasePercentage}%
+                  </p>
+                )
+              ) : (
+                  <p className="growth">{salesIncreasePercentage}</p>
+              )}
+               
+              <p className="cardName">Compared to Last Month</p>
             </div>
           </div>
           <div className="dbCard2   w-[100%] md:w-1/3">
             <div>
-              <p className="cardName">Average order</p>
+              <p className="cardName">Last Month Sells</p>
               <p className="cardAmount ">
                 <FaRupeeSign />
-                3799.00
+               {totalSalesLastMonth}
               </p>
-            </div>
-            <div>
-              <p className="growth">
-                <FaArrowTrendUp />
-                &nbsp;34%
-              </p>
-              <p className="cardName">Compared to April 2022</p>
             </div>
           </div>
           <div className="dbCard3   w-[100%] md:w-1/3">
             <div>
               {' '}
-              <p className="cardName">Total orders</p>
+              <p className="cardName">Total Sells</p>
               <p className="cardAmount ">
                 <FaRupeeSign />
-                3799.00
+               {totalSales}
               </p>
             </div>
             <div>
+              <p className="cardName">Total Orders</p>
               <p className="growth">
-                <FaArrowTrendUp />
-                &nbsp;34%
+                <FaArrowTrendUp />&nbsp;{totalProductsSold}
               </p>
-              <p className="cardName">Compared to April 2022</p>
             </div>
           </div>
         </div>

@@ -75,11 +75,6 @@ const BlogDetail = () => {
               <BiCategory size={16} />
               &nbsp; {aBlog?.category}
             </p>{' '}
-            {/* <span className="borderBetween">|</span>
-              <p className=" blogDetailName">
-                <FaRegEye size={16} />
-                &nbsp; {aBlog?.numViews}&nbsp;Views
-              </p>{" "} */}
           </div>
           <div className=' blogDetailNameAndDate'>
             <div>

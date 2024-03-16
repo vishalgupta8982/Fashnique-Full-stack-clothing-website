@@ -47,12 +47,20 @@ const AddBrand = () => {
     }
   }
 
-  const Brand = () => {
+  const Brand = async() => {
     if (getBrandId !== undefined) {
-      dispatch(updateBrand(getBrandId, editBrand))
+      await dispatch(updateBrand(getBrandId, editBrand))
+      clearEditBrand()
     } else {
-      dispatch(addBrand(newBrand))
+      await dispatch(addBrand(newBrand))
+      clearNewBrand()
     }
+  }
+  const clearEditBrand=()=>{
+    setEditBrand('')
+  }
+  const clearNewBrand=()=>{
+    setNewBrand('')
   }
   return (
     <div className="addBrand">

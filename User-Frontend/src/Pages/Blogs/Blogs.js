@@ -13,7 +13,7 @@ const Blogs = () => {
   const { isSuccess, loading, Blog } = blog
   return (
     <>
-      <div className='grid justify-between grid-cols-2 gap-0 md:grid-cols-5 min-h-[53vh] '>
+      <div className='grid justify-between grid-cols-2 mx-1 gap-x-1 md:gap-x-2   md:grid-cols-5 min-h-[50vh] md:mt-2'>
         {loading && (
           <div className='loader'>
             <ClipLoader

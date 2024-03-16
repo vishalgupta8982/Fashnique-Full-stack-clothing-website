@@ -4,7 +4,6 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Button from '../../Components/Button/Button'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { message, Upload } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCategory } from '../../Services/Category/CategoryAction'
 import { getColor } from '../../Services/Color/ColorAction'
@@ -103,7 +102,6 @@ const AddProduct = () => {
       })
     }
   }, [aProduct, getProductId])
-  console.log(editProductDetail)
   const colorOpt = []
   if (colorList) {
     colorList.forEach((i) => {

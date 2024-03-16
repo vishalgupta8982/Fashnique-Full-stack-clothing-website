@@ -492,6 +492,18 @@ const getOrderByUserId = asyncHandler(async (req, res) => {
     throw new Error(err);
   }
 });
+const getOrderByOrderId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const userOrder = await Order.findOne({ _id: id }).populate(
+      "products.product"
+    );
+    res.json(userOrder);
+  } catch (err) {
+    throw new Error(err);
+  }
+});
 
 module.exports = {
   createUser,
@@ -519,4 +531,5 @@ module.exports = {
   getAllOrder,
   getOrderByUserId,
   getaUserDetail,
+  getOrderByOrderId
 };

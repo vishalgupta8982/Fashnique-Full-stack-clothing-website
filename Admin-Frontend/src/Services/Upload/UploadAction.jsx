@@ -38,7 +38,6 @@ export const uploadImage = (images) => async (dispatch) => {
   for (let i = 0; i < images.length; i++) {
     formData.append(`images`, images[i])
   }
-
   console.log(formData)
   try {
     const response = await axios.post(

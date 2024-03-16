@@ -7,7 +7,7 @@ const BlogCard = ({ data }) => {
   return (
     <>
       <div onClick={() => navigate(`/blogDetail/${data._id}`)} className=' blogCard'>
-        <div className='cards '>
+        <div className='blogCards md:mb-2 mb-1  md:hover:duration-[0.3s] md:hover:translate-y-[-3px] md:hover:scale-[1.01]'>
           <img
             src={
               data.images[0]?.url ||
@@ -18,15 +18,10 @@ const BlogCard = ({ data }) => {
           />
           <div className=' blogCardContent'>
             <p className='blogDate'>{moment(data.createdAt).format('DD MMM YYYY')}</p>
-            <p className='blogHead'>{data.title.slice(0, 20)}</p>
-            <p className='blogContent'>
-              {data.description
-                .replace(/<[^>]+>/g, '')
-                .split(' ')
-                .slice(0, 15)
-                .join(' ')}
-              {data.description.replace(/<[^>]+>/g, '').split(' ').length > 4 ? '...' : ''}
+            <p className='blogHead'>{data.title.slice(0, 16)}...</p>
+            <p className='blogContent' dangerouslySetInnerHTML={{ __html: data?.description ? `${data.description.slice(0, 35)}...` : '' }}>
             </p>
+
           </div>
           <Button widthButton={'100px'} title='Read More' />
         </div>

@@ -34,13 +34,14 @@ const Customer = () => {
   const { loading, Customer } = customerList
   console.log(Customer)
   const data1 = Array.isArray(Customer)
-    ? Customer.map((item, index) => ({
-        key: index,
-        name: item.firstName + ' ' + item.lastName,
-        email: item.email,
-        mobile: item.mobile,
-      }))
-    : []
+    ? Customer.filter(item => item.role === "user").map((item, index) => ({
+      key: index,
+      name: item.firstName + ' ' + item.lastName,
+      email: item.email,
+      mobile: item.mobile,
+    }))
+    : [];
+
 
   return (
     <>

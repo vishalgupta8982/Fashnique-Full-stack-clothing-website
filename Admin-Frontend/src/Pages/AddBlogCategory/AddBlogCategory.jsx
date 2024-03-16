@@ -53,18 +53,25 @@ const AddBlogCategory = () => {
     }
   }
 
-  const BlogCat = () => {
+  const BlogCat = async() => {
     if (getBlogCatId !== undefined) {
-      dispatch(updateBlogCat(getBlogCatId, editBlogCategory))
+      await dispatch(updateBlogCat(getBlogCatId, editBlogCategory))
+      clearEditBlogCategory()
     } else {
       if (newBlogCategory.length < 1) {
         toast.error('This Field is required')
       } else {
-        dispatch(addBlogCat(newBlogCategory))
+        await dispatch(addBlogCat(newBlogCategory))
+        clearNewBlogCategory()
       }
     }
   }
-
+const clearNewBlogCategory=()=>{
+  setNewBlogCategory('')
+}
+const clearEditBlogCategory=()=>{
+  setEditBlogCategory('')
+}
   return (
     <div className="addBlogCat">
       {loading && (
