@@ -101,8 +101,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
     const product = products.filter(product => {
       // Calculate discounted price
       const discountedPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
-      const gte = parseFloat(queryObj.price.gte || 0);
-      const lte = parseFloat(queryObj.price.lte || Infinity);
+      const gte = parseFloat(queryObj?.price?.gte || 0);
+      const lte = parseFloat(queryObj?.price?.lte || Infinity);
       return discountedPrice >= gte && discountedPrice <= lte;
     });
     res.json({

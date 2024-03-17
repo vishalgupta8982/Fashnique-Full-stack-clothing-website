@@ -144,6 +144,7 @@ const Store = () => {
     setToPrice(newValue)
     updateURL({ toPrice: newValue })
   }
+  console.log(Product)
   return (
     <>
       <div
