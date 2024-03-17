@@ -98,7 +98,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
     
     const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
     const totalPages = Math.ceil(totalProducts / limit);
-    const product = product.filter(product => {
+    const product = products.filter(product => {
       // Calculate discounted price
       const discountedPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
       const gte = parseFloat(queryObj.price.gte || 0);
