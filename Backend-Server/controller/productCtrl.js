@@ -63,7 +63,6 @@ const getAllProduct = asyncHandler(async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     let query = Product.find(JSON.parse(queryStr));
-
     // Add color filtering
     if (req.query.color) {
       const decodedColors = decodeURIComponent(req.query.color).split(',').map(color => color.trim()); // Decode and split colors
@@ -77,7 +76,6 @@ const getAllProduct = asyncHandler(async (req, res) => {
     } else {
       query = query.sort('-createdAt');
     }
-
     // Limiting the fields
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
@@ -85,7 +83,6 @@ const getAllProduct = asyncHandler(async (req, res) => {
     } else {
       query = query.select('-__v');
     }
-
     // Pagination
     const page = parseInt(req.query.page) || 1; // Parse page to integer, default to 1 if not provided
     const limit = parseInt(req.query.limit) || 10; // Parse limit to integer, default to 10 if not provided
@@ -98,12 +95,19 @@ const getAllProduct = asyncHandler(async (req, res) => {
     }
 
     const product = await query;
+    
     const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
     const totalPages = Math.ceil(totalProducts / limit);
-
+    const filteredProducts = product.filter(product => {
+      // Calculate discounted price
+      const discountedPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
+      const gte = parseFloat(queryObj.price.gte || 0);
+      const lte = parseFloat(queryObj.price.lte || Infinity);
+      return discountedPrice >= gte && discountedPrice <= lte;
+    });
     res.json({
       data: {
-        product,
+        filteredProducts,
         totalPages,
       }
     });

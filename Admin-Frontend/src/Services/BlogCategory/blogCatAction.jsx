@@ -78,7 +78,7 @@ export const addBlogCat = (title) => async (dispatch) => {
     const response = await axios.post(
       `${baseUrl}/blogCategory`,
       { title },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(AddBlogCategorySuccess(response.data))
@@ -116,7 +116,7 @@ export const deleteBlogCat = (id) => async (dispatch) => {
   dispatch(DeleteBlogCategoryRqst())
   console.log(id)
   try {
-    const response = await axios.delete(`${baseUrl}/blogCategory/${id}`, config)
+    const response = await axios.delete(`${baseUrl}/blogCategory/${id}`, config())
     if (response) {
       await dispatch(DeleteBlogCategorySuccess(response.data))
       setTimeout(() => {
@@ -135,7 +135,7 @@ export const deleteBlogCat = (id) => async (dispatch) => {
 export const getaBlogCat = (id) => async (dispatch) => {
   dispatch(GetaBlogCategoryRqst())
   try {
-    const response = await axios.get(`${baseUrl}/blogCategory/${id}`, config)
+    const response = await axios.get(`${baseUrl}/blogCategory/${id}`, config())
     if (response) {
       await dispatch(GetaBlogCategorySuccess(response.data))
       setTimeout(() => {
@@ -154,7 +154,7 @@ export const updateBlogCat = (id, title) => async (dispatch) => {
     const response = await axios.put(
       `${baseUrl}/blogCategory/${id}`,
       { title },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(updateBlogCategorySuccess(response.data))

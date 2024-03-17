@@ -16,20 +16,25 @@ import { pages } from '../../assets/ImportantData/pagesNameAndPath'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllCategory, getCategory } from '../../services/Category/CategoryActions'
 import { getCart } from '../../services/Cart/CartAction'
-import { Config } from '../../utils/AxiosConfig'
+import debounce from 'lodash.debounce'
 import Cookies from 'js-cookie';
 const Header = () => {
   const location = useLocation()
-  const token = Cookies.get('token');
+  const token = Cookies.get('fashioniqueUserToken');
   const [search, setSearch] = useState('')
   const dispatch = useDispatch()
+  
   useEffect(() => {
     dispatch(getAllCategory())
     dispatch(getCart())
   }, [dispatch])
+  const debouncedDispatch = debounce((value) => {
+    dispatch(getCategory(value));
+  }, 200);
   useEffect(() => {
-    dispatch(getCategory(search))
-  }, [search])
+    debouncedDispatch(search);
+    return () => debouncedDispatch.cancel();
+  }, [search, debouncedDispatch, dispatch]);
   const category = useSelector((state) => state.category.allCategory)
   const cart = useSelector((state) => state.cart.Cart)
   const searchValue = useSelector((state) => state.category.Category)
@@ -80,8 +85,8 @@ const Header = () => {
                 </span>
               </div>
               {SearchDiv && (
-                <div className='searchField md:[40vw] w-[90vw]'>
-                  {searchValue.map((item) => (
+                <div className='searchField    md:w-[40vw] w-[90vw]'>
+                  {searchValue.slice(0,10).map((item) => (
                     <p
                       onClick={() => navigate(`store?category=${item.title}`)}
                       className='searchValue'
@@ -108,7 +113,7 @@ const Header = () => {
                 >
                   <div className='relative inline-flex mx-3'>
                     <FiShoppingCart className='text-2xl headIcon md:text-2xl' />
-                    {cart?.products?.length > 0 && (
+                    {cart?.products?.length > 0 && token && (
                       <p className="absolute min-w-[12px] min-h-[12px]  rounded-full  p-1 text-xs font-medium content-[''] leading-none grid place-items-center top-[4%] right-[2%] translate-x-2/4 -translate-y-2/4  bg-[#FF6008] text-[#fff]">
                         {cart.products.length}
                       </p>
@@ -197,7 +202,7 @@ const Header = () => {
                     }}
                     className='mx-4 md:border-b-[1px] md:border-r-[1px] p-1 md:p-3 border-[#514f4f]   categoryName md:mx-0'
                   >
-                    {item.title}
+                    {item.title.slice(0,12)}
                   </p>
                 ))}
               </div>

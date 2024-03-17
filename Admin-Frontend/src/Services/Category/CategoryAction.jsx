@@ -79,7 +79,7 @@ export const addCategory = (title) => async (dispatch) => {
     const response = await axios.post(
       `${baseUrl}/productCategory`,
       { title },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(AddCategorySuccess(response.data))
@@ -114,7 +114,7 @@ export const deleteCategory = (id) => async (dispatch) => {
   try {
     const response = await axios.delete(
       `${baseUrl}/productCategory/${id}`,
-      config,
+      config(),
     )
     if (response) {
       await dispatch(DeleteCategorySuccess(response.data))
@@ -134,7 +134,7 @@ export const deleteCategory = (id) => async (dispatch) => {
 export const getaCategory = (id) => async (dispatch) => {
   dispatch(GetaCategoryRqst())
   try {
-    const response = await axios.get(`${baseUrl}/productCategory/${id}`, config)
+    const response = await axios.get(`${baseUrl}/productCategory/${id}`, config())
     if (response) {
       await dispatch(GetaCategorySuccess(response.data))
     }
@@ -150,7 +150,7 @@ export const updateCategory = (id, title) => async (dispatch) => {
     const response = await axios.put(
       `${baseUrl}/productCategory/${id}`,
       { title },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(updateCategorySuccess(response.data))

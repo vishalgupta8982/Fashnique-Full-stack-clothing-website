@@ -74,7 +74,7 @@ export const resetCoupanState = () => ({
 export const addCoupan = (coupan) => async (dispatch) => {
   dispatch(AddCoupanRqst())
   try {
-    const response = await axios.post(`${baseUrl}/coupan`, coupan, config)
+    const response = await axios.post(`${baseUrl}/coupan`, coupan, config())
     if (response) {
       await dispatch(AddCoupanSuccess(response.data))
       setTimeout(() => {
@@ -92,10 +92,10 @@ export const addCoupan = (coupan) => async (dispatch) => {
 }
 
 export const getCoupan = () => async (dispatch) => {
-  console.log(config)
+  console.log(config())
   dispatch(GetCoupanRqst())
   try {
-    const response = await axios.get(`${baseUrl}/coupan`, config)
+    const response = await axios.get(`${baseUrl}/coupan`, config())
     console.log(response)
     if (response) {
       await dispatch(GetCoupanSuccess(response.data))
@@ -109,7 +109,7 @@ export const getCoupan = () => async (dispatch) => {
 export const deleteCoupan = (id) => async (dispatch) => {
   dispatch(DeleteCoupanRqst())
   try {
-    const response = await axios.delete(`${baseUrl}/coupan/${id}`, config)
+    const response = await axios.delete(`${baseUrl}/coupan/${id}`, config())
     if (response) {
       await dispatch(DeleteCoupanSuccess(response.data))
       setTimeout(() => {
@@ -128,7 +128,7 @@ export const deleteCoupan = (id) => async (dispatch) => {
 export const getaCoupan = (id) => async (dispatch) => {
   dispatch(GetaCoupanRqst())
   try {
-    const response = await axios.get(`${baseUrl}/coupan/${id}`, config)
+    const response = await axios.get(`${baseUrl}/coupan/${id}`, config())
     if (response) {
       await dispatch(GetaCoupanSuccess(response.data))
     }
@@ -141,7 +141,7 @@ export const getaCoupan = (id) => async (dispatch) => {
 export const updateCoupan = (id, coupan) => async (dispatch) => {
   dispatch(updateCoupanRqst())
   try {
-    const response = await axios.put(`${baseUrl}/coupan/${id}`, coupan, config)
+    const response = await axios.put(`${baseUrl}/coupan/${id}`, coupan, config())
     if (response) {
       await dispatch(updateCoupanSuccess(response.data))
       setTimeout(() => {

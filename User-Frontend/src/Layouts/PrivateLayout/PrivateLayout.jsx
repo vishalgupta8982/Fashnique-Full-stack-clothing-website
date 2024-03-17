@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom"
 const PrivateLayout = ({ children }) => {
     const navigate=useNavigate()
     useEffect(() => {
-        const token = Cookies.get('token');
+        const token = Cookies.get('fashioniqueUserToken');
         if (!token ) {
             navigate('/login')
         } 

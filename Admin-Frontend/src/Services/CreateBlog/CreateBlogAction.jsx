@@ -72,7 +72,7 @@ export const resetBlogState = () => ({
 export const addBlog = (blog) => async (dispatch) => {
   dispatch(AddBlogRqst())
   try {
-    const response = await axios.post(`${baseUrl}/blog/`, blog, config)
+    const response = await axios.post(`${baseUrl}/blog/`, blog, config())
     if (response) {
       await dispatch(AddBlogSuccess(response.data))
       setTimeout(() => {
@@ -90,9 +90,10 @@ export const addBlog = (blog) => async (dispatch) => {
 }
 
 export const getBlog = () => async (dispatch) => {
+  console.log(config())
   dispatch(GetBlogRqst())
   try {
-    const response = await axios.get(`${baseUrl}/blog`, config)
+    const response = await axios.get(`${baseUrl}/blog`, config())
     if (response) {
       await dispatch(GetBlogSuccess(response.data))
     }
@@ -105,7 +106,7 @@ export const getBlog = () => async (dispatch) => {
 export const deleteBlog = (id) => async (dispatch) => {
   dispatch(DeleteBlogRqst())
   try {
-    const response = await axios.delete(`${baseUrl}/blog/${id}`, config)
+    const response = await axios.delete(`${baseUrl}/blog/${id}`, config())
     if (response) {
       await dispatch(DeleteBlogSuccess(response.data))
       setTimeout(() => {
@@ -124,7 +125,7 @@ export const deleteBlog = (id) => async (dispatch) => {
 export const getaBlog = (id) => async (dispatch) => {
   dispatch(GetaBlogRqst())
   try {
-    const response = await axios.get(`${baseUrl}/blog/${id}`, config)
+    const response = await axios.get(`${baseUrl}/blog/${id}`, config())
     if (response) {
       await dispatch(GetaBlogSuccess(response.data))
     }
@@ -137,7 +138,7 @@ export const getaBlog = (id) => async (dispatch) => {
 export const updateBlog = (id, blog) => async (dispatch) => {
   dispatch(updateBlogRqst())
   try {
-    const response = await axios.put(`${baseUrl}/blog/${id}`, blog, config)
+    const response = await axios.put(`${baseUrl}/blog/${id}`, blog, config())
     if (response) {
       await dispatch(updateBlogSuccess(response.data))
       setTimeout(() => {

@@ -43,7 +43,7 @@ export const uploadImage = (images) => async (dispatch) => {
     const response = await axios.post(
       `${baseUrl}/product/upload`,
       formData,
-      config,
+      config(),
     )
     if (response) {
       console.log(response.data)
@@ -61,7 +61,7 @@ export const deleteImage = (id) => async (dispatch) => {
   try {
     const response = await axios.delete(
       `${baseUrl}/product/deleteImages/${id}`,
-      config,
+      config(),
     )
 
     if (response) {

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { getCustomer } from '../../Services/Customer/CustomerAction'
+import { blockUser, unblockUser } from '../../Services/User/UserAction'
 const columns = [
   {
     title: 'SNo',
@@ -41,7 +42,14 @@ const Customer = () => {
       mobile: item.mobile,
     }))
     : [];
-
+const handleBlockUnblock=(id,e)=>{
+  if (e ==="unblock"){
+    dispatch(unblockUser(id))
+  }
+  else if (e === "block") {
+    dispatch(blockUser(id))
+  } 
+}
 
   return (
     <>

@@ -53,7 +53,7 @@ const ViewOrder = () => {
         name: item.product.title,
         brand: item.product.brand,
         count: item.count,
-        amount: item.product.price,
+        amount: Math.floor(item.product.price-item.product.price*item.product.discount/100),
         color: item.color,
         date: new Date(item.product.createdAt).toLocaleString(),
       }))

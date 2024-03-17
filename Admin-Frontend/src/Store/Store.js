@@ -13,6 +13,7 @@ import enquiryReducer from '../Services/Enquiries/EnquiriesReducer'
 import productReducer from '../Services/CreateProduct/CreateProductReducer'
 import uploadReducer from '../Services/Upload/UploadReducer'
 import blogReducer from '../Services/CreateBlog/CreateBlogReducer'
+import userReducer from '../Services/User/UserReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   product: productReducer,
   blog: blogReducer,
   upload: uploadReducer,
+  user:userReducer
 })
 
 export const store = createStore(

@@ -9,6 +9,12 @@
   font-weight: 500;
   background-color: var(--white);
   padding: 10px;
-
   margin-bottom: 10px;
+}
+.blockText{
+  color: var(--iconColor);
+  cursor: pointer;
+}
+.unblockText{
+  color: var(--primary);
 }

@@ -75,7 +75,7 @@ export const resetBrandState = () => ({
 export const addBrand = (title) => async (dispatch) => {
   dispatch(AddBrandRqst())
   try {
-    const response = await axios.post(`${baseUrl}/brand`, { title }, config)
+    const response = await axios.post(`${baseUrl}/brand`, { title }, config())
     if (response) {
       await dispatch(AddBrandSuccess(response.data))
       setTimeout(() => {
@@ -105,7 +105,7 @@ export const getBrand = () => async (dispatch) => {
 export const deleteBrand = (id) => async (dispatch) => {
   dispatch(delteBrandRqst())
   try {
-    const response = await axios.delete(`${baseUrl}/brand/${id}`, config)
+    const response = await axios.delete(`${baseUrl}/brand/${id}`, config())
     if (response) {
       await dispatch(delteBrandSuccess(response.data))
       setTimeout(() => {
@@ -119,10 +119,10 @@ export const deleteBrand = (id) => async (dispatch) => {
 }
 
 export const getaBrand = (id) => async (dispatch) => {
-  console.log(config)
+  console.log(config())
   dispatch(GetABrandRqst())
   try {
-    const response = await axios.get(`${baseUrl}/brand/${id}`, config)
+    const response = await axios.get(`${baseUrl}/brand/${id}`, config())
     if (response) {
       await dispatch(GetABrandSuccess(response.data))
     }
@@ -138,7 +138,7 @@ export const updateBrand = (id, title) => async (dispatch) => {
     const response = await axios.put(
       `${baseUrl}/brand/${id}`,
       { title },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(updateBrandSuccess(response.data))

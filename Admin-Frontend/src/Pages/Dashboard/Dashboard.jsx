@@ -143,16 +143,16 @@ const Dashboard = () => {
     if (Array.isArray(Order)) {
       Order.forEach(order => {
         order.products.forEach(product => {
-          allTotalSales += product.product.price * product.count;
+          allTotalSales += Math.floor((product.product.price * product.count) - product.product.price * product.count*product.product.discount/100);
           productsSoldCount += product.count;
           const orderDate = new Date(order.createdAt);
           const orderMonth = orderDate.getMonth() + 1;
           const orderYear = orderDate.getFullYear();
           if (orderMonth === currentMonth && orderYear === currentYear) {
-            currentMonthSales += product.product.price * product.count;
+            currentMonthSales += Math.floor((product.product.price * product.count) - product.product.price * product.count * product.product.discount / 100);
           }
           if (orderMonth === lastMonth && orderYear === lastYear) {
-            lastMonthSales += product.product.price * product.count;
+            lastMonthSales += Math.floor((product.product.price * product.count) - product.product.price * product.count * product.product.discount / 100);
           }
         });
       });

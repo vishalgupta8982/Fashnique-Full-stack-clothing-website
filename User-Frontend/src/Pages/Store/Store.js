@@ -8,6 +8,7 @@ import { FaIndianRupeeSign } from 'react-icons/fa6'
 import { basisSortProduct } from '../../assets/ImportantData/SortBasis'
 import { RiArrowDropLeftLine } from 'react-icons/ri'
 import { ratingsFilter, Discount } from '../../assets/ImportantData/filterCategory'
+import debounce from 'lodash.debounce'
 import { CgChevronDown } from 'react-icons/cg'
 import { CgChevronUp } from 'react-icons/cg'
 import { IoIosStar } from 'react-icons/io'
@@ -118,10 +119,19 @@ const Store = () => {
 
     navigate({ search: queryParams.toString() })
   }
-  useEffect(() => {
-    dispatch(getProduct(queryParams.toString()))
+  // useEffect(() => {
+  //   dispatch(getProduct(queryParams.toString()))
+  //   dispatch(getColor())
+  // }, [queryParams.toString()])
+  const debouncedDispatch = debounce((value) => {
+    dispatch(getProduct(value))
     dispatch(getColor())
-  }, [queryParams.toString()])
+  }, 200);
+  useEffect(() => {
+    debouncedDispatch(queryParams.toString());
+    return () => debouncedDispatch.cancel();
+  }, [queryParams.toString()]);
+   
   //this function is for handleFromPriceChange
   const handleFromPriceChange = (e) => {
     const newValue = e.target.value

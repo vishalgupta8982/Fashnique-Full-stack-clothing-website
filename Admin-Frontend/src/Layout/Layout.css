@@ -125,3 +125,14 @@ li {
 .dropdown-item:hover {
   color: var(--primary);
 }
+.expired{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  height: 100vh;
+}
+.expiredImg{
+  width: 300px;
+}

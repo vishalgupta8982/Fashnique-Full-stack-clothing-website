@@ -62,7 +62,7 @@ export const getOrderByUserId = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
       `${baseUrl}/user/getorderbyorderid/${id}`,
-      config,
+      config(),
     )
     if (response) {
       await dispatch(GetOrdersByUserIdSuccess(response.data.products))
@@ -76,7 +76,7 @@ export const getOrderByUserId = (id) => async (dispatch) => {
 export const updateOrderStatus = (status,id) => async (dispatch) => {
   dispatch(UpdateOrdersRqst())
   try {
-    const response = await axios.put(`${baseUrl}/user/order/update-order/${id}`,{status},config)
+    const response = await axios.put(`${baseUrl}/user/order/update-order/${id}`,{status},config())
 console.log(response)
     if (response) {
       await dispatch(UpdateOrdersSuccess(response.data))

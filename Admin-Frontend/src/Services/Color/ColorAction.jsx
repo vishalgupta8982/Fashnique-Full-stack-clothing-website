@@ -75,7 +75,7 @@ export const resetColorState = () => ({
 export const addColor = (title) => async (dispatch) => {
   dispatch(AddColorRqst())
   try {
-    const response = await axios.post(`${baseUrl}/color`, { title }, config)
+    const response = await axios.post(`${baseUrl}/color`, { title }, config())
     if (response) {
       await dispatch(AddColorSuccess(response.data))
       setTimeout(() => {
@@ -108,7 +108,7 @@ export const deleteColor = (id) => async (dispatch) => {
   dispatch(DeleteColorRqst())
   console.log(id)
   try {
-    const response = await axios.delete(`${baseUrl}/color/${id}`, config)
+    const response = await axios.delete(`${baseUrl}/color/${id}`, config())
     if (response) {
       await dispatch(DeleteColorSuccess(response.data))
       setTimeout(() => {
@@ -127,7 +127,7 @@ export const deleteColor = (id) => async (dispatch) => {
 export const getaColor = (id) => async (dispatch) => {
   dispatch(GetaColorRqst())
   try {
-    const response = await axios.get(`${baseUrl}/color/${id}`, config)
+    const response = await axios.get(`${baseUrl}/color/${id}`, config())
 
     if (response) {
       await dispatch(GetaColorSuccess(response.data))
@@ -144,7 +144,7 @@ export const updateColor = (id, title) => async (dispatch) => {
     const response = await axios.put(
       `${baseUrl}/color/${id}`,
       { title },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(updateColorSuccess(response.data))

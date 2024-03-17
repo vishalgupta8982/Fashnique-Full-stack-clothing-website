@@ -11,7 +11,7 @@ function MyOrder() {
     dispatch(getOrder())
   }, [])
   const orderState = useSelector((state) => state.order)
-  const {  Order } = orderState
+  const { Order } = orderState
   return (
     <div className='myOrderBox'>
       {Order &&
@@ -20,7 +20,7 @@ function MyOrder() {
             <div className='orderBox'>
               <img className='myOrderImage' src={product.product?.images[0]?.url} alt='' />
               <div className='orderProductDetail'>
-                <div className='w-[35%]'>
+                <div className='w-[40%]'>
                   <p
                     onClick={() => navigate(`/order-detail/${item._id}-${product._id}`)}
                     className='orderProductName '
@@ -28,18 +28,25 @@ function MyOrder() {
                     {product.product?.brand} {product.product?.title}{' '}
                   </p>
                   <p className='orderProductColor'>
-                    Color:{product.color?.split('-')[0]}&nbsp;&nbsp;Size:{product.size}{' '}
+                    Color:{product.color?.split('-')[0]}&nbsp;&nbsp;Size:{product.size}&nbsp;&nbsp;Quantity:{product.count}{' '}
                   </p>
                 </div>
-                <p className='flex flex-row items-center'>
+                <p className='flex flex-row items-center text-center w-[20%] justify-center'>
                   <FaIndianRupeeSign size={14} />
-                  {Math.floor((product.product.price ) - (product.product.price *   product.product.discount / 100))}
+                  {Math.floor((product.product.price*product.count) - (product.product.price *product.count* product.product.discount / 100))}
                 </p>
-                <p className='orderStatus'>{item.orderStatus}</p>
+                {item.orderStatus === "Cancelled" ? (<p className='orderStatusCancel'>{item.orderStatus}</p>) : (<p className='orderStatus'>{item.orderStatus}</p>)}
               </div>
             </div>
           )),
         )}
+      {Order.length<1  && (
+        <div className='notOrderImgCont'>
+          <img className='notOrderImg' src='https://myntraweb.blob.core.windows.net/selfserveui/assets/images/cards@3x.png' alt='firstOrder' />
+          <p className='noOrderText'>You haven't placed any order yet!
+          </p>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { baseUrl } from '../../Utils/baseUrl'
 import axios from 'axios'
-
+import Cookies from 'js-cookie';
 export const AdminLoginRequest = () => ({
   type: 'ADMIN_LOGIN_REQUEST',
 })
@@ -38,7 +38,9 @@ export const adminLogin = (credential) => async (dispatch) => {
     const response = await axios.post(`${baseUrl}/user/admin-login`, credential)
     if (response) {
       dispatch(AdminLoginSuccess(response.data))
-      localStorage.setItem('User', JSON.stringify(response.data))
+      Cookies.set('fashniqueAdminToken', response.data.token.token, { expires: 1, secure: true });
+      localStorage.setItem('name', response.data.firstName+" "+response.data.lastName)
+      localStorage.setItem('email',response.data.email)
     }
     console.log(response.data)
   } catch (err) {

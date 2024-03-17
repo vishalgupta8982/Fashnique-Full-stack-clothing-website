@@ -58,7 +58,7 @@ export const getEnquiry = () => async (dispatch) => {
 export const deleteEnquiry = (id) => async (dispatch) => {
   dispatch(deleteEnquiryRqst())
   try {
-    const response = await axios.delete(`${baseUrl}/enquiry/${id}`, config)
+    const response = await axios.delete(`${baseUrl}/enquiry/${id}`, config())
     if (response) {
       await dispatch(deleteEnquirySuccess())
       setTimeout(() => {
@@ -80,7 +80,7 @@ export const updateEnquiry = (enquiry) => async (dispatch) => {
     const response = await axios.put(
       `${baseUrl}/enquiry/${enquiry.id}`,
       { status: enquiry.enqData },
-      config,
+      config(),
     )
     if (response) {
       await dispatch(UpdateEnquirySuccess(response.data))

@@ -77,9 +77,8 @@ export const userLogin = (credential) => async (dispatch) => {
   try {
     const response = await axios.post(`${baseUrl}/user/login`, credential)
     if (response) {
-      // localStorage.setItem('User', JSON.stringify(response.data))
       dispatch(UserLoginSuccess(response.data))
-      Cookies.set('token', response.data.token.token, { expires: 7, secure: true });
+      Cookies.set('fashioniqueUserToken', response.data.token.token, { expires: 1, secure: true });
       setTimeout(() => {
         dispatch(resetUserDetail())
       }, 1000)
