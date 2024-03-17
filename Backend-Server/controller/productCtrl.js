@@ -94,11 +94,11 @@ const getAllProduct = asyncHandler(async (req, res) => {
       if (skip >= productCount) throw new Error("This page does not exist");
     }
 
-    const product = await query;
+    const products = await query;
     
     const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
     const totalPages = Math.ceil(totalProducts / limit);
-    const filteredProducts = product.filter(product => {
+    const product = product.filter(product => {
       // Calculate discounted price
       const discountedPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
       const gte = parseFloat(queryObj.price.gte || 0);
@@ -107,7 +107,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
     });
     res.json({
       data: {
-        filteredProducts,
+        product,
         totalPages,
       }
     });
