@@ -19,9 +19,12 @@ const BlogCard = ({ data }) => {
           <div className=' blogCardContent'>
             <p className='blogDate'>{moment(data.createdAt).format('DD MMM YYYY')}</p>
             <p className='blogHead'>{data.title.slice(0, 16)}...</p>
-            <p className='blogContent' dangerouslySetInnerHTML={{ __html: data?.description ? `${data.description.slice(0, 35)}...` : '' }}>
-            </p>
-
+            <p
+              className='blogContent'
+              dangerouslySetInnerHTML={{
+                __html: data?.description ? `${data.description.slice(0, 35)}...` : '',
+              }}
+            ></p>
           </div>
           <Button widthButton={'100px'} title='Read More' />
         </div>

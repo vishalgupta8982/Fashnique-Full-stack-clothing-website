@@ -86,7 +86,7 @@ const AddCoupan = () => {
     })
   }
   return (
-    <div className="addCoupan">
+    <div onKeyDown={(e) => { if (e.keyCode === 13) { coupan(); } }} className="addCoupan">
       {loading && (
         <div className="loader">
           <ClipLoader

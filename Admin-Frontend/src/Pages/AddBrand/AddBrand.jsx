@@ -62,8 +62,10 @@ const AddBrand = () => {
   const clearNewBrand=()=>{
     setNewBrand('')
   }
+   
   return (
-    <div className="addBrand">
+    <div onKeyDown={(e) => { if (e.keyCode === 13) { Brand(); } }}
+ className="addBrand">
       {loading && (
         <div className="loader">
           <ClipLoader
@@ -87,7 +89,7 @@ const AddBrand = () => {
         value={getBrandId !== undefined ? editBrand : newBrand}
       />
       {/* </form> */}
-      <div onClick={Brand}>
+      <div   onClick={Brand}>
         <Button
           widthButton={'fit-content'}
           title={`  ${getBrandId !== undefined ? 'Update' : 'Add'} Brand`}

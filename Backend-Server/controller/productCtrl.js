@@ -56,19 +56,17 @@ const getAllProduct = asyncHandler(async (req, res) => {
   try {
     // Filtering
     const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields", "color"]; // Add "color" to exclude fields
+    const excludeFields = ["page", "sort", "limit", "fields", "color"]; 
     excludeFields.forEach((el) => delete queryObj[el]);
-
     // Handle color filtering
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `${match}`);
     let query = Product.find(JSON.parse(queryStr));
     // Add color filtering
     if (req.query.color) {
       const decodedColors = decodeURIComponent(req.query.color).split(',').map(color => color.trim()); // Decode and split colors
       query = query.where('color').in(decodedColors); // Filter products by color
     }
-
     // Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' ');
@@ -85,7 +83,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
     }
     // Pagination
     const page = parseInt(req.query.page) || 1; // Parse page to integer, default to 1 if not provided
-    const limit = parseInt(req.query.limit) || 10; // Parse limit to integer, default to 10 if not provided
+    const limit = parseInt(req.query.limit) || Number.MAX_SAFE_INTEGER; // Parse limit to integer, default to 10 if not provided
+   
     const skip = (page - 1) * limit;
     query = query.skip(skip).limit(limit);
 
@@ -105,6 +104,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
       const lte = parseFloat(queryObj?.price?.lte || Infinity);
       return discountedPrice >= gte && discountedPrice <= lte;
     });
+     
     res.json({
       data: {
         product,
@@ -196,7 +196,7 @@ const rating=asyncHandler(async(req,res)=>{
         totalRatings: actualRating,
       },
       { new: true }
-    );
+    ) ;
     res.json(finalproduct);
   } catch (err) {
     throw new Error(err);

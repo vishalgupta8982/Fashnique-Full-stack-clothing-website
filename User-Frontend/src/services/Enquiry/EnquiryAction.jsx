@@ -4,9 +4,8 @@ import { Config } from '../../utils/AxiosConfig'
 export const postEnqRqst = () => ({
   type: 'POST_ENQUIRY_REQUEST',
 })
-export const postEnqSuccess = (Blog) => ({
+export const postEnqSuccess = () => ({
   type: 'POST_ENQUIRY_SUCCESS',
-  payload: { Blog },
 })
 export const postEnqFailure = (error) => ({
   type: 'POST_ENQUIRY_FAILURE',

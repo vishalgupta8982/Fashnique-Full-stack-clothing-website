@@ -28,7 +28,7 @@
 }
 .pdImg {
   height: 60vh;
-  object-fit: cover;
+  object-fit: contain;
   margin: 10px 0px;
   display: block;
   margin: 0 auto;
@@ -48,7 +48,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--white);
+  border: 2px solid var(--lightGrey);
   margin: 0px 10px;
   cursor: pointer;
 }

@@ -67,7 +67,7 @@
 }
 @keyframes shine {
   0% {
-    left: -100%;
+    left: -10%;
   }
   100% {
     left: 80%;
@@ -92,11 +92,11 @@
 }
 
 .productCardImg {
-  min-width: 200px;
+  width: 270px;
   height: 300px;
   position: relative;
   z-index: 0;
-  object-fit: cover;
+  object-fit: contain;
   /* padding: 10px 0px; */
 }
 .productCardContent {

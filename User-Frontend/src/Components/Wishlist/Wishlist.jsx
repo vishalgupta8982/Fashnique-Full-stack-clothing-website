@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getWishlist } from '../../services/Wishlist/WishlistAction'
 import ClipLoader from 'react-spinners/ClipLoader'
 import Button from '../Button/Button'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 const Wishlist = () => {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -46,8 +46,11 @@ const Wishlist = () => {
             />
             <p className='emptyText'>Your wishlist is empty</p>
             <div className='flex justify-center'>
-                {Cookies.get('token') ? (<Button navigation={'/store'} title={'Visit Store'} />) : (<Button navigation={'/login'} title={'Login'} />)}
-
+              {Cookies.get('token') ? (
+                <Button navigation={'/store'} title={'Visit Store'} />
+              ) : (
+                <Button navigation={'/login'} title={'Login'} />
+              )}
             </div>
           </div>
         )}

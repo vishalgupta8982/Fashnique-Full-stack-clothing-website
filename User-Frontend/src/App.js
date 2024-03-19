@@ -66,7 +66,7 @@ const App = () => {
             <Route path='/order-detail/:id' element={<OrderDetail />} />
           </Route>
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

@@ -137,7 +137,7 @@ const AddBlog = () => {
   }, [aBlog, getBlogId])
   console.log(BlogDetail)
   return (
-    <div className="addBlog">
+    <div onKeyDown={(e) => { if (e.keyCode === 13) { handleSave(); } }} className="addBlog">
       {(loading || imgLoading) && (
         <div className="loader">
           <ClipLoader
@@ -197,6 +197,7 @@ const AddBlog = () => {
       <div className="p-5 text-center bg-[#fff] border-1">
         {imgError && <p className='imgUploadErr'>Images size is too large please resize images then try to upload it</p>}
         {imgSucceess && <p className='imgUploadSuccess'>Uploaded image successfully&nbsp;<FaCheck/></p>}
+        {imgLoading && <p className='imgUploadSuccess'>Uploading... image</p>}
         <Dropzone
           onDrop={(acceptedFiles) => dispatch(uploadImage(acceptedFiles))}
           maxFiles={1}

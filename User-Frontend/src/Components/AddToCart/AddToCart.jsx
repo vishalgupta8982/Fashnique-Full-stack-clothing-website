@@ -14,17 +14,17 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import { addProductInWishlist } from '../../services/Products/ProductsActions'
 import { getWishlist } from '../../services/Wishlist/WishlistAction'
 import { applyCoupan, applyCoupanResetState } from '../../services/Coupan/CoupanAction'
-import Cookies from 'js-cookie';
- 
- 
+import Cookies from 'js-cookie'
+
 const AddToCart = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
-    if (Cookies.get('token')){
-    dispatch(applyCoupanResetState())
-    dispatch(getCart())
-    dispatch(getWishlist())}
+    if (Cookies.get('fashioniqueUserToken')) {
+      dispatch(applyCoupanResetState())
+      dispatch(getCart())
+      dispatch(getWishlist())
+    }
   }, [])
   const [coupanCode, setCoupanCode] = useState('')
   const cart = useSelector((state) => state.cart)
@@ -91,20 +91,31 @@ const AddToCart = () => {
                         onClick={() => navigate(`/productDetail/${item.productId.slug}`)}
                         className='cartItemName'
                       >
-                        {item.productId.title} | {item.productId.brand}
+                        {item.productId.title.length > 20
+                          ? `${item.productId.title.slice(0, 30)}...`
+                          : item.productId.title.slice(0, 30)}
+                        | {item.productId.brand}
                       </p>
-                      <div className='flex flex-row items-center'> 
-                      <p className=' cartItemPrice'>
-                        <FaIndianRupeeSign /> {Math.floor((item.productId.price * item.quantity) - (item.productId.price * item.quantity * item.productId.discount/100))}
-                        </p><p className=' cartBeforePrice'>
+                      <div className='flex flex-row items-center'>
+                        <p className=' cartItemPrice'>
+                          <FaIndianRupeeSign />{' '}
+                          {Math.floor(
+                            item.productId.price * item.quantity -
+                              (item.productId.price * item.quantity * item.productId.discount) /
+                                100,
+                          )}
+                        </p>
+                        <p className=' cartBeforePrice'>
                           <span>{item.productId.price}</span>
-                        </p> <p className='cartDiscount'>
+                        </p>{' '}
+                        <p className='cartDiscount'>
                           <span>{item.productId.discount}% off</span>
-                        </p></div>
+                        </p>
+                      </div>
                     </div>
                     <p className='showStock'>In Stock</p>
                     <div className='flex flex-row items-center'>
-                      <p className='size'>Size:{item.size} &nbsp; </p>
+                      <p className='size'>Size: {item.size} &nbsp; </p>
                       <p className='flex flex-row items-center size'>
                         Color:&nbsp;
                         <div
@@ -175,7 +186,8 @@ const AddToCart = () => {
                   <div className='totalContainer'>
                     <p className='subTotal'>Subtotal</p>
                     <p className=' subTotal'>
-                      <FaIndianRupeeSign size={14} />{Cart.totalPrice}
+                      <FaIndianRupeeSign size={14} />
+                      {Cart.totalPrice}
                     </p>
                   </div>
                   <div className='totalContainer'>
@@ -216,7 +228,11 @@ const AddToCart = () => {
             />
             <p className='emptyText'>Your cart is empty</p>
             <div className='flex justify-center'>
-                {Cookies.get('token') ? (<Button navigation={'/store'} title={'Shop Now'} />) : (<Button navigation={'/login'} title={'Login'} />)}
+              {Cookies.get('fashioniqueUserToken') ? (
+                <Button navigation={'/store'} title={'Shop Now'} />
+              ) : (
+                <Button navigation={'/login'} title={'Login'} />
+              )}
             </div>
           </div>
         )}

@@ -56,6 +56,23 @@ export const getProduct = (filter) => async (dispatch) => {
     return err.response.data
   }
 }
+export const getAllProduct = () => async (dispatch) => {
+  dispatch(getProductRqst())
+  try {
+    const response = await axios.get(`${baseUrl}/product`, Config())
+
+    if (response) {
+      await dispatch(getProductSuccess(response.data))
+      setTimeout(() => {
+        dispatch(resetProductState())
+      }, 1000)
+    }
+  } catch (err) {
+    console.log(err.reponse.data)
+    dispatch(getProductFailure(err.response.data))
+    return err.response.data
+  }
+}
 export const getProductById = (slug) => async (dispatch) => {
   dispatch(getProductByIdRqst())
   try {

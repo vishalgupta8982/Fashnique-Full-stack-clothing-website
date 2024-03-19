@@ -73,7 +73,7 @@ const clearEditBlogCategory=()=>{
   setEditBlogCategory('')
 }
   return (
-    <div className="addBlogCat">
+    <div onKeyDown={(e) => { if (e.keyCode === 13) { BlogCat() } }} className="addBlogCat">
       {loading && (
         <div className="loader">
           <ClipLoader

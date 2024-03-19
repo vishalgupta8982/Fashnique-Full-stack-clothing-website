@@ -1,7 +1,7 @@
-import { Config, } from '../../utils/AxiosConfig.jsx'
+import { Config } from '../../utils/AxiosConfig.jsx'
 import { baseUrl } from '../../utils/baseUrl.jsx'
 import axios from 'axios'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 export const UserLoginRequest = () => ({
   type: 'USER_LOGIN_REQUEST',
 })
@@ -60,7 +60,6 @@ export const updatePasswordRequest = () => ({
 
 export const updatePasswordSuccess = () => ({
   type: 'UPDATE_PASSWORD_SUCCESS',
-  
 })
 
 export const updatePasswordFailure = (error) => ({
@@ -78,7 +77,7 @@ export const userLogin = (credential) => async (dispatch) => {
     const response = await axios.post(`${baseUrl}/user/login`, credential)
     if (response) {
       dispatch(UserLoginSuccess(response.data))
-      Cookies.set('fashioniqueUserToken', response.data.token.token, { expires: 1, secure: true });
+      Cookies.set('fashioniqueUserToken', response.data.token.token, { expires: 1, secure: true })
       setTimeout(() => {
         dispatch(resetUserDetail())
       }, 1000)
@@ -162,7 +161,6 @@ export const updatePassword = (password) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-
     dispatch(updatePasswordFailure(err.response.data))
     setTimeout(() => {
       dispatch(resetUserDetail())

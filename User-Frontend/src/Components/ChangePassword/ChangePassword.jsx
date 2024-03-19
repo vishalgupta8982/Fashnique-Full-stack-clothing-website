@@ -5,11 +5,11 @@ import { FaEye } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import {  updatePassword } from '../../services/Authentication/authAction'
+import { updatePassword } from '../../services/Authentication/authAction'
 import ClipLoader from 'react-spinners/ClipLoader'
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
 const ChangePassword = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth)
   const { loading, isLoginSuccess, userInformation, error } = user
@@ -34,7 +34,7 @@ const ChangePassword = () => {
       await dispatch(updatePassword(passwords))
     }
   }
-  console.log(isLoginSuccess,error)
+  console.log(isLoginSuccess, error)
   useEffect(() => {
     if (isLoginSuccess) {
       toast.success('Password update successfully')

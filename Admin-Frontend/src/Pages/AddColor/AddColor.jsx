@@ -58,7 +58,7 @@ const AddColor = () => {
     }
   }
   return (
-    <div className="addColor">
+    <div onKeyDown={(e) => { if (e.keyCode === 13) { color(); } }} className="addColor">
       {loading && (
         <div className="loader">
           <ClipLoader

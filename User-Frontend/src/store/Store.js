@@ -12,6 +12,7 @@ import cartReducer from '../services/Cart/CartReducer'
 import coupanReducer from '../services/Coupan/CoupanReducer'
 import manageAddressReducer from '../services/Manage-Address/Manage-AddressReducer'
 import orderReducer from '../services/Order/OrderReducer'
+import ratingReducer from '../services/Rating/RatingReducer'
 // Logout action creator
 export const logout = () => ({
   type: 'LOGOUT',
@@ -29,15 +30,15 @@ const appReducer = combineReducers({
   Coupan: coupanReducer,
   Address: manageAddressReducer,
   order: orderReducer,
+  rating: ratingReducer,
 })
 const rootReducer = (state, action) => {
   if (action.type === 'LOGOUT') {
-    state = undefined;  
+    state = undefined
   }
 
-  return appReducer(state, action);
-};
-
+  return appReducer(state, action)
+}
 
 const store = createStore(
   rootReducer,

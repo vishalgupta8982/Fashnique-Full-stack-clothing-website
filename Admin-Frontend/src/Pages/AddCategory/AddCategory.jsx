@@ -57,7 +57,7 @@ const AddCategory = () => {
     }
   }
   return (
-    <div className="addCat">
+    <div onKeyDown={(e) => { if (e.keyCode === 13) { category(); } }} className="addCat">
       {loading && (
         <div className="loader">
           <ClipLoader

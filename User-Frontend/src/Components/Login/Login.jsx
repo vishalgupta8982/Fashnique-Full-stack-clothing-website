@@ -16,9 +16,9 @@ import { getAllCategory, getCategory } from '../../services/Category/CategoryAct
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getAllCategory())
-},[])
+  }, [])
   const [secure, setSecure] = useState(true)
   const [credential, setCredential] = useState({ email: '', password: '' })
   const handleChange = (e, fieldName) => {
@@ -33,13 +33,12 @@ const Login = () => {
   const authState = useSelector((state) => state)
   const { user, error, isLoginSuccess, loading } = authState.auth
   useEffect(() => {
-      if (isLoginSuccess) {
-          navigate('/')
-          toast.success('Login Successfull')
+    if (isLoginSuccess) {
+      navigate('/')
+      toast.success('Login Successfull')
     } else {
       navigate('')
     }
-     
   }, [user, error, isLoginSuccess, loading])
   return (
     <>
@@ -110,3 +109,4 @@ const Login = () => {
 }
 
 export default Login
+ 

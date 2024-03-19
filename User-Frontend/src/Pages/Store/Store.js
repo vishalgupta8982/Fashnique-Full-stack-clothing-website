@@ -32,8 +32,8 @@ const Store = () => {
   const [isRatingDropdownOpen, setIsRatingDropdownOpen] = useState(true)
   const [isDiscountDropdownOpen, setIsDiscountDropdownOpen] = useState(true)
   const [checkedColors, setCheckedColors] = useState([])
-  const [checkedRating, setCheckedRating] = useState([])
-  const [checkedDiscount, setCheckedDiscount] = useState([])
+  const [checkedRating, setCheckedRating] = useState()
+  const [checkedDiscount, setCheckedDiscount] = useState()
   const [fromPrice, setFromPrice] = useState('')
   const [toPrice, setToPrice] = useState('')
   const [sortBasis, setSortBasis] = useState('')
@@ -42,15 +42,13 @@ const Store = () => {
   //this is handle when user refresh page then filter are still available
   useEffect(() => {
     const colors = queryParams.getAll('color')
-    const ratings = queryParams.getAll('totalRatings')
-    const discounts = queryParams.getAll('discount[gte]')
     setFromPrice(queryParams.get('price[gte]'))
     setToPrice(queryParams.get('price[lte]'))
     setSortBasis(queryParams.get('sort'))
     setPage(parseInt(queryParams.get('page')) || 1)
     setCheckedColors(colors)
-    setCheckedRating(ratings)
-    setCheckedDiscount(discounts)
+    setCheckedRating(queryParams.get('totalRatings[gte]'))
+    setCheckedDiscount(queryParams.get('discount[gte]'))
   }, [location.search])
   //this function is used for handle all checkbox in filter
   const handleCheckboxChange = (type, value) => {
@@ -62,24 +60,6 @@ const Store = () => {
             : [...prevCheckedColors, value]
           updateURL({ colors: newCheckedColors })
           return newCheckedColors
-        })
-        break
-      case 'rating':
-        setCheckedRating((prevCheckedRating) => {
-          const newCheckedRating = prevCheckedRating.includes(value)
-            ? prevCheckedRating.filter((rating) => rating !== value)
-            : [...prevCheckedRating, value]
-          updateURL({ ratings: newCheckedRating })
-          return newCheckedRating
-        })
-        break
-      case 'discount':
-        setCheckedDiscount((prevCheckedDiscount) => {
-          const newCheckedDiscount = prevCheckedDiscount.includes(value)
-            ? prevCheckedDiscount.filter((discount) => discount !== value)
-            : [...prevCheckedDiscount, value]
-          updateURL({ discounts: newCheckedDiscount })
-          return newCheckedDiscount
         })
         break
       case 'sort':
@@ -97,17 +77,22 @@ const Store = () => {
   //this function is used for update url on this basis of filter
   const updateURL = ({
     colors = checkedColors,
-    ratings = checkedRating,
-    discounts = checkedDiscount,
     sorts = sortBasis,
     pages = page,
+    ratings: newRatings = checkedRating,
+    discounts: newDiscount = checkedDiscount,
     fromPrice: newFromPrice = fromPrice,
     toPrice: newToPrice = toPrice,
   }) => {
     const queryParams = new URLSearchParams()
     colors.forEach((color) => queryParams.append('color', color))
-    ratings.forEach((rating) => queryParams.append('totalRatings', rating))
-    discounts.forEach((discount) => queryParams.append('discount[gte]', discount))
+
+    if (newRatings) {
+      queryParams.append('totalRatings[gte]', newRatings)
+    }
+    if (newDiscount) {
+      queryParams.append('discount[gte]', newDiscount)
+    }
     queryParams.append('sort', sorts)
     queryParams.append('page', pages)
     if (newFromPrice) {
@@ -119,19 +104,16 @@ const Store = () => {
 
     navigate({ search: queryParams.toString() })
   }
-  // useEffect(() => {
-  //   dispatch(getProduct(queryParams.toString()))
-  //   dispatch(getColor())
-  // }, [queryParams.toString()])
+
   const debouncedDispatch = debounce((value) => {
     dispatch(getProduct(value))
     dispatch(getColor())
-  }, 200);
+  }, 200)
   useEffect(() => {
-    debouncedDispatch(queryParams.toString());
-    return () => debouncedDispatch.cancel();
-  }, [queryParams.toString()]);
-   
+    debouncedDispatch(queryParams.toString())
+    return () => debouncedDispatch.cancel()
+  }, [queryParams.toString()])
+
   //this function is for handleFromPriceChange
   const handleFromPriceChange = (e) => {
     const newValue = e.target.value
@@ -144,19 +126,35 @@ const Store = () => {
     setToPrice(newValue)
     updateURL({ toPrice: newValue })
   }
-  console.log(Product)
+  const handleRatingChange = (e) => {
+    if(e==checkedRating){
+      setCheckedRating(null)
+      updateURL({ ratings: null })
+    }
+    else{
+    setCheckedRating(e)
+    updateURL({ ratings: e })}
+  }
+  const handleDiscountChange = (e) => {
+    if(e==checkedDiscount){
+      setCheckedDiscount(null)
+      updateURL({ discounts: null})
+    }
+    else{
+    setCheckedDiscount(e)
+    updateURL({ discounts: e })}
+  }
+  console.log(queryParams.toString())
   return (
     <>
       <div
-        className={`flex w-[screen]  ${
-          isColorDropdownOpen ? `min-h-[210vh]` : `min-h-[77vh]`
-        } p-2 store`}
+        className={`flex w-[screen]  ${isColorDropdownOpen ? `min-h-[100vh]` : `min-h-[77vh]`
+          } p-2 store`}
       >
         <section className=' filterSection'>
           <div
-            className={` flex h-[100vh]  pb-11 overflow-x-hidden  absolute    top-0   md:h-fit transition-all ease-out duration-500 filterContainer   ${
-              showFilter ? `left-[0px]` : ` opacity-1`
-            }   left-[-400px]    
+            className={` flex h-[100vh]  pb-11 overflow-x-hidden  absolute    top-0   md:h-fit transition-all ease-out duration-500 filterContainer   ${showFilter ? `left-[0px]` : ` opacity-1`
+              }   left-[-400px]    
                     md:static md:left-0`}
           >
             <div className='relative min-w-[100px]   h-[100vh]'>
@@ -261,8 +259,8 @@ const Store = () => {
                         <input
                           type='checkbox'
                           id={`colorCheckbox_${item.id}`}
-                          checked={checkedRating.includes(item.rating)}
-                          onChange={() => handleCheckboxChange('rating', item.rating)}
+                          checked={checkedRating == item.rating}
+                          onChange={() => handleRatingChange(item.rating)}
                           className='checkBoxFilter'
                         />
                         <p className='flex items-center cursor-pointer filterItem'>
@@ -300,8 +298,8 @@ const Store = () => {
                         <input
                           type='checkbox'
                           id={`colorCheckbox_${item.id}`}
-                          checked={checkedDiscount.includes(item.discount)}
-                          onChange={() => handleCheckboxChange('discount', item.discount)}
+                          checked={checkedDiscount == item.discount}
+                          onChange={() => handleDiscountChange(item.discount)}
                           className='checkBoxFilter'
                         />
                         <p className='flex items-center cursor-pointer filterItem'>
@@ -315,7 +313,7 @@ const Store = () => {
             </div>
           </div>
         </section>
-        <section className='productSectionStore w-[100%]'>
+        <section className='productSectionStore w-[100%]  '>
           <div className='flex md:hidden filterSortHeader'>
             <div onClick={() => setShowFilter(!showFilter)} className='filterHeader'>
               <IoFilterSharp />
@@ -329,9 +327,8 @@ const Store = () => {
               <div className='sortForMobile'>
                 {basisSortProduct.map((item) => (
                   <div
-                    className={`sortSelectForMobile ${
-                      sortBasis === item.value ? 'selectedOption' : ''
-                    }`}
+                    className={`sortSelectForMobile ${sortBasis === item.value ? 'selectedOption' : ''
+                      }`}
                     onClick={() => handleCheckboxChange('sort', item.value)}
                   >
                     <p className='sortSelectForMobileText'>{item.label}</p>
@@ -357,8 +354,8 @@ const Store = () => {
             </div>
             <p className='storeSortForMd'>
               Showing {Product?.data?.product.length != 0 ? (page - 1) * 8 + 1 : 0}-
-              {Product?.data?.product.length} of{' '}
-              {Product?.data?.totalPages * 8 < 8
+              {Product?.data?.product.length != 0 ? (page - 1) * 8 + 1 : 0 + Product?.data?.product.length} of{' '}
+              {Product?.data?.totalPages * 8 > 8
                 ? Product?.data?.totalPages * 8
                 : Product?.data?.product.length}{' '}
               results{' '}
@@ -375,27 +372,36 @@ const Store = () => {
               />
             </div>
           ) : (
-            <div>
-              <div className='grid justify-between grid-cols-2 gap-0 md:grid-cols-4 '>
-                {Product?.data?.product?.length > 0 &&
-                    Product.data.product.map((item) => (<ProductCard data={item} />))}
-              </div>
-              <div className='nextPage'>
+            <div className='min-h-[100vh]'>
+              {Product?.data?.product?.length > 0 ? (
+                <div className='grid grid-cols-2 gap-0 min-h-[95vh] justify-self-center items-start md:grid-cols-4 '>
+                  {' '}
+                  {Product.data.product.map((item) => (
+                    <ProductCard data={item} />
+                  ))}
+                </div>
+              ) : (
+                <div className='notProductImgCont min-h-[95vh]'>
+                  <img
+                    className='notProductImg'
+                    src='https://myntraweb.blob.core.windows.net/selfserveui/assets/images/cards@3x.png'
+                    alt='firstOrder'
+                  />
+                  <p className='noProductText'>No products available with the selected filters.</p>
+                </div>
+              )}
+
+              <div className='items-end nextPage'>
                 {page > 1 ? (
-                  <span onClick={() => handleCheckboxChange('page', parseInt(page) - 1)}>
+                  <span onClick={() => handleCheckboxChange('page', page - 1)}>
                     <RiArrowDropLeftLine className='pageNumber' />
                   </span>
                 ) : (
                   <RiArrowDropLeftLine className='pageNumberEnd' />
                 )}
+
                 {[...Array(Math.min(3, Product.data?.totalPages || 0))].map((_, index) => {
-                  const pageNumber =
-                    page < 2
-                      ? index + 1
-                      : Math.min(
-                          Product.data?.totalPages - 2 + index,
-                          Math.max(1, page - 1 + index),
-                        )
+                  const pageNumber = page < 2 ? index + 1 : page - 1 + index;
                   return (
                     <p
                       key={index}
@@ -404,17 +410,19 @@ const Store = () => {
                     >
                       {pageNumber}
                     </p>
-                  )
+                  );
                 })}
 
                 {page < Product.data?.totalPages ? (
-                  <span onClick={() => handleCheckboxChange('page', parseInt(page) + 1)}>
+                  <span onClick={() => handleCheckboxChange('page', page + 1)}>
                     <RiArrowDropRightLine className='pageNumber' />
                   </span>
                 ) : (
                   <RiArrowDropRightLine className='pageNumberEnd' />
                 )}
               </div>
+
+
             </div>
           )}
         </section>

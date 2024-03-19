@@ -17,24 +17,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllCategory, getCategory } from '../../services/Category/CategoryActions'
 import { getCart } from '../../services/Cart/CartAction'
 import debounce from 'lodash.debounce'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 const Header = () => {
   const location = useLocation()
-  const token = Cookies.get('fashioniqueUserToken');
+  const token = Cookies.get('fashioniqueUserToken')
   const [search, setSearch] = useState('')
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     dispatch(getAllCategory())
     dispatch(getCart())
   }, [dispatch])
   const debouncedDispatch = debounce((value) => {
-    dispatch(getCategory(value));
-  }, 200);
+    dispatch(getCategory(value))
+  }, 200)
   useEffect(() => {
-    debouncedDispatch(search);
-    return () => debouncedDispatch.cancel();
-  }, [search, debouncedDispatch, dispatch]);
+    debouncedDispatch(search)
+    return () => debouncedDispatch.cancel()
+  }, [search, debouncedDispatch, dispatch])
   const category = useSelector((state) => state.category.allCategory)
   const cart = useSelector((state) => state.cart.Cart)
   const searchValue = useSelector((state) => state.category.Category)
@@ -86,7 +86,7 @@ const Header = () => {
               </div>
               {SearchDiv && (
                 <div className='searchField    md:w-[40vw] w-[90vw]'>
-                  {searchValue.slice(0,10).map((item) => (
+                  {searchValue.slice(0, 10).map((item) => (
                     <p
                       onClick={() => navigate(`store?category=${item.title}`)}
                       className='searchValue'
@@ -128,7 +128,7 @@ const Header = () => {
                   {hamBurger ? <RxCross1 color='black' /> : <RiMenu2Fill color='black' />}
                 </span>
                 <div className='hidden ml-3 md:block'>
-                  {token !== null && token!==undefined && (
+                  {token !== null && token !== undefined && (
                     <div
                       onClick={() => navigate('/userprofile?tab=My Account')}
                       className='flex flex-col items-center cursor-pointer'
@@ -137,7 +137,7 @@ const Header = () => {
                       <p className='iconText'> Profile</p>
                     </div>
                   )}
-                  {!isLoginPage && (token === null || token===undefined) && (
+                  {!isLoginPage && (token === null || token === undefined) && (
                     <Button navigation={'/login'} title={'Login'} />
                   )}
                 </div>
@@ -154,12 +154,16 @@ const Header = () => {
             <div className='flex items-center justify-between md:hidden'>
               {!isLoginPage && token === null && (
                 <li className='mx-6 my-4 hamlink md:my-0'>
-                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>Login</NavLink>
+                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>
+                    Login
+                  </NavLink>
                 </li>
               )}
               {token !== null && (
                 <li className='mx-6 my-4 hamlink md:my-0'>
-                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>Profile</NavLink>
+                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>
+                    Profile
+                  </NavLink>
                 </li>
               )}
             </div>
@@ -167,7 +171,8 @@ const Header = () => {
           {pages.map((item) => (
             <div className='flex items-center justify-between md:my-5'>
               <li key={item} className='mx-6 my-4 link md:my-0'>
-                <NavLink onClick={() => setHamBurger(!hamBurger)}
+                <NavLink
+                  onClick={() => setHamBurger(!hamBurger)}
                   className={`nav-link   ${({ isActive }) => (isActive ? 'active' : 'inactive')}`}
                   to={`${item.route}`}
                 >
@@ -202,7 +207,7 @@ const Header = () => {
                     }}
                     className='mx-4 md:border-b-[1px] md:border-r-[1px] p-1 md:p-3 border-[#514f4f]   categoryName md:mx-0'
                   >
-                    {item.title.slice(0,12)}
+                    {item.title.slice(0, 12)}
                   </p>
                 ))}
               </div>

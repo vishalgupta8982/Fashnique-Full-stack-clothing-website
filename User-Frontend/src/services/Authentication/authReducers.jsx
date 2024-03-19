@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 const initialState = {
   loading: false,
-  token:  Cookies.get('token')  ,
+  token: Cookies.get('token'),
   error: null,
   userInformation: null,
   isLoginSuccess: false,
