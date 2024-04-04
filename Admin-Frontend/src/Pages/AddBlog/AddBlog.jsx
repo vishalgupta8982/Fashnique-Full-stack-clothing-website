@@ -27,7 +27,7 @@ const AddBlog = () => {
     description: '',
     category: '',
     images: [],
-    author: user.firstName + ' ' + user.lastName,
+    author: user?.firstName + ' ' + user?.lastName,
   })
   const [editBlogDetail, setEditBlogDetail] = useState({
     title: '',

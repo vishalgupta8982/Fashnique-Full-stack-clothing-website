@@ -70,9 +70,11 @@ export const resetProductState = () => ({
   type: 'RESET_PRODUCT_STATE',
 })
 export const addProduct = (product) => async (dispatch) => {
+  console.log(product)
   dispatch(AddProductRqst())
   try {
     const response = await axios.post(`${baseUrl}/product/`, product, config())
+    console.log(response.data)
     if (response) {
       await dispatch(AddProductSuccess(response.data))
       setTimeout(() => {

@@ -134,10 +134,10 @@ const AddProduct = () => {
   const handleSave = async () => {
     if (getProductId !== undefined) {
       await dispatch(updateProduct(getProductId, editProductDetail))
-      clearEditProductDetail()
+      // clearEditProductDetail()
     } else {
       await dispatch(addProduct(productDetail))
-      clearProductDetail()
+      // clearProductDetail()
       await dispatch(resetImageState(null))  
     }
   }

@@ -354,9 +354,9 @@ const Store = () => {
             </div>
             <p className='storeSortForMd'>
               Showing {Product?.data?.product.length != 0 ? (page - 1) * 8 + 1 : 0}-
-              {Product?.data?.product.length != 0 ? (page - 1) * 8 + 1 : 0 + Product?.data?.product.length} of{' '}
-              {Product?.data?.totalPages * 8 > 8
-                ? Product?.data?.totalPages * 8
+              {(Product?.data?.product.length != 0 ? (page - 1) * 8  : 0) + Product?.data?.product.length} of{' '}
+              {(Product?.data?.totalPages - 1) * 8 + Product?.data?.product.length > 8
+                ? (Product?.data?.totalPages - 1) * 8 + Product?.data?.product.length 
                 : Product?.data?.product.length}{' '}
               results{' '}
             </p>

@@ -46,7 +46,7 @@ const Wishlist = () => {
             />
             <p className='emptyText'>Your wishlist is empty</p>
             <div className='flex justify-center'>
-              {Cookies.get('token') ? (
+                {Cookies.get('fashioniqueUserToken') ? (
                 <Button navigation={'/store'} title={'Visit Store'} />
               ) : (
                 <Button navigation={'/login'} title={'Login'} />
