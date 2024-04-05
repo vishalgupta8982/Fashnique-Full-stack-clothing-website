@@ -25,40 +25,86 @@ validateMongoDbId;
 //     throw new Error("User already exist");
 //   }
 // });
+// const createUser = asyncHandler(async (req, res) => {
+//   const { email } = req.body;
+
+//   // Check if the user already exists
+//   const existingUser = await User.findOne({ email });
+
+//   if (existingUser) {
+//     throw new Error("User already exists");
+//   }
+
+//   try {
+//     const generateOTP = () => {
+//       return Math.floor(100000 + Math.random() * 900000);
+//     };
+//     // Generate OTP
+//     const otp = generateOTP();
+//     // Save OTP and timestamp to the user document in the database
+//     const newUser = await User.create({ ...req.body, passwordResetToken: otp });
+
+//     const resetURL =
+//       `
+//     <img  src="https://res.cloudinary.com/dytlgwywf/image/upload/v1712242872/fzwn8ubzt8ydxvnfj2cj.jpg" width="400" alt="secure" />
+//     <div style="font-size:22px" > 
+//     <b>Hey,</b>
+//     <b> Here's your OTP to log into your fashionique account.${otp}</b>
+//     </div>
+//     `
+//     const data = {
+//       to: email,
+//       text: "Hey User",
+//       subject: "Your OTP for Forgot Password",
+//       htm: resetURL,
+//     };
+//     sendEmail(data);
+//     res.json({ message: "OTP sent to your email. Please check your inbox to verify your account." });
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+
 const createUser = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   // Check if the user already exists
   const existingUser = await User.findOne({ email });
 
-  if (existingUser) {
+  if (existingUser && existingUser.isVerified) {
     throw new Error("User already exists");
   }
 
   try {
-    const generateOTP = () => {
-      return Math.floor(100000 + Math.random() * 900000);
-    };
     // Generate OTP
     const otp = generateOTP();
-    // Save OTP and timestamp to the user document in the database
-    const newUser = await User.create({ ...req.body, passwordResetToken: otp });
 
-    const resetURL =
-      `
-    <img  src="https://res.cloudinary.com/dytlgwywf/image/upload/v1712242872/fzwn8ubzt8ydxvnfj2cj.jpg" width="400" alt="secure" />
-    <div style="font-size:22px" > 
-    <b>Hey,</b>
-    <b> Here's your OTP to log into your fashionique account.${otp}</b>
-    </div>
-    `
+    if (existingUser) {
+      // Update the existing user document with new OTP if the user is not verified yet
+      existingUser.passwordResetToken = otp;
+      await existingUser.save();
+    } else {
+      // Save OTP and timestamp to the user document in the database if the user doesn't exist
+      await User.create({ ...req.body, passwordResetToken: otp });
+    }
+
+    // Compose email content with OTP
+    const resetURL = `
+      <div style="font-size: 16px;">
+        <p>Hey,</p>
+        <p>Here's your OTP to verify your fashionique account: <strong>${otp}</strong></p>
+        <p>Please enter this OTP to complete your registration.</p>
+      </div>
+    `;
+
+    // Send email
     const data = {
       to: email,
-      text: "Hey User",
-      subject: "Your OTP for Forgot Password",
-      htm: resetURL,
+      subject: "Your OTP for Account Verification",
+      html: resetURL,
     };
-    sendEmail(data);
+    await sendEmail(data);
+
     res.json({ message: "OTP sent to your email. Please check your inbox to verify your account." });
   } catch (error) {
     throw new Error(error);

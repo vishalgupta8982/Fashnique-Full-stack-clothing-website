@@ -2,11 +2,25 @@ import './OTP.css'
 import Button from '../Button/Button'
 import { useNavigate } from 'react-router-dom'
 import OTPInput from 'react-otp-input'
-import { useRef, useState } from 'react'
-const OTP = () => {
+import { useEffect, useRef, useState } from 'react'
+import {useDispatch,useSelector} from "react-redux"
+import { toast } from 'react-toastify'
+const OTP = ({email}) => {
   const navigate = useNavigate()
+  const dispatch=useDispatch()
   const [otp, setOtp] = useState('')
-  console.log(otp)
+  const verifyOTP=()=>{
+    dispatch(verifyOTP(otp,email))
+  }
+  const verifyState=useSelector((state)=>state.user.verify)
+  useEffect(()=>{
+    if (verifyState.message == "Account verified successfully."){
+      toast.success('Register Successfull')
+    }
+    else{
+      toast.error('Incorrect OTP')
+    }
+  },[dispatch])
   return (
     <>
       <div className="otpPage w-[screen]  min-h-[100vh]   ">
@@ -15,7 +29,7 @@ const OTP = () => {
             {' '}
             <p>Verify with otp</p>
           </div>
-          <p className="sentto">sent to vg980514@gmail.com</p>
+          <p className="sentto">sent to {email}</p>
           <div className="otp">
             <OTPInput
               value={otp}
@@ -36,7 +50,7 @@ const OTP = () => {
             />
           </div>
           <div className="LoginButton">
-            <Button title="Verify" widthButton={'270px'} />
+            <Button onClick={verifyOTP} title="Verify" widthButton={'270px'} />
           </div>
           <p onClick={() => navigate('/signUp')} className="newMember">
             Not recieved your code? <span className="join">Resend</span>

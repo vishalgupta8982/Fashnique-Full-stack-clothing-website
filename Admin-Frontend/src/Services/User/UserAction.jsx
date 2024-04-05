@@ -24,9 +24,21 @@ export const unblockUserSuccess = () => ({
 export const unblockUserFailure = () => ({
     type: 'UNBLOCK_USER_FAILURE',
 })
+export const verifyOtpRqst = () => ({
+    type: 'VERIFY_OTP_REQUEST',
+})
 
-export const resetUserState = () => ({
+export const verifyOtpSuccess = () => ({
+    type: 'VERIFY_OTP_SUCCESS',
+})
+
+export const verifyOtpFailure = () => ({
+    type: 'VERIFY_OTP_FAILURE',
+})
+
+export const resetUserState = ({verify}) => ({
     type: 'RESET_USER_STATE',
+    payload:{verify}
 })
 
 export const blockUser = (id) => async (dispatch) => {
@@ -61,4 +73,16 @@ export const unblockUser = (id) => async (dispatch) => {
         return err.response.data
     }
 }
- 
+export const verifyOtp = (otp,email) => async (dispatch) => {
+    dispatch(verifyOtpRqst())
+    try {
+        const response = await axios.post(`${baseUrl}/user/verify-account`, {email,otp})
+        if (response) {
+            await dispatch(verifyOtpSuccess(response.data))
+        }
+    } catch (err) {
+        console.log(err.response.data)
+        dispatch(verifyOtpFailure(err.response.data))
+        return err.response.data
+    }
+}

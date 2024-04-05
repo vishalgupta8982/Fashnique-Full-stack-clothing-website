@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
 
 export const store = createStore(
   rootReducer,
-  applyMiddleware(thunk)
-  // composeWithDevTools(applyMiddleware(thunk)),
+  // applyMiddleware(thunk)
+  composeWithDevTools(applyMiddleware(thunk)),
 )
 export default store

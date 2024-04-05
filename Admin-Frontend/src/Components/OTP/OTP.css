@@ -1,7 +1,6 @@
 .otpPage {
   display: flex;
   justify-content: center;
-  background: linear-gradient(to right, #ffdde1, #ee9ca7);
   align-items: center;
 }
 .otpCard {

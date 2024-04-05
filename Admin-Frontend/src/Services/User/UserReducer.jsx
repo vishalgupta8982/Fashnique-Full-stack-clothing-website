@@ -2,6 +2,7 @@ const initialState = {
     loading: false,
     error: null,
     isSuccess: false,
+    verify:false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -32,6 +33,21 @@ const userReducer = (state = initialState, action) => {
                 isSuccess: true,
             }
         case 'UNBLOCK_USER_FAILURE':
+            return {
+                ...state,
+                error: action.payload,
+                loading: false,
+            }
+        case 'VERIFY_OTP_REQUEST':
+            return { ...state, loading: true, error: null }
+        case 'VERIFY_OTP_SUCCESS':
+            return {
+                ...state,
+                loading: false,
+                verify: action.payload.verify,
+                error: null,
+            }
+        case 'VERIFY_OTP_FAILURE':
             return {
                 ...state,
                 error: action.payload,
