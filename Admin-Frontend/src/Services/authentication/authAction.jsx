@@ -54,10 +54,12 @@ export const adminRegister = (credential) => async (dispatch) => {
   dispatch(AdminRegisterRequest())
   try {
     const response = await axios.post(`${baseUrl}/user/register`, credential)
+    console.log(response.data)
     if (response) {
       dispatch(AdminRegisterSuccess(response.data))
     }
   } catch (err) {
+    console.log(err.response.data)
     dispatch(AdminRegisterFailure(err.response.data))
     return err.response.data
   }
