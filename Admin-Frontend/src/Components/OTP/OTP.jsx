@@ -9,18 +9,19 @@ const OTP = ({email}) => {
   const navigate = useNavigate()
   const dispatch=useDispatch()
   const [otp, setOtp] = useState('')
-  const verifyOTP=()=>{
-    dispatch(verifyOTP(otp,email))
+  const verifyOTP=async()=>{
+    await dispatch(verifyOTP(otp,email))
+    success()
   }
   const verifyState=useSelector((state)=>state.user.verify)
-  useEffect(()=>{
+  const success=()=>{
     if (verifyState.message == "Account verified successfully."){
       toast.success('Register Successfull')
     }
     else{
       toast.error('Incorrect OTP')
     }
-  },[dispatch])
+  } 
   return (
     <>
       <div className="otpPage w-[screen]  min-h-[100vh]   ">

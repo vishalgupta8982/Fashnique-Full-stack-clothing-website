@@ -92,21 +92,21 @@ const createUser = asyncHandler(async (req, res) => {
     }
 
     // Compose email content with OTP
-    const resetURL = `
-      <div style="font-size: 16px;">
-        <p>Hey,</p>
-        <p>Here's your OTP to verify your fashionique account: <strong>${otp}</strong></p>
-        <p>Please enter this OTP to complete your registration.</p>
-      </div>
-    `;
-
-    // Send email
-    const data = {
-      to: email,
-      subject: "Your OTP for Account Verification",
-      html: resetURL,
-    };
-     sendEmail(data);
+    const resetURL =
+          `
+        <img  src="https://res.cloudinary.com/dytlgwywf/image/upload/v1712242872/fzwn8ubzt8ydxvnfj2cj.jpg" width="400" alt="secure" />
+        <div style="font-size:22px" >
+        <b>Hey,</b>
+        <b> Here's your OTP to log into your fashionique account.${otp}</b>
+        </div>
+        `
+        const data = {
+          to: email,
+          text: "Hey User",
+          subject: "Your OTP for Forgot Password",
+          htm: resetURL,
+        };
+        sendEmail(data);
 
     res.json({ message: "OTP sent to your email. Please check your inbox to verify your account." });
   } catch (error) {
