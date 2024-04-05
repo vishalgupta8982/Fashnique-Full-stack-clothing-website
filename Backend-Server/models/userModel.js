@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'); // Erase if already required
 const bcrypt=require("bcrypt")
-const crypto=require("crypto")
+const crypto=require("crypto");
+const { type } = require('os');
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema(
   {
@@ -21,6 +22,13 @@ var userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    otp:{
+      type:String
+    },
+    isVerified:{
+      type:Boolean,
+      default:false
     },
     password: {
       type: String,

@@ -4,5 +4,5 @@ export const pages = [
   { name: 'Blogs', route: '/blogs' },
   { name: 'Contact us', route: '/contact' },
   // { name: "Shop By Category", route: "/category" },
-  { name: 'Become a seller', route: '/fasd' },
+  { name: 'Become a seller', route: 'https://fashioniqueadmin.netlify.app/' },
 ]

@@ -13,23 +13,81 @@ const uniqid = require("uniqid");
 const validateMongoDbId = require("../utils/validateMongoDbId");
 const sendEmail = require("./emailCtrl");
 validateMongoDbId;
+// const createUser = asyncHandler(async (req, res) => {
+//   const email = req.body.email;
+//   const findUser = await User.findOne({ email: email });
+//   if (!findUser) {
+//     //create new user
+//     const newUser = await User.create(req.body);
+//     res.json(newUser);
+//   } else {
+//     //user exist
+//     throw new Error("User already exist");
+//   }
+// });
 const createUser = asyncHandler(async (req, res) => {
-  const email = req.body.email;
-  const findUser = await User.findOne({ email: email });
-  if (!findUser) {
-    //create new user
-    const newUser = await User.create(req.body);
-    res.json(newUser);
-  } else {
-    //user exist
-    throw new Error("User already exist");
+  const { email } = req.body;
+
+  // Check if the user already exists
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    throw new Error("User already exists");
   }
+
+  try {
+    const generateOTP = () => {
+      return Math.floor(100000 + Math.random() * 900000);
+    };
+    // Generate OTP
+    const otp = generateOTP();
+    // Save OTP and timestamp to the user document in the database
+    const newUser = await User.create({ ...req.body, passwordResetToken: otp });
+
+    const resetURL =
+      `
+    <img  src="https://res.cloudinary.com/dytlgwywf/image/upload/v1712242872/fzwn8ubzt8ydxvnfj2cj.jpg" width="400" alt="secure" />
+    <div style="font-size:22px" > 
+    <b>Hey,</b>
+    <b> Here's your OTP to log into your fashionique account.${otp}</b>
+    </div>
+    `
+    const data = {
+      to: email,
+      text: "Hey User",
+      subject: "Your OTP for Forgot Password",
+      htm: resetURL,
+    };
+    sendEmail(data);
+    res.json({ message: "OTP sent to your email. Please check your inbox to verify your account." });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const verifyAccount = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  // Find the user by email
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  // Verify OTP
+  if (otp !== user.passwordResetToken) {
+    throw new Error("Invalid OTP");
+  }
+
+  // Create the account if OTP is correct
+  user.isVerified = true;
+  await user.save();
+
+  res.json({ message: "Account verified successfully." });
 });
 //user login
 const loginUserCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findUser = await User.findOne({ email });
-  if (findUser.role !== "user") {
+  if (findUser.role !== "user" || findUser.isVerified) {
     throw new Error("not authorized");
   }
   if (findUser && (await findUser.isPasswordMatched(password))) {
@@ -53,7 +111,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
 const loginAdminCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin") {
+  if (findAdmin.role !== "admin" || findUser.isVerified) {
     throw new Error("not authorized");
   }
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
@@ -173,7 +231,6 @@ const updatePassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   validateMongoDbId(_id);
   const user = await User.findById(_id);
-
   const isCurrentPasswordValid = await user.isPasswordMatched(currentPassword);
   if (!isCurrentPasswordValid) {
     return res.status(401).json({ message: "Incorrect current password" });
@@ -190,39 +247,73 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
     throw new Error("user not found with this email");
   }
   try {
-    const token = await user.createPasswordResetToken();
+    const generateOTP = () => {
+      return Math.floor(100000 + Math.random() * 900000);  
+    };
+    const otp = generateOTP();
+    user.passwordResetToken = otp;
+    user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
-    const resetURL = `Hi, please follow this link to reset your password. This link is valid for 10 minute from now. <a href='http://localhost:${process.env.PORT}/api/user/reset-password/${token}' >click here</>`;
-
+    const resetURL =
+    `
+    <img  src="https://res.cloudinary.com/dytlgwywf/image/upload/v1712242872/fzwn8ubzt8ydxvnfj2cj.jpg" width="400" alt="secure" />
+    <div style="font-size:22px" > 
+    <b>Hey,</b>
+    <b> Here's your OTP to log into your fashionique account.${otp}</b>
+    </div>
+    `
     const data = {
       to: email,
       text: "Hey User",
-      subject: "Forgot Passowrd Link",
+      subject: "Your OTP for Forgot Password",
       htm: resetURL,
     };
     sendEmail(data);
-    res.json(token);
+    res.json({"message":"sent"});
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+const verifyOTP = asyncHandler(async (req, res) => {
+  const { email, enteredOTP } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("User not found with this email");
+  }
+  try {
+    if (enteredOTP !== user.passwordResetToken) {
+      throw new Error("Invalid OTP");
+    }
+    if (user.passwordResetExpires < Date.now()) {
+      throw new Error("OTP has expired");
+    }
+    res.json({ message: "OTP verified. You can now reset your password." });
   } catch (error) {
     throw new Error(error);
   }
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const { password } = req.body;
-  const { token } = req.params;
-  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-  const user = await User.findOne({
-    passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
-  });
+  const { email, password, otp } = req.body;
+  const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("Token Expired, Please try again later");
+    throw new Error("User not found with this email");
+  }
+  if (otp !== user.passwordResetToken) {
+    throw new Error("Invalid OTP");
+  }
+  if (user.passwordResetExpires < Date.now()) {
+    throw new Error("OTP has expired");
   }
   user.password = password;
-  (user.passwordToken = undefined), (user.passwordResetExpires = undefined);
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
   await user.save();
-  res.json(user);
+
+  res.json({ message: "Password reset successful." });
 });
+
 
 const getWishlist = asyncHandler(async (req, res) => {
   const { _id } = req.user;
@@ -316,7 +407,7 @@ const getUserCart = asyncHandler(async (req, res) => {
     ).populate("products.color");
     let totalPrice = 0;
     cart.products.forEach(product => {
-      let discountedPrice = product.productId.price * (1 - product.productId.discount / 100);  
+      let discountedPrice = product.productId.price * (1 - product.productId.discount / 100);
       totalPrice += discountedPrice * product.quantity;
     });
     cart.products.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -391,7 +482,7 @@ const applyCoupan = asyncHandler(async (req, res) => {
 
 const createOrder = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const { COD, totalPriceAfterDiscount,address } = req.body;
+  const { COD, totalPriceAfterDiscount, address } = req.body;
   if (!COD) {
     throw new Error("Create Cash order failed");
   }
@@ -405,8 +496,8 @@ const createOrder = asyncHandler(async (req, res) => {
         product: product.productId._id,
         count: product.quantity,
         color: product.color,
-        size:product.size,
-        address:address
+        size: product.size,
+        address: address
       })),
       paymentIntent: {
         id: uniqid(),
@@ -440,7 +531,7 @@ const getOrder = asyncHandler(async (req, res) => {
     const userOrder = await Order.find({ orderBy: _id })
       .populate("products.product")
       .populate("orderBy")
-      .sort({ createdAt: -1 });  
+      .sort({ createdAt: -1 });
     res.json(userOrder);
   } catch (err) {
     throw new Error(err);
@@ -451,7 +542,7 @@ const getOrder = asyncHandler(async (req, res) => {
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
-  console.log(status,id)
+  console.log(status, id)
   validateMongoDbId(id);
   try {
     const updateOrder = await Order.findByIdAndUpdate(
@@ -529,5 +620,7 @@ module.exports = {
   getAllOrder,
   getOrderByUserId,
   getaUserDetail,
-  getOrderByOrderId
+  getOrderByOrderId,
+  verifyOTP,
+  verifyAccount
 };

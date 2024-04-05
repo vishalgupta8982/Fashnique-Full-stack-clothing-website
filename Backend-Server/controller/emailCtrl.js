@@ -12,10 +12,10 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASSWORD
   },
 });
-
+   
 async function main() {
   const info = await transporter.sendMail({
-    from: '"Hey 👻" <abc@gmail.com>', 
+    from: '"Fashionique" <abc@gmail.com>', 
     to: data.to, // list of receivers
     subject: data.subject, 
     text: data.text, 
