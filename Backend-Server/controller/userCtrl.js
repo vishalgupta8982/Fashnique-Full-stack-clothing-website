@@ -111,7 +111,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
 const loginAdminCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin" || findUser.isVerified) {
+  if (findAdmin.role !== "admin" || findAdmin.isVerified) {
     throw new Error("not authorized");
   }
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
