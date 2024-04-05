@@ -106,7 +106,7 @@ const createUser = asyncHandler(async (req, res) => {
       subject: "Your OTP for Account Verification",
       html: resetURL,
     };
-    await sendEmail(data);
+     sendEmail(data);
 
     res.json({ message: "OTP sent to your email. Please check your inbox to verify your account." });
   } catch (error) {
