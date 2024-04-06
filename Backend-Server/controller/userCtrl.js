@@ -335,9 +335,6 @@ const verifyOTP = asyncHandler(async (req, res) => {
     if (enteredOTP !== user.passwordResetToken) {
       throw new Error("Invalid OTP");
     }
-    if (user.passwordResetExpires < Date.now()) {
-      throw new Error("OTP has expired");
-    }
     res.json({ message: "OTP verified. You can now reset your password." });
   } catch (error) {
     throw new Error(error);
