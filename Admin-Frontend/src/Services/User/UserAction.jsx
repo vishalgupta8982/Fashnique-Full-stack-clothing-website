@@ -28,17 +28,18 @@ export const verifyOtpRqst = () => ({
     type: 'VERIFY_OTP_REQUEST',
 })
 
-export const verifyOtpSuccess = () => ({
+export const verifyOtpSuccess = (verify ) => ({
     type: 'VERIFY_OTP_SUCCESS',
+    payload: { verify }
 })
 
 export const verifyOtpFailure = () => ({
     type: 'VERIFY_OTP_FAILURE',
 })
 
-export const resetUserState = ({verify}) => ({
+export const resetUserState = ( ) => ({
     type: 'RESET_USER_STATE',
-    payload:{verify}
+   
 })
 
 export const blockUser = (id) => async (dispatch) => {
@@ -74,15 +75,18 @@ export const unblockUser = (id) => async (dispatch) => {
     }
 }
 export const verifyOtp = (otp,email) => async (dispatch) => {
+   
+    const data={email:email,otp:otp}
     dispatch(verifyOtpRqst())
     try {
-        const response = await axios.post(`${baseUrl}/user/verify-account`, {email,otp})
+        const response = await axios.post(`${baseUrl}/user/verify-account`, data)
+        
         if (response) {
-            await dispatch(verifyOtpSuccess(response.data))
+            await dispatch(verifyOtpSuccess(response.data.message))
         }
     } catch (err) {
-        console.log(err.response.data)
-        dispatch(verifyOtpFailure(err.response.data))
-        return err.response.data
+        console.log(err)
+        dispatch(verifyOtpFailure(err.response))
+        return err.response
     }
 }

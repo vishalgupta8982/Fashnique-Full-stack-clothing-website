@@ -15,6 +15,7 @@ const SignUp = () => {
   const dispatch = useDispatch()
   const [secure, setSecure] = useState(true)
   const [showOtp,setShowOtp]=useState(false)
+  const [registrationFinished, setRegistrationFinished] = useState(false);
   const [credential, setCredential] = useState({
     firstName: '',
     lastName: '',
@@ -29,25 +30,33 @@ const SignUp = () => {
       [fieldName]: e.target.value,
     }))
   }
-  const register = async() => {
-    if (credential.firstName.length < 1 && credential.lastName.length < 1 && credential.email.length < 1 && credential.mobile.length < 1 && credential.password.length < 1){
-      toast.error("*All fields are required")
-    }
-    else{
-    await dispatch(adminRegister(credential))
-    setShowOtp(true)}
-  }
+   
   const authState = useSelector((state) => state)
   const { user, error, isRegisterSuccess, loading } = authState.auth
-
-  // useEffect(() => {
-  //   if (isRegisterSuccess) {
-  //     navigate('/')
-  //     toast.success('Register Successfull')
-  //   } else {
-  //     navigate('')
-  //   }
-  // }, [user, error, isRegisterSuccess, loading])
+ 
+  const register = async () => {
+    try {
+      if (credential.firstName.length < 1 && credential.lastName.length < 1 && credential.email.length < 1 && credential.mobile.length < 1 && credential.password.length < 1) {
+        toast.error("*All fields are required");
+      }
+      else if (credential.password.length < 8) {
+        toast.error("Password must be 8 characters");
+      }
+      else {
+        await dispatch(adminRegister(credential));
+        setRegistrationFinished(true);
+      }
+    } catch (error) {
+      console.error("Registration Error:", error);
+      toast.error("An error occurred. Please try again later.");
+    }
+  }
+  useEffect(() => {
+    if (registrationFinished && !error) {
+      setShowOtp(true);
+    }
+  }, [registrationFinished, error]);
+   
   const navigate = useNavigate()
   return (
     <>

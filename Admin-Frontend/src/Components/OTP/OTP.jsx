@@ -3,28 +3,41 @@ import Button from '../Button/Button'
 import { useNavigate } from 'react-router-dom'
 import OTPInput from 'react-otp-input'
 import { useEffect, useRef, useState } from 'react'
+import ClipLoader from 'react-spinners/ClipLoader'
 import {useDispatch,useSelector} from "react-redux"
 import { toast } from 'react-toastify'
+import { verifyOtp } from '../../Services/User/UserAction'
 const OTP = ({email}) => {
   const navigate = useNavigate()
   const dispatch=useDispatch()
   const [otp, setOtp] = useState('')
-  const verifyOTP=async()=>{
-    await dispatch(verifyOTP(otp,email))
-    success()
+  const [otpVerification,setOtpVerification]=useState(false)
+  const verifyOTP = async() => {
+    await dispatch(verifyOtp(otp,email))
+setOtpVerification(true)
   }
-  const verifyState=useSelector((state)=>state.user.verify)
-  const success=()=>{
-    if (verifyState.message == "Account verified successfully."){
-      toast.success('Register Successfull')
+  const verifyState = useSelector((state) => state.user.isVerified)
+   const loading=useSelector((state)=>state.user.loading)
+  useEffect(() => {
+    if (verifyState === "Account verified successfully." && otpVerification) {
+      toast.success("Account verified successfully");
+      navigate('/');
     }
-    else{
-      toast.error('Incorrect OTP')
-    }
-  } 
+  }, [verifyState, otpVerification]);
   return (
     <>
       <div className="otpPage w-[screen]  min-h-[100vh]   ">
+        {loading && (
+          <div className="loader">
+            <ClipLoader
+              color={'#52ab98'}
+              loading={loading}
+              size={25}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        )}
         <div className="otpCard ">
           <div className="otpHead">
             {' '}
@@ -35,7 +48,7 @@ const OTP = ({email}) => {
             <OTPInput
               value={otp}
               onChange={setOtp}
-              numInputs={4}
+              numInputs={6}
               renderSeparator={<span></span>}
               renderInput={(props) => <input {...props} />}
               inputStyle={{
@@ -50,8 +63,8 @@ const OTP = ({email}) => {
               }}
             />
           </div>
-          <div className="LoginButton">
-            <Button onClick={verifyOTP} title="Verify" widthButton={'270px'} />
+          <div onClick={verifyOTP} className="LoginButton">
+            <Button   title="Verify" widthButton={'270px'} />
           </div>
           <p onClick={() => navigate('/signUp')} className="newMember">
             Not recieved your code? <span className="join">Resend</span>

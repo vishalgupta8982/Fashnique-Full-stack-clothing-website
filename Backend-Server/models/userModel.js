@@ -30,6 +30,9 @@ var userSchema = new mongoose.Schema(
       type:Boolean,
       default:false
     },
+    passwordResetExpires:{
+      type:Date
+    },
     password: {
       type: String,
       required: true,

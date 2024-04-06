@@ -85,6 +85,7 @@ const createUser = asyncHandler(async (req, res) => {
     if (existingUser) {
       // Update the existing user document with new OTP if the user is not verified yet
       existingUser.passwordResetToken = otp;
+      existingUser.passwordResetExpires = Date.now() + 10 * 60 * 1000;
       await existingUser.save();
     } else {
       // Save OTP and timestamp to the user document in the database if the user doesn't exist

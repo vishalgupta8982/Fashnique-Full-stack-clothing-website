@@ -2,7 +2,7 @@ const initialState = {
     loading: false,
     error: null,
     isSuccess: false,
-    verify:false
+    isVerified:false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -44,7 +44,7 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                verify: action.payload.verify,
+                isVerified: action.payload.verify,
                 error: null,
             }
         case 'VERIFY_OTP_FAILURE':
