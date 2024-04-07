@@ -39,7 +39,7 @@ export const resetProductState = () => ({
 
 export const getProduct = (filter) => async (dispatch) => {
   const filterParam = filter ? `?${filter}&limit=8` : '?sort=null?page=1&limit=8'
-  console.log(filterParam)
+ 
   dispatch(getProductRqst())
   try {
     const response = await axios.get(`${baseUrl}/product${filterParam}`, Config())
@@ -51,7 +51,7 @@ export const getProduct = (filter) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+  
     dispatch(getProductFailure(err.response.data))
     return err.response.data
   }
@@ -68,7 +68,7 @@ export const getAllProduct = () => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+    
     dispatch(getProductFailure(err.response.data))
     return err.response.data
   }
@@ -100,7 +100,7 @@ export const addProductInWishlist = (prodId) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+  
     dispatch(addProductInWishlistFailure(err.response.data))
     return err.response.data
   }

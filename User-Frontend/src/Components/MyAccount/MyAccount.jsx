@@ -22,7 +22,6 @@ const MyAccount = () => {
     dateOfBirth: 'mm/dd/yyyy',
     gender: '',
   })
-  console.log(updateDetail)
   useEffect(() => {
     if (!loading && userInformation) {
       setUpdateDetail({

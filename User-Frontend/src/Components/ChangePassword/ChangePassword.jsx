@@ -27,14 +27,13 @@ const ChangePassword = () => {
     if (passwords.newPassword !== confirmPassword) {
       toast.error('New Password does not match')
     }
-    // else if ((passwords.newPassword).length < 8) {
-    //     toast.error("Password must have at least 8 characters");
-    // }
+    else if ((passwords.newPassword).length < 8) {
+        toast.error("Password must have at least 8 characters");
+    }
     else {
       await dispatch(updatePassword(passwords))
     }
   }
-  console.log(isLoginSuccess, error)
   useEffect(() => {
     if (isLoginSuccess) {
       toast.success('Password update successfully')

@@ -16,11 +16,11 @@ export const resetRatingState = () => ({
 })
 
 export const postRating = (data) => async (dispatch) => {
-  console.log(data, 'dfsd')
+ 
   dispatch(postRatingRqst())
   try {
     const response = await axios.put(`${baseUrl}/product/rating`, data, Config())
-    console.log(response.data)
+   
     if (response) {
       await dispatch(postRatingSuccess(response.data))
       setTimeout(() => {
@@ -28,7 +28,7 @@ export const postRating = (data) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+   
     dispatch(postRatingFailure(err.response.data))
     return err.response.data
   }

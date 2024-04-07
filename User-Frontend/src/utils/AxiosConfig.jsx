@@ -5,7 +5,6 @@ export const Config = () => {
     const decodedToken = JSON.parse(atob(token.split('.')[1]))
     const expirationTime = new Date(decodedToken.exp * 1000)
     const expireTimeInMs = expirationTime.getTime()
-    console.log('Token expiration time:', expireTimeInMs, Date.now())
     if (Date.now() > expireTimeInMs) {
       Cookies.remove('token')
     }

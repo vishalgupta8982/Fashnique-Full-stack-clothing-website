@@ -27,14 +27,14 @@ const Header = () => {
   useEffect(() => {
     dispatch(getAllCategory())
     dispatch(getCart())
-  }, [dispatch])
+  }, [])
   const debouncedDispatch = debounce((value) => {
     dispatch(getCategory(value))
   }, 200)
   useEffect(() => {
     debouncedDispatch(search)
     return () => debouncedDispatch.cancel()
-  }, [search, debouncedDispatch, dispatch])
+  }, [search])
   const category = useSelector((state) => state.category.allCategory)
   const cart = useSelector((state) => state.cart.Cart)
   const searchValue = useSelector((state) => state.category.Category)
@@ -161,7 +161,7 @@ const Header = () => {
               )}
               {token !== null && (
                 <li className='mx-6 my-4 hamlink md:my-0'>
-                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/login'>
+                  <NavLink onClick={() => setHamBurger(!hamBurger)} to='/userProfile'>
                     Profile
                   </NavLink>
                 </li>

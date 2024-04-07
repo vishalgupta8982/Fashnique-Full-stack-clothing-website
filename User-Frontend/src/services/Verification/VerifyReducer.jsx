@@ -1,43 +1,12 @@
 const initialState = {
   loading: false,
-  error: null,
+  error: false,
   isSuccess: false,
   isVerified: false,
 }
 
-const userReducer = (state = initialState, action) => {
+const verifyReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'BLOCK_USER_REQUEST':
-      return { ...state, loading: true, error: null }
-    case 'BLOCK_USER_SUCCESS':
-      return {
-        ...state,
-        loading: false,
-        Enquiry: action.payload.Enquiry,
-        error: null,
-      }
-    case 'BLOCK_USER_FAILURE':
-      return {
-        ...state,
-        error: action.payload,
-        loading: false,
-      }
-
-    case 'UNBLOCK_USER_REQUEST':
-      return { ...state, loading: true, error: null }
-    case 'UNBLOCK_USER_SUCCESS':
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        isSuccess: true,
-      }
-    case 'UNBLOCK_USER_FAILURE':
-      return {
-        ...state,
-        error: action.payload,
-        loading: false,
-      }
     case 'VERIFY_OTP_REQUEST':
       return { ...state, loading: true, error: null }
     case 'VERIFY_OTP_SUCCESS':
@@ -53,16 +22,44 @@ const userReducer = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       }
-    case 'RESET_USER_STATE':
+    case 'VERIFY_OTP_FORGOT_REQUEST':
+      return { ...state, loading: true, error: null }
+    case 'VERIFY_OTP_FORGOT_SUCCESS':
       return {
         ...state,
-        error: null,
         loading: false,
+        error: false,
+      }
+    case 'VERIFY_OTP_FORGOT_FAILURE':
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+    case 'FORGOT_PASSWORD_REQUEST':
+      return { ...state, loading: true, error: null }
+    case 'FORGOT_PASSWORD_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      }
+    case 'FORGOT_PASSWORD_FAILURE':
+      return {
+        ...state,
+        error: true,
+        loading: false,
+      }
+    case 'VERIFY_RESET_STATE':
+      return {
+        ...state,
+        loading: false,
+        error: false,
         isSuccess: false,
+        isVerified: false,
       }
     default:
       return state
   }
 }
-
-export default userReducer
+export default verifyReducer

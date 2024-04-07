@@ -47,7 +47,7 @@ const AddBrand = () => {
     }
   }
 
-  const Brand = async() => {
+  const Brand = async () => {
     if (getBrandId !== undefined) {
       await dispatch(updateBrand(getBrandId, editBrand))
       clearEditBrand()
@@ -56,16 +56,22 @@ const AddBrand = () => {
       clearNewBrand()
     }
   }
-  const clearEditBrand=()=>{
+  const clearEditBrand = () => {
     setEditBrand('')
   }
-  const clearNewBrand=()=>{
+  const clearNewBrand = () => {
     setNewBrand('')
   }
-   
+
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { Brand(); } }}
- className="addBrand">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          Brand()
+        }
+      }}
+      className="addBrand"
+    >
       {loading && (
         <div className="loader">
           <ClipLoader
@@ -89,7 +95,7 @@ const AddBrand = () => {
         value={getBrandId !== undefined ? editBrand : newBrand}
       />
       {/* </form> */}
-      <div   onClick={Brand}>
+      <div onClick={Brand}>
         <Button
           widthButton={'fit-content'}
           title={`  ${getBrandId !== undefined ? 'Update' : 'Add'} Brand`}

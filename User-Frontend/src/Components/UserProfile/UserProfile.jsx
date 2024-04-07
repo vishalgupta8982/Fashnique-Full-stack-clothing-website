@@ -49,7 +49,7 @@ const UserProfile = () => {
       navigate(item.path)
     }
     if (item.head === 'Log Out') {
-      await Cookies.remove('token')
+      await Cookies.remove('fashioniqueUserToken')
       await dispatch(logout())
       navigate('/login')
     } else if (!item.path) {

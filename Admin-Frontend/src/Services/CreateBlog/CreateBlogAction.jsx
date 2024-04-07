@@ -84,13 +84,11 @@ export const addBlog = (blog) => async (dispatch) => {
     setTimeout(() => {
       dispatch(resetBlogState())
     }, 1000)
-    console.log(err.response.data)
     return err.response.data
   }
 }
 
 export const getBlog = () => async (dispatch) => {
-  console.log(config())
   dispatch(GetBlogRqst())
   try {
     const response = await axios.get(`${baseUrl}/blog`, config())

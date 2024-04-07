@@ -84,60 +84,60 @@ function ManageAddress() {
           <div className='addAddressBox'>
             <p className='newAddressHead'>ADD A NEW ADDRESS </p>
             <div className='inputContainer'>
-              <div className='twoInputSide'>
+              <div className='twoInputSide md:flex-row flex-col'>
                 <input
-                  className='inputAddress'
+                  className='inputAddress   mt-5 md:w-[45%] w-[100%]'
                   type='text'
                   value={newAddress.name}
                   onChange={(e) => handleChange(e, 'name')}
                   placeholder='Enter Name'
                 />
                 <input
-                  className='inputAddress'
+                  className='inputAddress    mt-5  md:w-[45%] w-[100%]'
                   type='number'
                   value={newAddress.mobile}
                   onChange={(e) => handleChange(e, 'mobile')}
                   placeholder='10 digit mobile number'
                 />
               </div>
-              <div className='twoInputSide'>
+              <div className='twoInputSide md:flex-row flex-col'>
                 <input
                   value={newAddress.pincode}
-                  className='inputAddress'
+                  className='inputAddress   mt-5  md:w-[45%] w-[100%]'
                   type='text'
                   onChange={(e) => handleChange(e, 'pincode')}
                   placeholder='Pincode'
                 />
                 <input
                   value={newAddress.locality}
-                  className='inputAddress'
+                  className='inputAddress   mt-5  md:w-[45%] w-[100%]'
                   type='text'
                   onChange={(e) => handleChange(e, 'locality')}
                   placeholder='Locality'
                 />
               </div>
-              <div className='twoInputSide'>
+              <div className='twoInputSide md:flex-row flex-col'>
                 <textarea
                   value={newAddress.address}
                   onChange={(e) => handleChange(e, 'address')}
                   rows={4}
-                  className='textAreaAddress'
+                  className='textAreaAddress mt-5'
                   type='text'
                   placeholder='Address(Area and Street)'
                 />
               </div>
-              <div className='twoInputSide'>
+              <div className='twoInputSide md:flex-row flex-col'>
                 <input
                   value={newAddress.city}
                   onChange={(e) => handleChange(e, 'city')}
-                  className='inputAddress'
+                  className='inputAddress mt-5  md:w-[45%] w-[100%] '
                   type='text'
                   placeholder='City/District/Town'
                 />
                 <select
                   value={newAddress.state}
                   onChange={(e) => handleChange(e, 'state')}
-                  className='inputAddress'
+                  className='inputAddress mt-5  md:w-[45%] w-[100%]'
                   id='stateSelect'
                 >
                   <option value=''>Select State</option>
@@ -148,18 +148,18 @@ function ManageAddress() {
                   ))}
                 </select>
               </div>
-              <div className='twoInputSide'>
+              <div className='twoInputSide md:flex-row flex-col'>
                 <input
                   value={newAddress.landmark}
                   onChange={(e) => handleChange(e, 'landmark')}
-                  className='inputAddress'
+                  className='inputAddress mt-5  md:w-[45%] w-[100%]'
                   type='text'
                   placeholder='Landmark'
                 />
                 <input
                   value={newAddress.alternateMobile}
                   onChange={(e) => handleChange(e, 'alternateMobile')}
-                  className='inputAddress'
+                  className='inputAddress mt-5  md:w-[45%] w-[100%]'
                   type='number'
                   placeholder='Alternate phone number'
                 />
@@ -188,7 +188,7 @@ function ManageAddress() {
                   </span>
                 </div>
                 <p className='addressDetail'>
-                  {item.address},{item.locality},{item.city},{item.state}
+                  {item.address}, {item.locality}, {item.city}, {item.state}
                 </p>
                 <p className='text-xs font-medium'>{item.pincode}</p>
               </div>

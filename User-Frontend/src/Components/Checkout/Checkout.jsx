@@ -46,7 +46,6 @@ function Checkout() {
     dispatch(applyCoupanResetState())
     dispatch(applyCoupan(coupan))
   }
-  console.log(orderDetail)
   const placeOrder = async () => {
     await dispatch(createOrder(orderDetail))
     navigate('/order-success')

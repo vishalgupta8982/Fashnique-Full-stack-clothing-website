@@ -72,7 +72,7 @@ const ProductList = () => {
       toast.success('Deleted Successfully')
     }
   }, [dispatch, isSuccess])
-  console.log(Product)
+
   const data1 = Array.isArray(Product?.data?.product)
     ? Product?.data?.product?.map((item, index) => ({
         key: index,

@@ -10,7 +10,7 @@ import { getColor } from '../../Services/Color/ColorAction'
 import { getBrand } from '../../Services/Brand/BrandAction'
 import { Select } from 'antd'
 import { tags } from '../../assets/Constant/Size'
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck } from 'react-icons/fa6'
 import Dropzone from 'react-dropzone'
 import {
   addProduct,
@@ -76,15 +76,17 @@ const AddProduct = () => {
   const newProduct = useSelector((state) => state.product)
   const imgStat = useSelector((state) => state.upload)
   const { isSuccess, error, loading, aProduct } = newProduct
-  const { loading: imgLoading, isSuccess: imgSucceess, error: imgError } = imgStat
+  const {
+    loading: imgLoading,
+    isSuccess: imgSucceess,
+    error: imgError,
+  } = imgStat
   useEffect(() => {
     if (error) {
       toast.error('Check All Fields')
-    }
-    else if (getProductId !== undefined && isSuccess) {
+    } else if (getProductId !== undefined && isSuccess) {
       toast.success('Updated Successfully')
     } else if (isSuccess) toast.success('Added Successfully')
-
   }, [isSuccess, error])
 
   useEffect(() => {
@@ -138,11 +140,11 @@ const AddProduct = () => {
     } else {
       await dispatch(addProduct(productDetail))
       // clearProductDetail()
-      await dispatch(resetImageState(null))  
+      await dispatch(resetImageState(null))
     }
   }
 
-  const clearEditProductDetail=()=>{
+  const clearEditProductDetail = () => {
     setEditProductDetail({
       title: '',
       description: '',
@@ -157,7 +159,7 @@ const AddProduct = () => {
       size: [],
     })
   }
-  const clearProductDetail=()=>{
+  const clearProductDetail = () => {
     setProductDetail({
       title: '',
       description: '',
@@ -178,9 +180,9 @@ const AddProduct = () => {
         ...prevState,
         [fieldName]:
           fieldName === 'description' ||
-            fieldName === 'color' ||
-            fieldName === 'size' ||
-            fieldName === 'tags'
+          fieldName === 'color' ||
+          fieldName === 'size' ||
+          fieldName === 'tags'
             ? e
             : e.target.value,
       }))
@@ -189,16 +191,23 @@ const AddProduct = () => {
         ...prevState,
         [fieldName]:
           fieldName === 'description' ||
-            fieldName === 'color' ||
-            fieldName === 'size' ||
-            fieldName === 'tags'
+          fieldName === 'color' ||
+          fieldName === 'size' ||
+          fieldName === 'tags'
             ? e
             : e.target.value,
       }))
     }
   }
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { handleSave(); } }} className="addProduct">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          handleSave()
+        }
+      }}
+      className="addProduct"
+    >
       <p className="addProductHead">
         {getProductId !== undefined ? 'Update' : 'Add'}Product
       </p>
@@ -339,9 +348,18 @@ const AddProduct = () => {
         type="number"
       />
       <div className="p-5 text-center bg-[#fff] border-1">
-        {imgError && <p className='imgUploadErr'>Images size is too large please resize images then try to upload it</p>}
-        {imgSucceess && <p className='imgUploadSuccess'>Uploaded image successfully&nbsp;<FaCheck /></p>}
-        {imgLoading && <p className='imgUploadSuccess'>Uploading image...</p>}
+        {imgError && (
+          <p className="imgUploadErr">
+            Images size is too large please resize images then try to upload it
+          </p>
+        )}
+        {imgSucceess && (
+          <p className="imgUploadSuccess">
+            Uploaded image successfully&nbsp;
+            <FaCheck />
+          </p>
+        )}
+        {imgLoading && <p className="imgUploadSuccess">Uploading image...</p>}
         <Dropzone
           onDrop={(acceptedFiles) => dispatch(uploadImage(acceptedFiles))}
         >
@@ -358,19 +376,19 @@ const AddProduct = () => {
       <div className="flex flex-wrap ">
         {getProductId !== undefined
           ? editProductDetail.images.map((item) => (
-            <img src={item.url} alt="" width={100} height={100} />
-          ))
+              <img src={item.url} alt="" width={100} height={100} />
+            ))
           : imgState &&
-          imgState?.map((i, j) => {
-            return (
-              <div className="mt-1 mr-1 position-relative" key={j}>
-                {/* <span onClick={()=>dispatch(deleteImage(i.public_id))} className="mt-1 top-5 position-absolute " style={{ padding: 0, margin: 0 }}>
+            imgState?.map((i, j) => {
+              return (
+                <div className="mt-1 mr-1 position-relative" key={j}>
+                  {/* <span onClick={()=>dispatch(deleteImage(i.public_id))} className="mt-1 top-5 position-absolute " style={{ padding: 0, margin: 0 }}>
                                 <RxCross1 />
                             </span> */}
-                <img src={i.url} alt="" width={100} height={100} />
-              </div>
-            )
-          })}
+                  <img src={i.url} alt="" width={100} height={100} />
+                </div>
+              )
+            })}
       </div>
       {(loading || imgLoading) && (
         <div className="loader">

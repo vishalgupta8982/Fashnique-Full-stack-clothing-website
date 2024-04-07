@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import Button from '../../Components/Button/Button'
 import { toast } from 'react-toastify'
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck } from 'react-icons/fa6'
 import { useDispatch, useSelector } from 'react-redux'
 import Dropzone from 'react-dropzone'
 import { useLocation } from 'react-router-dom'
@@ -50,7 +50,11 @@ const AddBlog = () => {
   const blogCat = useSelector((state) => state.blogCat.blogCategory)
   const imgState = useSelector((state) => state.upload.Images)
   const imgStat = useSelector((state) => state.upload)
-  const {loading:imgLoading,isSuccess:imgSucceess,error:imgError}=imgStat
+  const {
+    loading: imgLoading,
+    isSuccess: imgSucceess,
+    error: imgError,
+  } = imgStat
   const newBlog = useSelector((state) => state.blog)
   const { isSuccess, error, loading, aBlog } = newBlog
   useEffect(() => {
@@ -96,8 +100,8 @@ const AddBlog = () => {
       console.error('imgState is not an array.')
     }
   }, [])
-   
-  const handleSave = async() => {
+
+  const handleSave = async () => {
     if (getBlogId !== undefined) {
       await dispatch(updateBlog(getBlogId, editBlogDetail))
       clearEditBlogDetail()
@@ -113,18 +117,18 @@ const AddBlog = () => {
       category: '',
       images: [],
       author: user.firstName + ' ' + user.lastName,
-    });
+    })
     dispatch(resetImageState())
-  };
+  }
   const clearEditBlogDetail = () => {
     setEditBlogDetail({
       title: '',
       description: '',
       category: '',
       images: [],
-    });
+    })
     dispatch(resetImageState())
-  };
+  }
   useEffect(() => {
     if (aBlog && getBlogId !== undefined) {
       setEditBlogDetail({
@@ -135,9 +139,15 @@ const AddBlog = () => {
       })
     }
   }, [aBlog, getBlogId])
-  console.log(BlogDetail)
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { handleSave(); } }} className="addBlog">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          handleSave()
+        }
+      }}
+      className="addBlog"
+    >
       {(loading || imgLoading) && (
         <div className="loader">
           <ClipLoader
@@ -195,9 +205,18 @@ const AddBlog = () => {
         />
       </div>
       <div className="p-5 text-center bg-[#fff] border-1">
-        {imgError && <p className='imgUploadErr'>Images size is too large please resize images then try to upload it</p>}
-        {imgSucceess && <p className='imgUploadSuccess'>Uploaded image successfully&nbsp;<FaCheck/></p>}
-        {imgLoading && <p className='imgUploadSuccess'>Uploading... image</p>}
+        {imgError && (
+          <p className="imgUploadErr">
+            Images size is too large please resize images then try to upload it
+          </p>
+        )}
+        {imgSucceess && (
+          <p className="imgUploadSuccess">
+            Uploaded image successfully&nbsp;
+            <FaCheck />
+          </p>
+        )}
+        {imgLoading && <p className="imgUploadSuccess">Uploading... image</p>}
         <Dropzone
           onDrop={(acceptedFiles) => dispatch(uploadImage(acceptedFiles))}
           maxFiles={1}

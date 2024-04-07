@@ -27,7 +27,7 @@ export const getColor = () => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+   
     dispatch(getColorFailure(err.response.data))
     return err.response.data
   }

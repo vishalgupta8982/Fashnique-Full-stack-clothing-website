@@ -38,7 +38,7 @@ const ContactUs = () => {
   }, [userInformation, loading, enquirySuccess])
 
   const submit = async () => {
-    if (!Cookies.get('token')) {
+    if (!Cookies.get('fashioniqueUserToken')) {
       toast.error('Please login to submit comment')
       navigate('/login')
     } else if (enqDetail.comment === '') {

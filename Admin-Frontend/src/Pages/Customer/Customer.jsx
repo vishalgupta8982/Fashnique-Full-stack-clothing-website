@@ -33,23 +33,22 @@ const Customer = () => {
   }, [])
   const customerList = useSelector((state) => state.customer)
   const { loading, Customer } = customerList
-  console.log(Customer)
+ 
   const data1 = Array.isArray(Customer)
-    ? Customer.filter(item => item.role === "user").map((item, index) => ({
-      key: index,
-      name: item.firstName + ' ' + item.lastName,
-      email: item.email,
-      mobile: item.mobile,
-    }))
-    : [];
-const handleBlockUnblock=(id,e)=>{
-  if (e ==="unblock"){
-    dispatch(unblockUser(id))
+    ? Customer.filter((item) => item.role === 'user').map((item, index) => ({
+        key: index,
+        name: item.firstName + ' ' + item.lastName,
+        email: item.email,
+        mobile: item.mobile,
+      }))
+    : []
+  const handleBlockUnblock = (id, e) => {
+    if (e === 'unblock') {
+      dispatch(unblockUser(id))
+    } else if (e === 'block') {
+      dispatch(blockUser(id))
+    }
   }
-  else if (e === "block") {
-    dispatch(blockUser(id))
-  } 
-}
 
   return (
     <>

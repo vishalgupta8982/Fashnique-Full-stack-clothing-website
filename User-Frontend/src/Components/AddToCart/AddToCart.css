@@ -29,8 +29,9 @@
   align-items: center;
 }
 .cartProductImg {
-  width: 130px;
-  object-fit: cover;
+  width: 190px;
+  height: 140px;
+  object-fit: contain;
 }
 .cartItemContainer {
   display: flex;

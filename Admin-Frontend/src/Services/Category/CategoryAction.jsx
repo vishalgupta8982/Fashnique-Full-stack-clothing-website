@@ -73,7 +73,6 @@ export const resetCategoryState = () => ({
 })
 
 export const addCategory = (title) => async (dispatch) => {
-  console.log(title)
   dispatch(AddCategoryRqst())
   try {
     const response = await axios.post(
@@ -134,7 +133,10 @@ export const deleteCategory = (id) => async (dispatch) => {
 export const getaCategory = (id) => async (dispatch) => {
   dispatch(GetaCategoryRqst())
   try {
-    const response = await axios.get(`${baseUrl}/productCategory/${id}`, config())
+    const response = await axios.get(
+      `${baseUrl}/productCategory/${id}`,
+      config(),
+    )
     if (response) {
       await dispatch(GetaCategorySuccess(response.data))
     }

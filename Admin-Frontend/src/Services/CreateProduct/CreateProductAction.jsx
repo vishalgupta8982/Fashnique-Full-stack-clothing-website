@@ -70,11 +70,9 @@ export const resetProductState = () => ({
   type: 'RESET_PRODUCT_STATE',
 })
 export const addProduct = (product) => async (dispatch) => {
-  console.log(product)
   dispatch(AddProductRqst())
   try {
     const response = await axios.post(`${baseUrl}/product/`, product, config())
-    console.log(response.data)
     if (response) {
       await dispatch(AddProductSuccess(response.data))
       setTimeout(() => {
@@ -82,7 +80,6 @@ export const addProduct = (product) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.response.data)
     dispatch(AddProductFailure(err.response.data))
     setTimeout(() => {
       dispatch(resetProductState())
@@ -124,11 +121,9 @@ export const deleteProduct = (id) => async (dispatch) => {
 }
 
 export const getaProduct = (id) => async (dispatch) => {
-  console.log(id, config())
   dispatch(GetaProductRqst(1))
   try {
     const response = await axios.get(`${baseUrl}/product/${id}`, config())
-    console.log(response.data)
     if (response) {
       await dispatch(GetaProductSuccess(response.data))
     }
@@ -146,7 +141,6 @@ export const updateProduct = (slug, product) => async (dispatch) => {
       product,
       config(),
     )
-    console.log(response)
     if (response) {
       await dispatch(updateProductSuccess(response.data))
       setTimeout(() => {

@@ -82,7 +82,7 @@ export const userLogin = (credential) => async (dispatch) => {
         dispatch(resetUserDetail())
       }, 1000)
     }
-    console.log(response.data)
+   
   } catch (err) {
     dispatch(UserLoginFailure(err.response.data))
     setTimeout(() => {
@@ -96,17 +96,13 @@ export const userRegister = (credential) => async (dispatch) => {
   dispatch(UserRegisterRequest())
   try {
     const response = await axios.post(`${baseUrl}/user/register`, credential)
+  
     if (response) {
       dispatch(UserRegisterSuccess(response.data))
-      setTimeout(() => {
-        dispatch(resetUserDetail())
-      }, 1000)
     }
   } catch (err) {
+
     dispatch(UserRegisterFailure(err.response.data))
-    setTimeout(() => {
-      dispatch(resetUserDetail())
-    }, 1000)
     return err.response.data
   }
 }

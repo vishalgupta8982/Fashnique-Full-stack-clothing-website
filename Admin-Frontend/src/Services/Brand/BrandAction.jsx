@@ -83,7 +83,6 @@ export const addBrand = (title) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.response.data)
     dispatch(AddBrandFailure(err.response.data))
     return err.response.data
   }
@@ -119,7 +118,6 @@ export const deleteBrand = (id) => async (dispatch) => {
 }
 
 export const getaBrand = (id) => async (dispatch) => {
-  console.log(config())
   dispatch(GetABrandRqst())
   try {
     const response = await axios.get(`${baseUrl}/brand/${id}`, config())

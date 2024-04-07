@@ -13,6 +13,7 @@
   justify-content: center;
   padding-bottom: 10px;
   width: 300px;
+  margin: 5px;
 }
 .blogCardImg {
   min-width: 150px;

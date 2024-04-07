@@ -13,6 +13,7 @@ import coupanReducer from '../services/Coupan/CoupanReducer'
 import manageAddressReducer from '../services/Manage-Address/Manage-AddressReducer'
 import orderReducer from '../services/Order/OrderReducer'
 import ratingReducer from '../services/Rating/RatingReducer'
+import verifyReducer from '../services/Verification/VerifyReducer'
 // Logout action creator
 export const logout = () => ({
   type: 'LOGOUT',
@@ -31,6 +32,7 @@ const appReducer = combineReducers({
   Address: manageAddressReducer,
   order: orderReducer,
   rating: ratingReducer,
+  verify: verifyReducer,
 })
 const rootReducer = (state, action) => {
   if (action.type === 'LOGOUT') {

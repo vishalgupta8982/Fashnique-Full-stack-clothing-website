@@ -13,58 +13,6 @@ const uniqid = require("uniqid");
 const validateMongoDbId = require("../utils/validateMongoDbId");
 const sendEmail = require("./emailCtrl");
 validateMongoDbId;
-// const createUser = asyncHandler(async (req, res) => {
-//   const email = req.body.email;
-//   const findUser = await User.findOne({ email: email });
-//   if (!findUser) {
-//     //create new user
-//     const newUser = await User.create(req.body);
-//     res.json(newUser);
-//   } else {
-//     //user exist
-//     throw new Error("User already exist");
-//   }
-// });
-// const createUser = asyncHandler(async (req, res) => {
-//   const { email } = req.body;
-
-//   // Check if the user already exists
-//   const existingUser = await User.findOne({ email });
-
-//   if (existingUser) {
-//     throw new Error("User already exists");
-//   }
-
-//   try {
-//     const generateOTP = () => {
-//       return Math.floor(100000 + Math.random() * 900000);
-//     };
-//     // Generate OTP
-//     const otp = generateOTP();
-//     // Save OTP and timestamp to the user document in the database
-//     const newUser = await User.create({ ...req.body, passwordResetToken: otp });
-
-//     const resetURL =
-//       `
-//     <img  src="https://res.cloudinary.com/dytlgwywf/image/upload/v1712242872/fzwn8ubzt8ydxvnfj2cj.jpg" width="400" alt="secure" />
-//     <div style="font-size:22px" > 
-//     <b>Hey,</b>
-//     <b> Here's your OTP to log into your fashionique account.${otp}</b>
-//     </div>
-//     `
-//     const data = {
-//       to: email,
-//       text: "Hey User",
-//       subject: "Your OTP for Forgot Password",
-//       htm: resetURL,
-//     };
-//     sendEmail(data);
-//     res.json({ message: "OTP sent to your email. Please check your inbox to verify your account." });
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// });
-
 const createUser = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -327,7 +275,6 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
 const verifyOTP = asyncHandler(async (req, res) => {
   const { email, enteredOTP } = req.body;
   const user = await User.findOne({ email });
-
   if (!user) {
     throw new Error("User not found with this email");
   }
@@ -589,7 +536,6 @@ const getOrder = asyncHandler(async (req, res) => {
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
-  console.log(status, id)
   validateMongoDbId(id);
   try {
     const updateOrder = await Order.findByIdAndUpdate(

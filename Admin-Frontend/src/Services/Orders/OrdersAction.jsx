@@ -33,7 +33,6 @@ export const UpdateOrdersRqst = () => ({
 
 export const UpdateOrdersSuccess = () => ({
   type: 'UPDATE_ORDER_SUCCESS',
-   
 })
 
 export const UpdateOrdersFailure = (error) => ({
@@ -48,7 +47,6 @@ export const getOrder = () => async (dispatch) => {
   dispatch(GetOrdersRqst())
   try {
     const response = await axios.get(`${baseUrl}/user/get-all-order`)
-console.log(response.data)
     if (response) {
       await dispatch(GetOrdersSuccess(response.data))
     }
@@ -69,15 +67,17 @@ export const getOrderByUserId = (id) => async (dispatch) => {
     }
   } catch (err) {
     dispatch(GetOrdersByUserIdFailure(err.response.data))
-    console.log(err.response.data)
     return err.response.data
   }
 }
-export const updateOrderStatus = (status,id) => async (dispatch) => {
+export const updateOrderStatus = (status, id) => async (dispatch) => {
   dispatch(UpdateOrdersRqst())
   try {
-    const response = await axios.put(`${baseUrl}/user/order/update-order/${id}`,{status},config())
-console.log(response)
+    const response = await axios.put(
+      `${baseUrl}/user/order/update-order/${id}`,
+      { status },
+      config(),
+    )
     if (response) {
       await dispatch(UpdateOrdersSuccess(response.data))
     }

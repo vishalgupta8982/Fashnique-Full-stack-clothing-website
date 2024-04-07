@@ -4,26 +4,29 @@ import { useNavigate } from 'react-router-dom'
 import OTPInput from 'react-otp-input'
 import { useEffect, useRef, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import {useDispatch,useSelector} from "react-redux"
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { verifyOtp } from '../../Services/User/UserAction'
-const OTP = ({email}) => {
+const OTP = ({ email }) => {
   const navigate = useNavigate()
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const [otp, setOtp] = useState('')
-  const [otpVerification,setOtpVerification]=useState(false)
-  const verifyOTP = async() => {
-    await dispatch(verifyOtp(otp,email))
-setOtpVerification(true)
+  const [otpVerification, setOtpVerification] = useState(false)
+  const verifyOTP = async () => {
+    await dispatch(verifyOtp(otp, email))
+    setOtpVerification(true)
   }
   const verifyState = useSelector((state) => state.user.isVerified)
-   const loading=useSelector((state)=>state.user.loading)
+  const loading = useSelector((state) => state.user.loading)
   useEffect(() => {
-    if (verifyState === "Account verified successfully." && otpVerification) {
-      toast.success("Account verified successfully");
-      navigate('/');
+    if (verifyState === 'Account verified successfully.' && otpVerification) {
+      toast.success('Account verified successfully, login again')
+      navigate('/')
     }
-  }, [verifyState, otpVerification]);
+    else if (verifyState !== 'Account verified successfully.' && otpVerification) {
+      toast.error("Incorrect OTP")
+    }
+  }, [verifyState, otpVerification])
   return (
     <>
       <div className="otpPage w-[screen]  min-h-[100vh]   ">
@@ -64,7 +67,7 @@ setOtpVerification(true)
             />
           </div>
           <div onClick={verifyOTP} className="LoginButton">
-            <Button   title="Verify" widthButton={'270px'} />
+            <Button title="Verify" widthButton={'270px'} />
           </div>
           <p onClick={() => navigate('/signUp')} className="newMember">
             Not recieved your code? <span className="join">Resend</span>

@@ -204,7 +204,6 @@ const rating=asyncHandler(async(req,res)=>{
 })
 
 const uploadImages=asyncHandler(async(req,res)=>{
-  console.log(req.files,"hi")
   try{
 const uploader = async (path) => {
   const newpath = await cloudinaryUploadImg(path, "images");
@@ -217,7 +216,6 @@ for(const file of files){
   const newpath=await uploader(path);
   urls.push(newpath)
 }
-   console.log(urls)
 const images=urls.map((file)=>{
   return file
 }

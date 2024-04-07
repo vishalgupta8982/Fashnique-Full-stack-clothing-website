@@ -53,7 +53,6 @@ const App = () => {
           <Route path='category' element={<Category />} />
           <Route path='login' element={<Login />} />
           <Route path='signUp' element={<SignUp />} />
-          <Route path='otp' element={<OTP />} />
           <Route path='blogdetail/:id' element={<BlogDetail />} />
           <Route path='productdetail/:id' element={<ProductDetail />} />
           <Route path='contact' element={<ContactUs />} />

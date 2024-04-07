@@ -127,34 +127,36 @@ const Store = () => {
     updateURL({ toPrice: newValue })
   }
   const handleRatingChange = (e) => {
-    if(e==checkedRating){
+    if (e == checkedRating) {
       setCheckedRating(null)
       updateURL({ ratings: null })
+    } else {
+      setCheckedRating(e)
+      updateURL({ ratings: e })
     }
-    else{
-    setCheckedRating(e)
-    updateURL({ ratings: e })}
   }
   const handleDiscountChange = (e) => {
-    if(e==checkedDiscount){
+    if (e == checkedDiscount) {
       setCheckedDiscount(null)
-      updateURL({ discounts: null})
+      updateURL({ discounts: null })
+    } else {
+      setCheckedDiscount(e)
+      updateURL({ discounts: e })
     }
-    else{
-    setCheckedDiscount(e)
-    updateURL({ discounts: e })}
   }
-  console.log(queryParams.toString())
+ 
   return (
     <>
       <div
-        className={`flex w-[screen]  ${isColorDropdownOpen ? `min-h-[100vh]` : `min-h-[77vh]`
-          } p-2 store`}
+        className={`flex w-[screen]  ${
+          isColorDropdownOpen ? `min-h-[100vh]` : `min-h-[77vh]`
+        } p-2 store`}
       >
         <section className=' filterSection'>
           <div
-            className={` flex h-[100vh]  pb-11 overflow-x-hidden  absolute    top-0   md:h-fit transition-all ease-out duration-500 filterContainer   ${showFilter ? `left-[0px]` : ` opacity-1`
-              }   left-[-400px]    
+            className={` flex h-[100vh]  pb-11 overflow-x-hidden  absolute    top-0   md:h-fit transition-all ease-out duration-500 filterContainer   ${
+              showFilter ? `left-[0px]` : ` opacity-1`
+            }   left-[-400px]    
                     md:static md:left-0`}
           >
             <div className='relative min-w-[100px]   h-[100vh]'>
@@ -327,8 +329,9 @@ const Store = () => {
               <div className='sortForMobile'>
                 {basisSortProduct.map((item) => (
                   <div
-                    className={`sortSelectForMobile ${sortBasis === item.value ? 'selectedOption' : ''
-                      }`}
+                    className={`sortSelectForMobile ${
+                      sortBasis === item.value ? 'selectedOption' : ''
+                    }`}
                     onClick={() => handleCheckboxChange('sort', item.value)}
                   >
                     <p className='sortSelectForMobileText'>{item.label}</p>
@@ -354,9 +357,11 @@ const Store = () => {
             </div>
             <p className='storeSortForMd'>
               Showing {Product?.data?.product.length != 0 ? (page - 1) * 8 + 1 : 0}-
-              {(Product?.data?.product.length != 0 ? (page - 1) * 8  : 0) + Product?.data?.product.length} of{' '}
+              {(Product?.data?.product.length != 0 ? (page - 1) * 8 : 0) +
+                Product?.data?.product.length}{' '}
+              of{' '}
               {(Product?.data?.totalPages - 1) * 8 + Product?.data?.product.length > 8
-                ? (Product?.data?.totalPages - 1) * 8 + Product?.data?.product.length 
+                ? (Product?.data?.totalPages - 1) * 8 + Product?.data?.product.length
                 : Product?.data?.product.length}{' '}
               results{' '}
             </p>
@@ -401,7 +406,7 @@ const Store = () => {
                 )}
 
                 {[...Array(Math.min(3, Product.data?.totalPages || 0))].map((_, index) => {
-                  const pageNumber = page < 2 ? index + 1 : page - 1 + index;
+                  const pageNumber = page < 2 ? index + 1 : page - 1 + index
                   return (
                     <p
                       key={index}
@@ -410,7 +415,7 @@ const Store = () => {
                     >
                       {pageNumber}
                     </p>
-                  );
+                  )
                 })}
 
                 {page < Product.data?.totalPages ? (
@@ -421,8 +426,6 @@ const Store = () => {
                   <RiArrowDropRightLine className='pageNumberEnd' />
                 )}
               </div>
-
-
             </div>
           )}
         </section>

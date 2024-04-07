@@ -87,7 +87,7 @@ const Login = () => {
               </span>
             </div>
           </div>
-          <p className="forgot">Forgot Password?</p>
+          {/* <p className="forgot">Forgot Password?</p> */}
           <div onClick={login} className="LoginButton">
             <Button title="Sign in" widthButton={'270px'} />
           </div>

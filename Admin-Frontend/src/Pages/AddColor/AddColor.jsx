@@ -48,7 +48,7 @@ const AddColor = () => {
     }
   }
 
-  const color = async() => {
+  const color = async () => {
     if (getColorId !== undefined) {
       await dispatch(updateColor(getColorId, editColor))
       setEditColor('')
@@ -58,7 +58,14 @@ const AddColor = () => {
     }
   }
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { color(); } }} className="addColor">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          color()
+        }
+      }}
+      className="addColor"
+    >
       {loading && (
         <div className="loader">
           <ClipLoader

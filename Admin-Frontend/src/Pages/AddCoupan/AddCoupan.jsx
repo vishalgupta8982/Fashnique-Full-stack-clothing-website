@@ -62,7 +62,7 @@ const AddCoupan = () => {
     }
   }
 
-  const coupan = async() => {
+  const coupan = async () => {
     if (getCoupanId !== undefined) {
       await dispatch(updateCoupan(getCoupanId, editCoupan))
       clearUpdateCoupanField()
@@ -71,14 +71,14 @@ const AddCoupan = () => {
       clearCoupanField()
     }
   }
-  const clearCoupanField=()=>{
+  const clearCoupanField = () => {
     setNewCoupan({
       name: '',
       discount: '',
       expiry: '',
     })
   }
-  const clearUpdateCoupanField=()=>{
+  const clearUpdateCoupanField = () => {
     setEditCoupan({
       name: '',
       discount: '',
@@ -86,7 +86,14 @@ const AddCoupan = () => {
     })
   }
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { coupan(); } }} className="addCoupan">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          coupan()
+        }
+      }}
+      className="addCoupan"
+    >
       {loading && (
         <div className="loader">
           <ClipLoader

@@ -17,7 +17,7 @@ export const resetEnqState = () => ({
 
 export const postEnq = (enquiry) => async (dispatch) => {
   dispatch(postEnqRqst())
-  console.log(enquiry)
+  
   try {
     const response = await axios.post(`${baseUrl}/enquiry/`, enquiry, Config())
     if (response) {
@@ -27,7 +27,7 @@ export const postEnq = (enquiry) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+   
     dispatch(postEnqFailure(err.response.data))
     return err.response.data
   }

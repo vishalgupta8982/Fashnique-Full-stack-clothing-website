@@ -1,13 +1,32 @@
 import './OTP.css'
 import Button from '../Button/Button'
 import { useNavigate } from 'react-router-dom'
-import Layout from '../../Layouts/Layout/Layout'
+import { useDispatch, useSelector } from 'react-redux'
 import OTPInput from 'react-otp-input'
+import { toast } from 'react-toastify'
 import { useRef, useState } from 'react'
-const OTP = () => {
+import { resetVerifcationState, verifyOtp } from '../../services/Verification/VerifyAction'
+import { useEffect } from 'react'
+const OTP = ({ email }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [otp, setOtp] = useState('')
-  console.log(otp)
+  const [otpVerification, setOtpVerification] = useState(false)
+  const verifyOTP = async () => {
+    await dispatch(resetVerifcationState())
+    await dispatch(verifyOtp(otp, email))
+    setOtpVerification(true)
+  }
+  const verifyState = useSelector((state) => state.verify.isVerified)
+  useEffect(() => {
+    if (verifyState === 'Account verified successfully.' && otpVerification) {
+      toast.success('Account verified successfully, login again')
+      navigate('/login')
+    }
+    else if (verifyState !== 'Account verified successfully.' && otpVerification){
+      toast.error("Incorrect OTP")
+    }
+  }, [verifyState, otpVerification])
   return (
     <>
       <div className='otpPage w-[screen]  min-h-[74vh]   '>
@@ -16,12 +35,12 @@ const OTP = () => {
             {' '}
             <p>Verify with otp</p>
           </div>
-          <p className='sentto'>sent to vg980514@gmail.com</p>
+          <p className='sentto'>sent to {email}</p>
           <div className='otp'>
             <OTPInput
               value={otp}
               onChange={setOtp}
-              numInputs={4}
+              numInputs={6}
               renderSeparator={<span></span>}
               renderInput={(props) => <input {...props} />}
               inputStyle={{
@@ -36,7 +55,7 @@ const OTP = () => {
               }}
             />
           </div>
-          <div className='LoginButton'>
+          <div onClick={verifyOTP} className='LoginButton'>
             <Button title='Verify' widthButton={'270px'} />
           </div>
           <p onClick={() => navigate('/signUp')} className='newMember'>

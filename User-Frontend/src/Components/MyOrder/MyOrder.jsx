@@ -14,7 +14,7 @@ function MyOrder() {
   const navigate = useNavigate()
   const [star, setStar] = useState(0)
   const [prodId, setProdId] = useState('')
-  console.log(star)
+ 
   useEffect(() => {
     dispatch(getOrder())
     dispatch(userDetail())
@@ -23,7 +23,7 @@ function MyOrder() {
   const { userInformation } = user
   const orderState = useSelector((state) => state.order)
   const { Order } = orderState
-  console.log(userInformation)
+ 
   useEffect(() => {
     const fetchData = async () => {
       if (star !== 0) {

@@ -106,7 +106,6 @@ export const getColor = () => async (dispatch) => {
 
 export const deleteColor = (id) => async (dispatch) => {
   dispatch(DeleteColorRqst())
-  console.log(id)
   try {
     const response = await axios.delete(`${baseUrl}/color/${id}`, config())
     if (response) {

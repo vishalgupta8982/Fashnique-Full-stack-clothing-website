@@ -53,7 +53,7 @@ const AddBlogCategory = () => {
     }
   }
 
-  const BlogCat = async() => {
+  const BlogCat = async () => {
     if (getBlogCatId !== undefined) {
       await dispatch(updateBlogCat(getBlogCatId, editBlogCategory))
       clearEditBlogCategory()
@@ -66,14 +66,21 @@ const AddBlogCategory = () => {
       }
     }
   }
-const clearNewBlogCategory=()=>{
-  setNewBlogCategory('')
-}
-const clearEditBlogCategory=()=>{
-  setEditBlogCategory('')
-}
+  const clearNewBlogCategory = () => {
+    setNewBlogCategory('')
+  }
+  const clearEditBlogCategory = () => {
+    setEditBlogCategory('')
+  }
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { BlogCat() } }} className="addBlogCat">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          BlogCat()
+        }
+      }}
+      className="addBlogCat"
+    >
       {loading && (
         <div className="loader">
           <ClipLoader

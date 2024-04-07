@@ -33,11 +33,9 @@
 }
 .twoInputSide {
   display: flex;
-  flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  margin-top: 20px;
 }
 .newAddressHead {
   font-size: 14px;
@@ -48,7 +46,6 @@
   outline: none;
   padding: 10px;
   border: 1px solid var(--primary);
-  width: 45%;
 }
 .inputContainer {
   display: flex;

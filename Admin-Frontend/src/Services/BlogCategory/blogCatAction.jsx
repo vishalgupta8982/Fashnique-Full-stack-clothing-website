@@ -87,7 +87,6 @@ export const addBlogCat = (title) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.response.data)
     dispatch(AddBlogCategoryFailure(err.response.data))
     setTimeout(() => {
       dispatch(resetBlogCategoryState())
@@ -114,9 +113,11 @@ export const getBlogCat = () => async (dispatch) => {
 
 export const deleteBlogCat = (id) => async (dispatch) => {
   dispatch(DeleteBlogCategoryRqst())
-  console.log(id)
   try {
-    const response = await axios.delete(`${baseUrl}/blogCategory/${id}`, config())
+    const response = await axios.delete(
+      `${baseUrl}/blogCategory/${id}`,
+      config(),
+    )
     if (response) {
       await dispatch(DeleteBlogCategorySuccess(response.data))
       setTimeout(() => {

@@ -17,7 +17,7 @@ const AddCategory = () => {
   const [newCategory, setNewCategory] = useState('')
   const categoryState = useSelector((state) => state.category)
   const { error, isSuccess, loading, aproductCategory } = categoryState
-  console.log(error, isSuccess)
+ 
   const getCategoryId = location.pathname.split('/')[3]
   useEffect(() => {
     if (getCategoryId !== undefined) {
@@ -47,7 +47,7 @@ const AddCategory = () => {
     }
   }
 
-  const category = async() => {
+  const category = async () => {
     if (getCategoryId !== undefined) {
       await dispatch(updateCategory(getCategoryId, editCategory))
       setEditCategory('')
@@ -57,7 +57,14 @@ const AddCategory = () => {
     }
   }
   return (
-    <div onKeyDown={(e) => { if (e.keyCode === 13) { category(); } }} className="addCat">
+    <div
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          category()
+        }
+      }}
+      className="addCat"
+    >
       {loading && (
         <div className="loader">
           <ClipLoader

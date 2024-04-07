@@ -20,7 +20,6 @@ export const getWishlist = () => async (dispatch) => {
   dispatch(getWishlistRqst())
   try {
     const response = await axios.get(`${baseUrl}/user/wishlist`, Config())
-    console.log(response)
     if (response) {
       await dispatch(getWishlistSuccess(response.data))
       setTimeout(() => {
@@ -28,7 +27,6 @@ export const getWishlist = () => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
     dispatch(getWishlistFailure(err.response.data))
     return err.response.data
   }

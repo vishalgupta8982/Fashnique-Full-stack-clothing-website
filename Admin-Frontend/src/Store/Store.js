@@ -28,12 +28,12 @@ const rootReducer = combineReducers({
   product: productReducer,
   blog: blogReducer,
   upload: uploadReducer,
-  user:userReducer
+  user: userReducer,
 })
 
 export const store = createStore(
   rootReducer,
-  // applyMiddleware(thunk)
-  composeWithDevTools(applyMiddleware(thunk)),
+  applyMiddleware(thunk)
+  // composeWithDevTools(applyMiddleware(thunk)),
 )
 export default store

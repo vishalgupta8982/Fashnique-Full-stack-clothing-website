@@ -82,7 +82,6 @@ export const addCoupan = (coupan) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.response)
     dispatch(AddCoupanFailure(err.response.data))
     setTimeout(() => {
       dispatch(resetCoupanState())
@@ -92,11 +91,9 @@ export const addCoupan = (coupan) => async (dispatch) => {
 }
 
 export const getCoupan = () => async (dispatch) => {
-  console.log(config())
   dispatch(GetCoupanRqst())
   try {
     const response = await axios.get(`${baseUrl}/coupan`, config())
-    console.log(response)
     if (response) {
       await dispatch(GetCoupanSuccess(response.data))
     }
@@ -141,7 +138,11 @@ export const getaCoupan = (id) => async (dispatch) => {
 export const updateCoupan = (id, coupan) => async (dispatch) => {
   dispatch(updateCoupanRqst())
   try {
-    const response = await axios.put(`${baseUrl}/coupan/${id}`, coupan, config())
+    const response = await axios.put(
+      `${baseUrl}/coupan/${id}`,
+      coupan,
+      config(),
+    )
     if (response) {
       await dispatch(updateCoupanSuccess(response.data))
       setTimeout(() => {

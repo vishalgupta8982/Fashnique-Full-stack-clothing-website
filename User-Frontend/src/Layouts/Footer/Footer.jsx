@@ -22,16 +22,7 @@ const Footer = () => {
           </div>
 
           <div className='w-1/2 footerContainer md:w-1/3'>
-            <p className='text-[14px] md:text-[18px] footerHead'>
-              WANT TO BE SELL PRODUCT IN MY WEBSITE?
-            </p>
-            <a
-              className='flex text-[14px] ml-0 md:text-[18px] items-center mt-3 underline footerHead'
-              href='https://www.w3schools.com/css/css_align.asp'
-            >
-              Sign Up for sell product in our website
-            </a>
-            <p className='mt-5 text-[12px] md:text-[18px] footerHead'>FOLLOW ME:-</p>
+            <p className=' text-[12px] md:text-[18px] footerHead'>FOLLOW ME:-</p>
             <div className='flex mt-4 text-center md:text-start '>
               {socialMedia.map((item, index) => (
                 <Link to={item.link} key={index} className='mr-5 md:mr-8 footerIcon'>

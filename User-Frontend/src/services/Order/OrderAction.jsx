@@ -37,7 +37,7 @@ export const getOrder = () => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.response.data)
+   
     dispatch(getOrderFailure(err.response.data))
     return err.response.data
   }
@@ -54,7 +54,7 @@ export const createOrder = (data) => async (dispatch) => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err.reponse.data)
+   
     dispatch(createOrderFailure(err.response.data))
     return err.response.data
   }

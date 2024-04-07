@@ -38,7 +38,7 @@ export const uploadImage = (images) => async (dispatch) => {
   for (let i = 0; i < images.length; i++) {
     formData.append(`images`, images[i])
   }
-  console.log(formData)
+
   try {
     const response = await axios.post(
       `${baseUrl}/product/upload`,
@@ -46,11 +46,9 @@ export const uploadImage = (images) => async (dispatch) => {
       config(),
     )
     if (response) {
-      console.log(response.data)
       dispatch(UploadImageSuccess(response.data))
     }
   } catch (err) {
-    console.log(err.response.data)
     dispatch(UploadImageFailure(err.response.data.message))
     return err.response.data
   }
@@ -65,11 +63,9 @@ export const deleteImage = (id) => async (dispatch) => {
     )
 
     if (response) {
-      console.log(response, 'fads')
       dispatch(deleteImageSuccess(response))
     }
   } catch (err) {
-    console.log(err.response.data)
     dispatch(deleteImageFailure(err.response))
     return err.response.data
   }
