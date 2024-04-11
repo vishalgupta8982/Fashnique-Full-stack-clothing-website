@@ -39,11 +39,10 @@ export const resetProductState = () => ({
 
 export const getProduct = (filter) => async (dispatch) => {
   const filterParam = filter ? `?${filter}&limit=8` : '?sort=null?page=1&limit=8'
- 
   dispatch(getProductRqst())
   try {
     const response = await axios.get(`${baseUrl}/product${filterParam}`, Config())
-
+    console.log(response)
     if (response) {
       await dispatch(getProductSuccess(response.data))
       setTimeout(() => {

@@ -25,7 +25,6 @@ const Homepage = () => {
   const blog = useSelector((state) => state.blog)
   const product = useSelector((state) => state.product.Product)
   const { loading, Blog } = blog
- 
   const [swiperRef, setSwiperRef] = useState(null)
   return (
     <>

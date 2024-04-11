@@ -52,21 +52,49 @@ const getaProduct = asyncHandler(async (req, res) => {
   }
 });
 
+ 
 const getAllProduct = asyncHandler(async (req, res) => {
   try {
     // Filtering
     const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields", "color"]; 
+    const excludeFields = ["page", "sort", "limit", "fields", "color"];
     excludeFields.forEach((el) => delete queryObj[el]);
-    // Handle color filtering
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `${match}`);
-    let query = Product.find(JSON.parse(queryStr));
+
+    // Dynamically construct the query object
+    Object.keys(queryObj).forEach(key => {
+      if (key === 'totalRatings' && queryObj[key].gte) {
+        const totalRatingsGTE = parseFloat(queryObj[key].gte);
+        if (!isNaN(totalRatingsGTE)) {
+          queryObj[key] = { $gte: totalRatingsGTE };
+        }
+      } else if (key === 'discount' && queryObj[key].gte) {
+        const discountGTE = parseFloat(queryObj[key].gte);
+        if (!isNaN(discountGTE)) {
+          queryObj[key] = { $gte: discountGTE };
+        }
+      } 
+      else if (key === 'price' && queryObj[key].gte) {
+        const priceGTE = parseFloat(queryObj[key].gte);
+        if (!isNaN(priceGTE)) {
+          queryObj[key] = { $gte: priceGTE };
+        }
+      } 
+      else if (key === 'price' && queryObj[key].lte) {
+        const priceLTE = parseFloat(queryObj[key].lte);
+        if (!isNaN(priceLTE)) {
+          queryObj[key] = { $gte: priceLTE };
+        }
+      } 
+    });
+
+    let query = Product.find(queryObj);
+
     // Add color filtering
     if (req.query.color) {
       const decodedColors = decodeURIComponent(req.query.color).split(',').map(color => color.trim()); // Decode and split colors
       query = query.where('color').in(decodedColors); // Filter products by color
     }
+
     // Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' ');
@@ -74,6 +102,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
     } else {
       query = query.sort('-createdAt');
     }
+
     // Limiting the fields
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
@@ -81,40 +110,32 @@ const getAllProduct = asyncHandler(async (req, res) => {
     } else {
       query = query.select('-__v');
     }
+
     // Pagination
-    const page = parseInt(req.query.page) || 1; // Parse page to integer, default to 1 if not provided
-    const limit = parseInt(req.query.limit) || Number.MAX_SAFE_INTEGER; // Parse limit to integer, default to 10 if not provided
-   
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || Number.MAX_SAFE_INTEGER;  
     const skip = (page - 1) * limit;
     query = query.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const productCount = await Product.countDocuments();
-      if (skip >= productCount) throw new Error("This page does not exist");
-    }
-
     const products = await query;
-    
-    const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
+    const totalProducts = await Product.countDocuments(queryObj);
     const totalPages = Math.ceil(totalProducts / limit);
-    const product = products.filter(product => {
-      // Calculate discounted price
-      const discountedPrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
-      const gte = parseFloat(queryObj?.price?.gte || 0);
-      const lte = parseFloat(queryObj?.price?.lte || Infinity);
-      return discountedPrice >= gte && discountedPrice <= lte;
+    product = products.filter((product) => {
+      const effectivePrice = product.discount ? product.price * (1 - product.discount / 100) : product.price;
+      const gte = queryObj.price?.$gte || 0
+      const lte = queryObj.price?.$lte || Infinity
+      return effectivePrice >=  gte   && effectivePrice <= lte ;
     });
-     
-    res.json({
-      data: {
-        product,
-        totalPages,
-      }
-    });
+      res.json({
+        data: {
+          product,
+          totalPages,
+        }
+      });
   } catch (error) {
     throw new Error(error);
   }
 });
+
 
 const addToWishList=asyncHandler(async(req,res)=>{
   

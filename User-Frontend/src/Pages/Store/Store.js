@@ -144,7 +144,7 @@ const Store = () => {
       updateURL({ discounts: e })
     }
   }
- 
+  console.log(queryParams.toString())
   return (
     <>
       <div
@@ -356,7 +356,7 @@ const Store = () => {
               </select>
             </div>
             <p className='storeSortForMd'>
-              Showing {Product?.data?.product.length != 0 ? (page - 1) * 8 + 1 : 0}-
+              Showing {Product?.data?.product?.length != 0 ? (page - 1) * 8 + 1 : 0}-
               {(Product?.data?.product.length != 0 ? (page - 1) * 8 : 0) +
                 Product?.data?.product.length}{' '}
               of{' '}
